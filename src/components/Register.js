@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
-
+import { useAuth } from '../contexts/AuthContext'
 
 
 function Register() {
@@ -11,18 +11,26 @@ function Register() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
+    const { register } = useAuth()
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        const userData = {
-            nameRef: nameRef.current.value,
-            emailRef: emailRef.current.value,
-            passwordRef: passwordRef.current.value,
-            confirmPasswordRef: confirmPasswordRef.current.value,
+        if(passwordRef.current.value !== confirmPasswordRef.current.value){
+            return setError('Passwords do not match')
         }
 
-        console.table(userData)
+        try{
+            setError('')
+            setLoading(true)
+            register(emailRef.current.value, passwordRef.current.value)
+        } catch{
+            setError('Failed to create an account')
+        }
+
+        setLoading(false)
     }
 
     return (        
@@ -30,6 +38,7 @@ function Register() {
                 <RegisterContainer>
                     <h3>Register</h3>
                     <hr/>
+                    {error && alert({error})}
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
@@ -48,7 +57,7 @@ function Register() {
                             <input id="confirm_password" type="password" ref={confirmPasswordRef}  />
                         </ConfirmPassword>
                         <Submit>
-                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
+                            <button disabled={loading} type="submit" value="submit" onClick={handleSubmit}>Submit</button>
                         </Submit>
 
                     </form>
@@ -74,7 +83,7 @@ const Container = styled.div`
     justify-content: center;
 `
 const RegisterContainer = styled.div`
-    width: 450px;
+    max-width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;

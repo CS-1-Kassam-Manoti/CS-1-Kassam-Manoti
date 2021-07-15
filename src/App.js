@@ -7,28 +7,29 @@ import Footer from './components/Footer'
 import Login from './components/Login'
 import Register from './components/Register'
 import Home from './components/Home'
+import { AuthProvider } from './contexts/AuthContext';
 
 
 
 function App() {
   return (
-    <Container>
-      <Router>
-        <Route exact path="/" component={Home}/>
+      <Container>
+        <Router>
+          <Route exact path="/" component={Home}/>
 
-        <Route path="/register">
-          <Register/>
-        </Route>
+          <Route path="/register">
+            <Register/>
+          </Route>
 
-        <Route path="/login">
-          <Login/>
-        </Route>
+          <Route path="/login">
+            <Login/>
+          </Route>
 
-
-      </Router>
-    
-      
-    </Container>
+          <Route path="/header">
+            <Header/>
+          </Route>
+        </Router>
+      </Container>
   );
 }
 

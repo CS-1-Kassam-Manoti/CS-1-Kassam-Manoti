@@ -64,7 +64,7 @@ const Container = styled.div`
 
 `
 const LoginContainer = styled.div`
-    width: 450px;
+    max-width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;
