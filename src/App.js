@@ -10,14 +10,9 @@ function App() {
   return (
     <Container>
 
-      <Header/>
-
-      <Article/>
-
 
       <Register/>
 
-      <Login/>
 
     
       
@@ -28,5 +23,5 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  color: blue;
+  
 `
