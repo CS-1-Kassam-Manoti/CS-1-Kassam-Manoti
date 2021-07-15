@@ -6,6 +6,7 @@ function Register() {
         <Container>
             <RegisterContainer>
                 <h3>Register</h3>
+                <hr/>
                 <form action="">
                     <Name>
                         <label htmlFor="name">Name</label>
@@ -38,48 +39,86 @@ function Register() {
 export default Register
 
 const Container = styled.div`
-    border: 1px solid black;
     width: 100%;
     height: 100vh;
-    margin: auto 0;
     display: flex;
 `
 const RegisterContainer = styled.div`
-    width: 350px;
+    width: 400px;
     height: 400px;
     margin: auto;
-    background-color: grey;
+    padding-top: 50px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
     h3{
         text-align: center;
-        border: 1px solid black;
+        margin-bottom: 10px;
+        
+    }
+
+    hr{
+        margin: 0 11%;
     }
 
     form{
-        border: 1px solid black;
-        margin: 0 15px;
+        margin: 15px;
+        height: 100%;
+
+        input{
+            width: 200px;
+            margin-right: 10px;
+            font-size: 17px;
+        }
+
+        label{
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
     }
 `
 const Name = styled.div`
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
 `
 const Email = styled.div`
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
 `
 const Password = styled.div`
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
 `
 const ConfirmPassword = styled.div`
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
 `
 const Submit = styled.div`
     text-align: center;
     margin-top: 20px;
+    padding: 20px 0 5px 0;
+    height: 30px;
+
+    input{
+        height: 30px;
+        padding: 0;
+        width: 100px !important;
+        margin-bottom: 5px;
+        background: transparent;
+        border: 1px solid blue;
+        border-radius: 4px;
+    }
 `
 const Login = styled.div`
     text-align: center;
+    font-size: 16px;
 `
