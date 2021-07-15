@@ -1,38 +1,46 @@
-import styled from 'styled-components'
+import styled from 'styled-components' //installed via "npm install styled-components"
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
+import Login from './Login'
 
 
 function Register() {
     return (
-        <Container>
-            <RegisterContainer>
-                <h3>Register</h3>
-                <hr/>
-                <form action="">
-                    <Name>
-                        <label htmlFor="name">Name</label>
-                        <input id="name" type="text"  /> 
-                    </Name>
-                    <Email>
-                        <label htmlFor="email">Email Address</label>
-                        <input id="email" type="email"  />
-                    </Email>
-                    <Password>
-                        <label htmlFor="password">Password</label>
-                        <input id="password" type="email"  />
-                    </Password>
-                    <ConfirmPassword>
-                        <label htmlFor="confirm_password">Confirm Password</label>
-                        <input id="confirm_password" type="password"  />
-                    </ConfirmPassword>
-                    <Submit>
-                        <input type="submit" value="submit" />
-                    </Submit>
-                    <Login>
-                        <h6>Already Have an Account? <a Link="">Login</a></h6>
-                    </Login>
-                </form>
-            </RegisterContainer>
-        </Container>
+        // from the react-router-dom installed
+        <Router>
+            <Container>
+                <RegisterContainer>
+                    <h3>Register</h3>
+                    <hr/>
+                    <form action="">
+                        <Name>
+                            <label htmlFor="name">Name</label>
+                            <input id="name" type="text"  /> 
+                        </Name>
+                        <Email>
+                            <label htmlFor="email">Email Address</label>
+                            <input id="email" type="email"  />
+                        </Email>
+                        <Password>
+                            <label htmlFor="password">Password</label>
+                            <input id="password" type="email"  />
+                        </Password>
+                        <ConfirmPassword>
+                            <label htmlFor="confirm_password">Confirm Password</label>
+                            <input id="confirm_password" type="password"  />
+                        </ConfirmPassword>
+                        <Submit>
+                            <input type="submit" value="submit" />
+                        </Submit>
+                        <LoginText>
+                            <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
+                        </LoginText>
+                    </form>
+                </RegisterContainer>
+
+                    
+            </Container>
+        </Router>
+        
     )
 }
 
@@ -54,7 +62,7 @@ const RegisterContainer = styled.div`
     h3{
         text-align: center;
         margin-bottom: 10px;
-        
+        font-size: 24px;
     }
 
     hr{
@@ -118,7 +126,14 @@ const Submit = styled.div`
         border-radius: 4px;
     }
 `
-const Login = styled.div`
+const LoginText = styled.div`
     text-align: center;
     font-size: 16px;
+
+    h6{
+        a{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
 `
