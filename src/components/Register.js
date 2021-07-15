@@ -1,45 +1,65 @@
+import React, { useRef } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
 
 
+
 function Register() {
-    return (
-        // from the react-router-dom installed
-        <Router>
+
+    const nameRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const confirmPasswordRef = useRef()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const userData = {
+            nameRef: nameRef.current.value,
+            emailRef: emailRef.current.value,
+            passwordRef: passwordRef.current.value,
+            confirmPasswordRef: confirmPasswordRef.current.value,
+        }
+
+        console.table(userData)
+    }
+
+    return (        
             <Container>
                 <RegisterContainer>
                     <h3>Register</h3>
                     <hr/>
-                    <form action="">
+                    <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  /> 
+                            <input id="name" type="text"  ref={nameRef} /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email"  />
+                            <input id="email" type="email" ref={emailRef}  />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="email"  />
+                            <input id="password" type="password" ref={passwordRef}  />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input id="confirm_password" type="password"  />
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  />
                         </ConfirmPassword>
                         <Submit>
-                            <input type="submit" value="submit" />
+                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
                         </Submit>
-                        <LoginText>
-                            <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
-                        </LoginText>
+
                     </form>
+                    <LoginText>
+                        <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
+                    </LoginText>
                 </RegisterContainer>
 
                     
             </Container>
-        </Router>
+        
         
     )
 }
@@ -50,12 +70,13 @@ const Container = styled.div`
     width: 100%;
     height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
 `
 const RegisterContainer = styled.div`
-    width: 400px;
-    height: 400px;
+    width: 450px;
     margin: auto;
-    padding-top: 50px;
+    padding: 50px 0;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
@@ -70,13 +91,19 @@ const RegisterContainer = styled.div`
     }
 
     form{
-        margin: 15px;
-        height: 100%;
+        margin:  15px;
 
         input{
-            width: 200px;
+            width: 250px;
             margin-right: 10px;
-            font-size: 17px;
+            font-size: 15px;
+            cursor: text;
+            border: none;
+            border-bottom: 1px solid grey;
+
+            :focus{
+                outline: none;
+            }
         }
 
         label{
@@ -112,23 +139,24 @@ const ConfirmPassword = styled.div`
 `
 const Submit = styled.div`
     text-align: center;
-    margin-top: 20px;
+    margin: 20px 10px 0 10px;
     padding: 20px 0 5px 0;
     height: 30px;
 
-    input{
+    button{
         height: 30px;
         padding: 0;
-        width: 100px !important;
         margin-bottom: 5px;
         background: transparent;
         border: 1px solid blue;
         border-radius: 4px;
+        width: 100%;
+        cursor: pointer;
     }
 `
 const LoginText = styled.div`
     text-align: center;
-    font-size: 16px;
+    font-size: 17px;
 
     h6{
         a{

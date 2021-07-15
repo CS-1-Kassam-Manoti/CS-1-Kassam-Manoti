@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import styled from 'styled-components'
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
@@ -14,8 +14,13 @@ import InputHints from "react-input-hints";
 
 const Login = () => {
 
+
+    const handleSubmit = () => {
+
+    }
+
 return (
-	<Router>
+	
             <Container>
                 <LoginContainer>
                     <h3>Login</h3>
@@ -32,17 +37,18 @@ return (
                         </Password>
                         
                         <Submit>
-                            <input type="submit" value="submit" />
+                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
                         </Submit>
-                        <RegisterText>
-                            <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
-                        </RegisterText>
+                        
                     </form>
+                    <RegisterText>
+                            <h6>Already Have an Account? <Link to="/register">Register</Link></h6>
+                    </RegisterText>
                 </LoginContainer>
 
                     
             </Container>
-        </Router>
+        
 
 );
 };
@@ -53,12 +59,14 @@ const Container = styled.div`
     width: 100%;
     height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
+
 `
 const LoginContainer = styled.div`
-    width: 400px;
-    height: 400px;
+    width: 450px;
     margin: auto;
-    padding-top: 50px;
+    padding: 50px 0;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
@@ -73,14 +81,21 @@ const LoginContainer = styled.div`
     }
 
     form{
-        margin: 15px;
-        height: 100%;
+        margin:  15px;
 
         input{
-            width: 200px;
+            width: 250px;
             margin-right: 10px;
             font-size: 17px;
+            cursor: text;
+            border: none;
+            border-bottom: 1px solid grey;
+
+            :focus{
+            outline: none;
         }
+        }
+        
 
         label{
             display: flex;
@@ -103,23 +118,24 @@ const Password = styled.div`
 `
 const Submit = styled.div`
     text-align: center;
-    margin-top: 20px;
+    margin: 20px 10px 0 10px;
     padding: 20px 0 5px 0;
     height: 30px;
 
-    input{
+    button{
         height: 30px;
         padding: 0;
-        width: 100px !important;
         margin-bottom: 5px;
         background: transparent;
         border: 1px solid blue;
         border-radius: 4px;
+        width: 100%;
+        cursor: pointer;
     }
 `
 const RegisterText = styled.div`
     text-align: center;
-    font-size: 16px;
+    font-size: 17px;
 
     h6{
         a{

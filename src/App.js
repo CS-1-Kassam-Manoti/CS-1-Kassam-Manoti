@@ -6,7 +6,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import Register from './components/Register'
-import  Home from './components/Home';
+import Home from './components/Home'
 
 
 
@@ -26,10 +26,6 @@ function App() {
 
 
       </Router>
-
-
-
-
     
       
     </Container>
