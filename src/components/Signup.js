@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
 import { useAuth } from '../contexts/AuthContext'
+
 
 
 export default function Signup() {
@@ -11,12 +12,12 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup } = useAuth()
+    // const { signup } = useAuth()
 
     function handleSubmit (e){
         e.preventDefault()
 
-        signup(emailRef.current.value, passwordRef.current.value)
+        // signup(emailRef.current.value, passwordRef.current.value)
 
         // const userData = {
         //     nameRef: nameRef.current.value,
@@ -31,9 +32,8 @@ export default function Signup() {
     return (        
             <Container>
                 <RegisterContainer>
-                    <h3>Signup</h3>
+                    <h3>Register</h3>
                     <hr/>
-                    {error && alert({error})}
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
@@ -52,7 +52,7 @@ export default function Signup() {
                             <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
                         </ConfirmPassword>
                         <Submit>
-                            <button disabled={loading} type="submit" value="submit" onClick={handleSubmit}>Submit</button>
+                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
                         </Submit>
 
                     </form>
@@ -77,25 +77,21 @@ const Container = styled.div`
     justify-content: center;
 `
 const RegisterContainer = styled.div`
-    max-width: 450px;
+    width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-
     h3{
         text-align: center;
         margin-bottom: 10px;
         font-size: 24px;
     }
-
     hr{
         margin: 0 11%;
     }
-
     form{
         margin:  15px;
-
         input{
             width: 250px;
             margin-right: 10px;
@@ -103,12 +99,10 @@ const RegisterContainer = styled.div`
             cursor: text;
             border: none;
             border-bottom: 1px solid grey;
-
             :focus{
                 outline: none;
             }
         }
-
         label{
             display: flex;
             align-items: center;
@@ -145,7 +139,6 @@ const Submit = styled.div`
     margin: 20px 10px 0 10px;
     padding: 20px 0 5px 0;
     height: 30px;
-
     button{
         height: 30px;
         padding: 0;
@@ -160,7 +153,6 @@ const Submit = styled.div`
 const LoginText = styled.div`
     text-align: center;
     font-size: 17px;
-
     h6{
         a{
             text-decoration: underline;
