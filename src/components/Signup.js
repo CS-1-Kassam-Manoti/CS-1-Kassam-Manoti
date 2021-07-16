@@ -2,27 +2,31 @@ import React, { useRef } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
+import { useAuth } from '../contexts/AuthContext'
 
 
 
-function Register() {
+export default function Signup() {
 
     const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
+    // const { signup } = useAuth()
 
-    const handleSubmit = (e) => {
+    function handleSubmit (e){
         e.preventDefault()
 
-        const userData = {
-            nameRef: nameRef.current.value,
-            emailRef: emailRef.current.value,
-            passwordRef: passwordRef.current.value,
-            confirmPasswordRef: confirmPasswordRef.current.value,
-        }
+        // signup(emailRef.current.value, passwordRef.current.value)
 
-        console.table(userData)
+        // const userData = {
+        //     nameRef: nameRef.current.value,
+        //     emailRef: emailRef.current.value,
+        //     passwordRef: passwordRef.current.value,
+        //     confirmPasswordRef: confirmPasswordRef.current.value,
+        // }
+
+        // console.table(userData)
     }
 
     return (        
@@ -33,19 +37,19 @@ function Register() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} /> 
+                            <input id="name" type="text"  ref={nameRef} required/> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef}  />
+                            <input id="email" type="email" ref={emailRef} required />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef}  />
+                            <input id="password" type="password" ref={passwordRef} required  />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  />
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
                         </ConfirmPassword>
                         <Submit>
                             <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
@@ -64,7 +68,6 @@ function Register() {
     )
 }
 
-export default Register
 
 const Container = styled.div`
     width: 100%;
