@@ -5,30 +5,33 @@ import Article from './components/Article'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './components/Login'
-import Register from './components/Register'
+import Register from './components/Signup'
 import Home from './components/Home'
+import { AuthProvider } from './contexts/AuthContext'
 
 
 
 function App() {
   return (
-    <Container>
-      <Router>
-        <Route exact path="/" component={Home}/>
+    <AuthProvider>
+      <Container>
+        <Router>
+          <Route exact path="/" component={Home}/>
 
-        <Route path="/register">
-          <Register/>
-        </Route>
+          <Route path="/signup">
+            <Register/>
+          </Route>
 
-        <Route path="/login">
-          <Login/>
-        </Route>
+          <Route path="/login">
+            <Login/>
+          </Route>
 
 
-      </Router>
-    
+        </Router>
       
-    </Container>
+        
+      </Container>
+     </AuthProvider>
   );
 }
 

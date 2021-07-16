@@ -42,7 +42,7 @@ return (
                         
                     </form>
                     <RegisterText>
-                            <h6>Already Have an Account? <Link to="/register">Register</Link></h6>
+                            <h6>Already Have an Account? <Link to="/signup">Register</Link></h6>
                     </RegisterText>
                 </LoginContainer>
 
