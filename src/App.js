@@ -5,19 +5,20 @@ import Article from './components/Article'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './components/Login'
-import Register from './components/Register'
+import Register from './components/Signup'
 import Home from './components/Home'
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext'
 
 
 
 function App() {
   return (
+    <AuthProvider>
       <Container>
         <Router>
           <Route exact path="/" component={Home}/>
 
-          <Route path="/register">
+          <Route path="/signup">
             <Register/>
           </Route>
 
@@ -25,11 +26,12 @@ function App() {
             <Login/>
           </Route>
 
-          <Route path="/header">
-            <Header/>
-          </Route>
+
         </Router>
+      
+        
       </Container>
+     </AuthProvider>
   );
 }
 

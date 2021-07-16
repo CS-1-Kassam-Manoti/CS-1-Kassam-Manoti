@@ -33,7 +33,7 @@ return (
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="email"  />
+                            <input id="password" type="password"  />
                         </Password>
                         
                         <Submit>
@@ -42,7 +42,7 @@ return (
                         
                     </form>
                     <RegisterText>
-                            <h6>Already Have an Account? <Link to="/register">Register</Link></h6>
+                            <h6>Already Have an Account? <Link to="/signup">Register</Link></h6>
                     </RegisterText>
                 </LoginContainer>
 
