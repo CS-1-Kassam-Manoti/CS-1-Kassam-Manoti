@@ -33,7 +33,7 @@ return (
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="email"  />
+                            <input id="password" type="password"  />
                         </Password>
                         
                         <Submit>
