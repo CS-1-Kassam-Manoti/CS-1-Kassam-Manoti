@@ -33,19 +33,19 @@ function Register() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} /> 
+                            <input id="name" type="text"  ref={nameRef} required/> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef}  />
+                            <input id="email" type="email" ref={emailRef} required />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef}  />
+                            <input id="password" type="password" ref={passwordRef} required  />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  />
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
                         </ConfirmPassword>
                         <Submit>
                             <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
