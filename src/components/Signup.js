@@ -11,12 +11,12 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    // const { signup } = useAuth()
+    const { signup } = useAuth()
 
     function handleSubmit (e){
         e.preventDefault()
 
-        // signup(emailRef.current.value, passwordRef.current.value)
+        signup(emailRef.current.value, passwordRef.current.value)
 
         // const userData = {
         //     nameRef: nameRef.current.value,
