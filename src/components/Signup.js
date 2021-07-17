@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
@@ -12,12 +12,25 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    // const { signup } = useAuth()
+    const { signup } = useAuth()
+    const[error, setError]=useState('')
+    const[loading,setLoading]=useState(false)
 
-    function handleSubmit (e){
+
+    async function handleSubmit (e){
         e.preventDefault()
-
-        // signup(emailRef.current.value, passwordRef.current.value)
+        if(passwordRef.current.value !==confirmPasswordRef.current.value){
+          return  setError('The Passswords Do Not Match')
+        }
+        try{
+          setError('')
+          setLoading(true)  
+          await signup(emailRef.current.value, passwordRef.current.value)
+        }
+        catch{
+            setError('Account Creation Failed')
+        }
+        setLoading(false)
 
         // const userData = {
         //     nameRef: nameRef.current.value,
@@ -34,6 +47,7 @@ export default function Signup() {
                 <RegisterContainer>
                     <h3>Register</h3>
                     <hr/>
+                    
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
@@ -52,7 +66,7 @@ export default function Signup() {
                             <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
                         </ConfirmPassword>
                         <Submit>
-                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
+                            <button disabled={loading} type="submit" value="submit" onClick={handleSubmit}>Submit</button>
                         </Submit>
 
                     </form>
