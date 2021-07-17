@@ -5,10 +5,9 @@ import Article from './components/Article'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './components/Login'
-import Register from './components/Signup'
+import Signup from './components/Signup'
 import Home from './components/Home'
 import { AuthProvider } from './contexts/AuthContext'
-
 
 
 function App() {
@@ -16,22 +15,18 @@ function App() {
     <AuthProvider>
       <Container>
         <Router>
+
           <Route exact path="/" component={Home}/>
 
-          <Route path="/signup">
-            <Register/>
-          </Route>
+          <Route exact path="/signup" component={Signup}/>
 
-          <Route path="/login">
-            <Login/>
-          </Route>
-
+          <Route exact path="/login" component={Login}/>
 
         </Router>
       
         
       </Container>
-     </AuthProvider>
+    </AuthProvider>
   );
 }
 
