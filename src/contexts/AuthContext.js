@@ -51,7 +51,9 @@ export function AuthProvider({children}) {
     }
 
     function updateName(name){
-        return currentUser.updateName(name)
+        return currentUser.updateProfile({
+            displayName: name
+        })
     }
 
     useEffect(() =>{

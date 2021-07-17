@@ -63,11 +63,11 @@ export default function UpdateProfile() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} required/> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={currentUser.displayName} /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef} required defaultValue={currentUser.email} />
+                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>

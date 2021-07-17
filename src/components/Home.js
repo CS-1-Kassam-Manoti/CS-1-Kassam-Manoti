@@ -51,7 +51,7 @@ function Home() {
                 </button>
             </Button>
 
-                {name}
+                {currentUser.displayName ? currentUser.displayName : name}
             
         </Container>
     )
