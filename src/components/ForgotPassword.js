@@ -1,30 +1,29 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
-import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
+import { Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
-export default function Login() {
+export default function ForgotPassword() {
 
     const emailRef = useRef()
-    const passwordRef = useRef()
-    const { login } = useAuth()
+    const { resetPassword } = useAuth()
     const[error, setError] = useState('')
+    const [message, setMessage] = useState('')
     const[loading, setLoading] = useState(false)
-    const history = useHistory()
-
 
     async function handleSubmit (e){
         e.preventDefault()
         
         try{
+            setMessage('')
             setError('')
             setLoading(true)  
-            await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/')
+            await resetPassword(emailRef.current.value)
+            setMessage('Check your inbox for further instructions')
         }
         catch{
-            setError('Failed to Log In')
+            setError('Failed to Reset Password')
         }
         setLoading(false)
 
@@ -33,7 +32,7 @@ export default function Login() {
     return (        
             <Container>
                 <RegisterContainer>
-                    <h3>log In</h3>
+                    <h3>Password Reset</h3>
                     <hr/>
                    
                     { //this code checks if theres error - it displays an error component
@@ -43,6 +42,12 @@ export default function Login() {
                             {error}
                         </ErrorComponent>
                     }
+                    { 
+                    message && 
+                        <MessageComponent>
+                            {message}
+                        </MessageComponent>
+                    }
 
                     <form onSubmit={handleSubmit} >
                         
@@ -50,18 +55,15 @@ export default function Login() {
                             <label htmlFor="email">Email Address</label>
                             <input id="email" type="email" ref={emailRef} required />
                         </Email>
-                        <Password>
-                            <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef} required  />
-                        </Password>
+                        
                        
                         <Submit>
-                            <button disabled={loading} type="submit" >Log In</button>
+                            <button disabled={loading} type="submit" >Reset Password</button>
                         </Submit>
 
                     </form>
                     <ForgotPasswordText>
-                        <h6><Link to="/forgot-password">Forgot Password</Link></h6>
+                        <h6><Link to="/login">Log In</Link></h6>
                     </ForgotPasswordText>
                     <SignupText>
                         <h6>Need an Account? <Link to="/signup">Sign Up</Link></h6>
@@ -95,6 +97,16 @@ const ErrorComponent = styled.div`
     .error_icon{
         transform: scale(0.8);
     }
+`
+const MessageComponent = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: green;
+    font-weight: bold;
+    background-color: #ffc1c1;
+    margin: 0 11%;
+
 `
 
 const RegisterContainer = styled.div`

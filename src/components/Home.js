@@ -1,37 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import app, {auth} from '../firebase'
+import app from '../firebase'
 import { useAuth } from '../contexts/AuthContext'
+import {useHistory, Link} from 'react-router-dom'
+import ErrorIcon from '@material-ui/icons/Error';
 
 
 function Home() {
-
+    const [error, setError] = useState("")
     
-    const { signup, currentUser } = useAuth()
+    const { currentUser, logout } = useAuth()
+    const history = useHistory()
 
-    const Signoutfunction = () => {
-        const signout = app.auth().signOut()
+    const handleLogout = async () => {
+        setError('')
 
-        console.log( signout && 'signout working')
-
-        return signout
+        try{
+            await logout()
+            history.push('/login')
+        }
+        catch{
+            setError('Failed to log out')
+        }
     }
 
     
+    console.log(JSON.stringify(currentUser))
+    const email = currentUser.email
+    const name = email.substring(0, email.lastIndexOf("@"));
 
 
     return (
         <Container>
             <Header>
+            { 
+                    error && 
+                        <ErrorComponent>
+                            <ErrorIcon className="error_icon"/>
+                            {error}
+                        </ErrorComponent>
+                    }
             This is the home page
             </Header>
             <Button>
-                <button onClick={Signoutfunction}>SignOut</button>
+                <button onClick={handleLogout} >SignOut</button>
+            </Button>
+            <Button> 
+                <button>
+                    <Link to="/update-profile">Update Profile</Link>
+                </button>
             </Button>
 
-            {
-                currentUser.providerData[0].displayName
-            }
+                {name}
+            
         </Container>
     )
 }
@@ -45,5 +66,8 @@ const Header = styled.div`
 
 `
 const Button = styled.div`
+
+`
+const ErrorComponent = styled.div`
 
 `

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
-import { Link } from 'react-router-dom' //installed via "npm install react-router-dom"
+import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
@@ -10,9 +10,10 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup, currentUser, updateUserProfile } = useAuth()
+    const { signup} = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
+    const history = useHistory()
 
 
     async function handleSubmit (e){
@@ -25,13 +26,14 @@ export default function Signup() {
             setLoading(true)  
             console.log('passwords match')
 
-            await signup(nameRef.current.value, emailRef.current.value, passwordRef.current.value)
-            
+            await signup(emailRef.current.value, passwordRef.current.value)
             console.log('signup successful')
+            history.push('/')
 
         }
         catch{
             setError('Account Creation Failed')
+            console.log(error)
         }
         setLoading(false)
 
@@ -42,12 +44,9 @@ export default function Signup() {
                 <RegisterContainer>
                     <h3>Signup</h3>
                     <hr/>
-                    {/* {currentUser.email} */}
-                    {console.log(JSON.stringify(currentUser))}
-                    {/* {console.log(currentUser.displayName)}  */}
-                    {currentUser.providerData[0].displayName}
 
-                    { //this code checks if theres error - it displays an error component
+                     {/* // this code checks if theres error - it displays an error component */}
+                    { 
                     error && 
                         <ErrorComponent>
                             <ErrorIcon className="error_icon"/>

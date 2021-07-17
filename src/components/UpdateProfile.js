@@ -4,39 +4,49 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
-export default function Login() {
+export default function UpdateProfile() {
 
+    const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { login } = useAuth()
+    const confirmPasswordRef = useRef()
+    const { currentUser } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
 
 
     async function handleSubmit (e){
-        e.preventDefault()
-        
-        try{
-            setError('')
-            setLoading(true)  
-            await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/')
-        }
-        catch{
-            setError('Failed to Log In')
-        }
-        setLoading(false)
+        // e.preventDefault()
+        // if(passwordRef.current.value !== confirmPasswordRef.current.value){
+        //     return  setError('The Passswords Do Not Match')
+        // }
+        // try{
+        //     setError('')
+        //     setLoading(true)  
+        //     console.log('passwords match')
+
+        //     await signup(emailRef.current.value, passwordRef.current.value)
+        //     console.log('signup successful')
+        //     history.push('/')
+
+        // }
+        // catch{
+        //     setError('Account Creation Failed')
+        //     console.log(error)
+        // }
+        // setLoading(false)
 
     }
 
     return (        
             <Container>
                 <RegisterContainer>
-                    <h3>log In</h3>
+                    <h3>Update Profile</h3>
                     <hr/>
-                   
-                    { //this code checks if theres error - it displays an error component
+
+                     {/* // this code checks if theres error - it displays an error component */}
+                    { 
                     error && 
                         <ErrorComponent>
                             <ErrorIcon className="error_icon"/>
@@ -45,27 +55,30 @@ export default function Login() {
                     }
 
                     <form onSubmit={handleSubmit} >
-                        
+                        <Name>
+                            <label htmlFor="name">Name</label>
+                            <input id="name" type="text"  ref={nameRef} required/> 
+                        </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef} required />
+                            <input id="email" type="email" ref={emailRef} required defaultValue={currentUser.email} />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef} required  />
+                            <input id="password" type="password" ref={passwordRef} required placeholder="Leave blank to keep the same" />
                         </Password>
-                       
+                        <ConfirmPassword>
+                            <label htmlFor="confirm_password">Confirm Password</label>
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef} required placeholder="Leave blank to keep the same" />
+                        </ConfirmPassword>
                         <Submit>
-                            <button disabled={loading} type="submit" >Log In</button>
+                            <button disabled={loading} type="submit" >Update Profile</button>
                         </Submit>
 
                     </form>
-                    <ForgotPasswordText>
-                        <h6><Link to="/forgot-password">Forgot Password</Link></h6>
-                    </ForgotPasswordText>
-                    <SignupText>
-                        <h6>Need an Account? <Link to="/signup">Sign Up</Link></h6>
-                    </SignupText>
+                    <LoginText>
+                        <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
+                    </LoginText>
                 </RegisterContainer>
 
                     
@@ -135,6 +148,12 @@ const RegisterContainer = styled.div`
         }
     }
 `
+const Name = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
 const Email = styled.div`
     display: flex;
     justify-content: space-between;
@@ -142,6 +161,12 @@ const Email = styled.div`
     height: 30px;
 `
 const Password = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
+const ConfirmPassword = styled.div`
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
@@ -163,17 +188,7 @@ const Submit = styled.div`
         cursor: pointer;
     }
 `
-const SignupText = styled.div`
-    text-align: center;
-    font-size: 17px;
-    h6{
-        a{
-            text-decoration: underline;
-            cursor: pointer;
-        }
-    }
-`
-const ForgotPasswordText = styled.div`
+const LoginText = styled.div`
     text-align: center;
     font-size: 17px;
     h6{
