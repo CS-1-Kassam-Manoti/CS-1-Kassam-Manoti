@@ -10,32 +10,38 @@ export default function UpdateProfile() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { currentUser } = useAuth()
+    const { currentUser, updateName, updateEmail, updatePassword } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
 
 
-    async function handleSubmit (e){
-        // e.preventDefault()
-        // if(passwordRef.current.value !== confirmPasswordRef.current.value){
-        //     return  setError('The Passswords Do Not Match')
-        // }
-        // try{
-        //     setError('')
-        //     setLoading(true)  
-        //     console.log('passwords match')
+    function handleSubmit (e){
+        e.preventDefault()
+        if(passwordRef.current.value !== confirmPasswordRef.current.value){
+            return  setError('The Passswords Do Not Match')
+        }
 
-        //     await signup(emailRef.current.value, passwordRef.current.value)
-        //     console.log('signup successful')
-        //     history.push('/')
+        const promises = []
+        setLoading(true)
+        setError('')
+        if (nameRef.current.value !== currentUser.displayName){
+            promises.push(updateName(nameRef.current.value))
+        }
+        if (emailRef.current.value !== currentUser.email){
+            promises.push(updateEmail(emailRef.current.value))
+        }
+        if (passwordRef.current.value){
+            promises.push(updatePassword(passwordRef.current.value))
+        }
 
-        // }
-        // catch{
-        //     setError('Account Creation Failed')
-        //     console.log(error)
-        // }
-        // setLoading(false)
+        Promise.all(promises).then(() => {
+            history.push('/')
+        }).catch(() => {
+            setError('Failed to update account')
+        }).finally(() => {
+            setLoading(false)
+        })
 
     }
 
@@ -65,20 +71,20 @@ export default function UpdateProfile() {
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef} required placeholder="Leave blank to keep the same" />
+                            <input id="password" type="password" ref={passwordRef} placeholder="Leave blank to keep the same" />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input id="confirm_password" type="password" ref={confirmPasswordRef} required placeholder="Leave blank to keep the same" />
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef} placeholder="Leave blank to keep the same" />
                         </ConfirmPassword>
                         <Submit>
                             <button disabled={loading} type="submit" >Update Profile</button>
                         </Submit>
 
                     </form>
-                    <LoginText>
-                        <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
-                    </LoginText>
+                    <CancelText>
+                        <h6> <Link to="/">Cancel</Link></h6>
+                    </CancelText>
                 </RegisterContainer>
 
                     
@@ -188,7 +194,7 @@ const Submit = styled.div`
         cursor: pointer;
     }
 `
-const LoginText = styled.div`
+const CancelText = styled.div`
     text-align: center;
     font-size: 17px;
     h6{
