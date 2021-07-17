@@ -37,7 +37,7 @@ return (
                         </Password>
                         
                         <Submit>
-                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
+                            <button type="submit" >Login</button>
                         </Submit>
                         
                     </form>
