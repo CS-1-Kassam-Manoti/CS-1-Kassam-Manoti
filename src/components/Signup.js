@@ -12,21 +12,14 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    // const { signup } = useAuth()
+    const { signup } = useAuth()
 
     function handleSubmit (e){
         e.preventDefault()
 
-        // signup(emailRef.current.value, passwordRef.current.value)
+        signup(emailRef.current.value, passwordRef.current.value)
 
-        // const userData = {
-        //     nameRef: nameRef.current.value,
-        //     emailRef: emailRef.current.value,
-        //     passwordRef: passwordRef.current.value,
-        //     confirmPasswordRef: confirmPasswordRef.current.value,
-        // }
-
-        // console.table(userData)
+        
     }
 
     return (        
@@ -82,16 +75,20 @@ const RegisterContainer = styled.div`
     padding: 50px 0;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
     h3{
         text-align: center;
         margin-bottom: 10px;
         font-size: 24px;
     }
+
     hr{
         margin: 0 11%;
     }
+    
     form{
         margin:  15px;
+
         input{
             width: 250px;
             margin-right: 10px;

@@ -42,7 +42,7 @@ return (
                         
                     </form>
                     <RegisterText>
-                            <h6>Already Have an Account? <Link to="/signup">Register</Link></h6>
+                            <h6>Already Have an Account? <Link to="/signup">Signup</Link></h6>
                     </RegisterText>
                 </LoginContainer>
 
@@ -64,7 +64,7 @@ const Container = styled.div`
 
 `
 const LoginContainer = styled.div`
-    max-width: 450px;
+    width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;
@@ -86,7 +86,7 @@ const LoginContainer = styled.div`
         input{
             width: 250px;
             margin-right: 10px;
-            font-size: 17px;
+            font-size: 15px;
             cursor: text;
             border: none;
             border-bottom: 1px solid grey;
