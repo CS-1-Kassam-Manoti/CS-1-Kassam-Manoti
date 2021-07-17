@@ -1,59 +1,80 @@
-import React, {useRef} from "react";
-import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import React, { useRef, useState } from 'react';
+import styled from 'styled-components' //installed via "npm install styled-components"
+import { Link } from 'react-router-dom' //installed via "npm install react-router-dom"
+import { useAuth } from '../contexts/AuthContext'
+import ErrorIcon from '@material-ui/icons/Error';
+
+export default function Login() {
+
+    const nameRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const { login, currentUser, saveUser } = useAuth()
+    const[error, setError] = useState('')
+    const[loading, setLoading] = useState(false)
 
 
-
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Input from "@material-ui/core/Input";
-import Card from "@material-ui/core/Card";
-import InputHints from "react-input-hints";
-
-const Login = () => {
-
-
-    const handleSubmit = () => {
+    async function handleSubmit (e){
+        e.preventDefault()
+        
+        try{
+            setError('')
+            setLoading(true)  
+            await login(emailRef.current.value, passwordRef.current.value)
+            console.log('signin successful')
+        }
+        catch{
+            setError('Failed to Log In')
+        }
+        setLoading(false)
 
     }
 
-return (
-	
+    return (        
             <Container>
-                <LoginContainer>
-                    <h3>Login</h3>
+                <RegisterContainer>
+                    <h3>log In</h3>
                     <hr/>
-                    <form action="">
+                    {console.log(JSON.stringify(currentUser))}
+                    {/* {console.log(currentUser.displayName)}  */}
+                    {currentUser.email}
+
+                    { //this code checks if theres error - it displays an error component
+                    error && 
+                        <ErrorComponent>
+                            <ErrorIcon className="error_icon"/>
+                            {error}
+                        </ErrorComponent>
+                    }
+
+                    <form onSubmit={handleSubmit} >
                         
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email"  />
+                            <input id="email" type="email" ref={emailRef} required />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password"  />
+                            <input id="password" type="password" ref={passwordRef} required  />
                         </Password>
-                        
+                       
                         <Submit>
-                            <button type="submit" >Login</button>
+                            <button disabled={loading} type="submit" >Log In</button>
                         </Submit>
-                        
+
                     </form>
-                    <RegisterText>
-                            <h6>Already Have an Account? <Link to="/signup">Signup</Link></h6>
-                    </RegisterText>
-                </LoginContainer>
+                    <SignupText>
+                        <h6>Need an Account? <Link to="/signup">Sign Up</Link></h6>
+                    </SignupText>
+                </RegisterContainer>
 
                     
             </Container>
         
+        
+    )
+}
 
-);
-};
-
-export default Login;
 
 const Container = styled.div`
     width: 100%;
@@ -61,14 +82,27 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
 `
-const LoginContainer = styled.div`
+const ErrorComponent = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-weight: bold;
+    background-color: #ffc1c1;
+    margin: 0 11%;
+
+    .error_icon{
+        transform: scale(0.8);
+    }
+`
+
+const RegisterContainer = styled.div`
     width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
 
     h3{
         text-align: center;
@@ -79,7 +113,7 @@ const LoginContainer = styled.div`
     hr{
         margin: 0 11%;
     }
-
+    
     form{
         margin:  15px;
 
@@ -90,19 +124,22 @@ const LoginContainer = styled.div`
             cursor: text;
             border: none;
             border-bottom: 1px solid grey;
-
             :focus{
-            outline: none;
+                outline: none;
+            }
         }
-        }
-        
-
         label{
             display: flex;
             align-items: center;
             margin-left: 10px;
         }
     }
+`
+const Name = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
 `
 const Email = styled.div`
     display: flex;
@@ -116,12 +153,17 @@ const Password = styled.div`
     padding-top: 20px;
     height: 30px;
 `
+const ConfirmPassword = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
 const Submit = styled.div`
     text-align: center;
     margin: 20px 10px 0 10px;
     padding: 20px 0 5px 0;
     height: 30px;
-
     button{
         height: 30px;
         padding: 0;
@@ -133,10 +175,9 @@ const Submit = styled.div`
         cursor: pointer;
     }
 `
-const RegisterText = styled.div`
+const SignupText = styled.div`
     text-align: center;
     font-size: 17px;
-
     h6{
         a{
             text-decoration: underline;

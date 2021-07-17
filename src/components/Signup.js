@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
-import Login from './Login'
+import { Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
-
-
+import ErrorIcon from '@material-ui/icons/Error';
 
 export default function Signup() {
 
@@ -12,23 +10,24 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup } = useAuth()
+    const { signup, currentUser, updateUserProfile } = useAuth()
     const[error, setError] = useState('')
-    const[loading,setLoading] = useState(false)
+    const[loading, setLoading] = useState(false)
 
 
     async function handleSubmit (e){
         e.preventDefault()
         if(passwordRef.current.value !== confirmPasswordRef.current.value){
-            alert('Passwords dont match')
             return  setError('The Passswords Do Not Match')
         }
         try{
-          setError('')
-          setLoading(true)  
-          console.log('passwords match')
-          await signup(emailRef.current.value, passwordRef.current.value)
-          console.log('signup successful')
+            setError('')
+            setLoading(true)  
+            console.log('passwords match')
+
+            await signup(nameRef.current.value, emailRef.current.value, passwordRef.current.value)
+            
+            console.log('signup successful')
 
         }
         catch{
@@ -43,7 +42,19 @@ export default function Signup() {
                 <RegisterContainer>
                     <h3>Signup</h3>
                     <hr/>
-                    
+                    {/* {currentUser.email} */}
+                    {console.log(JSON.stringify(currentUser))}
+                    {/* {console.log(currentUser.displayName)}  */}
+                    {currentUser.providerData[0].displayName}
+
+                    { //this code checks if theres error - it displays an error component
+                    error && 
+                        <ErrorComponent>
+                            <ErrorIcon className="error_icon"/>
+                            {error}
+                        </ErrorComponent>
+                    }
+
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
@@ -86,12 +97,26 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
 `
+const ErrorComponent = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-weight: bold;
+    background-color: #ffc1c1;
+    margin: 0 11%;
+
+    .error_icon{
+        transform: scale(0.8);
+    }
+`
+
 const RegisterContainer = styled.div`
     width: 450px;
     margin: auto;
     padding: 50px 0;
     border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
 
     h3{
         text-align: center;

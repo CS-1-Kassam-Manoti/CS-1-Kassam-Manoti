@@ -1,9 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import app from '../firebase'
+import app, {auth} from '../firebase'
+import { useAuth } from '../contexts/AuthContext'
 
 
 function Home() {
+
+    
+    const { signup, currentUser } = useAuth()
 
     const Signoutfunction = () => {
         const signout = app.auth().signOut()
@@ -12,6 +16,8 @@ function Home() {
 
         return signout
     }
+
+    
 
 
     return (
@@ -22,6 +28,10 @@ function Home() {
             <Button>
                 <button onClick={Signoutfunction}>SignOut</button>
             </Button>
+
+            {
+                currentUser.providerData[0].displayName
+            }
         </Container>
     )
 }
