@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom' //installed via "npm install react-router-dom"
 import Login from './Login'
@@ -13,20 +13,37 @@ export default function Signup() {
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
     const { signup } = useAuth()
+    const[error, setError] = useState('')
+    const[loading,setLoading] = useState(false)
 
-    function handleSubmit (e){
+
+    async function handleSubmit (e){
         e.preventDefault()
+        if(passwordRef.current.value !== confirmPasswordRef.current.value){
+            alert('Passwords dont match')
+            return  setError('The Passswords Do Not Match')
+        }
+        try{
+          setError('')
+          setLoading(true)  
+          console.log('passwords match')
+          await signup(emailRef.current.value, passwordRef.current.value)
+          console.log('signup successful')
 
-        signup(emailRef.current.value, passwordRef.current.value)
+        }
+        catch{
+            setError('Account Creation Failed')
+        }
+        setLoading(false)
 
-        
     }
 
     return (        
             <Container>
                 <RegisterContainer>
-                    <h3>Register</h3>
+                    <h3>Signup</h3>
                     <hr/>
+                    
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
@@ -45,7 +62,7 @@ export default function Signup() {
                             <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
                         </ConfirmPassword>
                         <Submit>
-                            <button type="submit" value="submit" onClick={handleSubmit}>Submit</button>
+                            <button disabled={loading} type="submit" >Sign Up</button>
                         </Submit>
 
                     </form>
