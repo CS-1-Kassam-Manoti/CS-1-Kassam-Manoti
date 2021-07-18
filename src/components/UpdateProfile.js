@@ -22,8 +22,8 @@ export default function UpdateProfile() {
     const [url, setURL] = useState(allInputs)
 
     
-    const email = currentUser.email
-    const name = email.substring(0, email.indexOf("." || '@'));
+    // const email = currentUser.email
+    // const name = email.substring(0, email.indexOf("." || '@'));
 
     // console.log(file)
     const handleImageAsFile = (e) => {
@@ -64,7 +64,7 @@ export default function UpdateProfile() {
         const promises = []
         setLoading(true)
         setError('')
-        if ((nameRef.current.value !== (currentUser.displayName ? currentUser.displayName : name))){
+        if ((nameRef.current.value !== currentUser.displayName)){
             promises.push(updateName(nameRef.current.value))
         }
         if (emailRef.current.value !== currentUser.email){
@@ -110,7 +110,7 @@ export default function UpdateProfile() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} defaultValue ={(currentUser.displayName ? currentUser.displayName : name)} /> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={currentUser.displayName ? currentUser.displayName : currentUser.email } /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
