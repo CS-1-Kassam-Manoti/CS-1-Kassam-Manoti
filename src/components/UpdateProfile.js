@@ -25,7 +25,8 @@ export default function UpdateProfile() {
     const email = currentUser.email
     const name = email.substring(0, email.indexOf("." || '@'));
 
-    // console.log(file)
+    console.log(file)
+    console.log(url)
     const handleImageAsFile = (e) => {
         const image = e.target.files[0]
         setFile(imageFile => (image))
@@ -50,7 +51,7 @@ export default function UpdateProfile() {
         uploadTask.on('state_changed', 
             (snapShot) => {
         //takes a snap shot of the process as it is happening
-        console.log(snapShot)
+            console.log(snapShot)
             }, (err) => {
                 console.log(err)
                 }, () => {
