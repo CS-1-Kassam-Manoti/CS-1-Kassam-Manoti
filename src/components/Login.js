@@ -24,7 +24,7 @@ export default function Login() {
             history.push('/')
         }
         catch{
-            setError('Failed to Log In')
+            setError('Failed to Log In - email or password incorrect')
         }
         setLoading(false)
 

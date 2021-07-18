@@ -148,11 +148,13 @@ const SignOut = styled.div`
 const UserIcon = styled.div`
     margin-left: 5px;
     margin-right: 10px;
+    cursor: pointer;
 
     .icon{
         width: 35px;
         height: 35px;
         border-radius: 50%;
+        cursor: pointer;
     }
 
     img{
@@ -160,6 +162,7 @@ const UserIcon = styled.div`
         border: 1px solid grey;
         height: 35px;
         border-radius: 50%;
+        cursor: pointer;
         
     }
 
