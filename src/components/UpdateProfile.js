@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 import { storage } from '../firebase'
+import Header from './Header'
 
 export default function UpdateProfile() {
 
@@ -17,20 +18,10 @@ export default function UpdateProfile() {
     const[loading, setLoading] = useState(false)
     const history = useHistory()
 
-    const allInputs = {imgUrl: ''}
     const [file, setFile] = useState("")
-    const [url, setURL] = useState(allInputs)
+    const [url, setURL] = useState("")
 
-    
-    const email = currentUser.email
-    const name = email.substring(0, email.indexOf("." || '@'));
 
-    console.log(file)
-    console.log(url)
-    const handleImageAsFile = (e) => {
-        const image = e.target.files[0]
-        setFile(imageFile => (image))
-    }
 
 
     function handleSubmit (e){
@@ -39,35 +30,10 @@ export default function UpdateProfile() {
             return  setError('The Passswords Do Not Match')
         }
 
-        
-        const ref = storage.ref(`/images/${file.name}`)
-        
-        console.log('start of upload')
-
-        if(file === '' ) {
-            console.error(`not an image, the image file is a ${typeof(file)}`)
-        }
-        const uploadTask = storage.ref(`/images/${file.name}`).put(file)
-        uploadTask.on('state_changed', 
-            (snapShot) => {
-        //takes a snap shot of the process as it is happening
-            console.log(snapShot)
-            }, (err) => {
-                console.log(err)
-                }, () => {
-      // gets the functions from storage refences the image storage in firebase by the children
-      // gets the download url then sets the image from firebase as the value for the imgUrl key:
-            storage.ref('images').child(file.name).getDownloadURL()
-                .then(fireBaseUrl => {
-                    setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-                })
-            })
-
-
         const promises = []
-        setLoading(true)
+        setLoading(false)
         setError('')
-        if ((nameRef.current.value !== (currentUser.displayName ? currentUser.displayName : name))){
+        if ((nameRef.current.value)){
             promises.push(updateName(nameRef.current.value))
         }
         if (emailRef.current.value !== currentUser.email){
@@ -76,30 +42,61 @@ export default function UpdateProfile() {
         if (passwordRef.current.value){
             promises.push(updatePassword(passwordRef.current.value))
         }
-        if (file){
-            const storedurl = url.imgUrl
-            promises.push(updateProfilePicture(storedurl))
+        if (pictureRef.current.value){
             
-            console.log(JSON.stringify(currentUser))
-            console.log(url)
-            console.log(file)
+        storage.ref(`/images/${file.name}`).put(file)
+        .on("state_changed", console.log("success"), alert, () => {
+          // Getting Download Link
+          storage.ref("images").child(file.name).getDownloadURL()
+            .then((url) => {
+              setURL(url);
+              console.log('url is ' + url)
+              promises.push(updateProfilePicture(url))
+            }).then(() =>{
+                history.push('/')
+                
+
+            })
+        });
+
             
+        // promises.push(updateProfilePicture(url))
         }
 
-        Promise.all(promises).then(() => {
-            history.push('/')
-        }).catch(() => {
-            setError('Failed to update account')
-        }).finally(() => {
-            setLoading(false)
-        })
+        // Promise.all(promises).then(() => {
+        //     storage.ref(`/images/${file.name}`).put(file)
+        // .on("state_changed", console.log("success"), alert, () => {
+        //   // Getting Download Link
+        //   storage.ref("images").child(file.name).getDownloadURL()
+        //     .then((url) => { 
+        //       setURL(url);
+        //       console.log('url is ' + url)
+              
+        //     console.log(JSON.stringify(currentUser))
+        //     })
+        // });
 
+            
+        // }).then(() => {
+        //     history.push('/')
+        // }).
+        // catch(() => {
+        //     setError('Failed to update account')
+        // }).finally(() => {
+        //     setLoading(false)
+        // })
+        // setLoading(false)
         
-
+                console.log('url first is ' + url)
+                history.push('/')
+                // window.location.reload()
+        
+        
     }
 
     return (        
             <Container>
+                <Header urlvar={url}/>
                 <RegisterContainer>
                     <h3>Update Profile</h3>
                     <hr/>
@@ -116,7 +113,7 @@ export default function UpdateProfile() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} defaultValue ={(currentUser.displayName ? currentUser.displayName : name)} /> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={(currentUser.displayName ? currentUser.displayName : currentUser.email)} /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
@@ -132,7 +129,7 @@ export default function UpdateProfile() {
                         </ConfirmPassword>
                         <UploadImage>
                         <label>Profile Picture</label>
-                        <input type="file" className="upload-image" onChange={handleImageAsFile} ref={pictureRef}/>
+                        <input type="file" className="upload-image" onChange={(e) => { setFile(e.target.files[0]) }} ref={pictureRef}/>
                         </UploadImage>
                         <Submit>
                             <button disabled={loading} type="submit" >Update Profile</button>

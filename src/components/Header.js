@@ -2,20 +2,20 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link } from 'react-router-dom'
+import { storage } from '../firebase'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
 
 import { useAuth } from '../contexts/AuthContext'
 
-function Header() {
+function Header(props) {
 
     
     const [error, setError] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
-    // const { signoutProps, updateProp, isOpen, setIsOpen } = useDropdownMenu(2)
 
     
 
@@ -49,6 +49,7 @@ function Header() {
                             currentUser.photoURL ? 
                             <img src={currentUser.photoURL}></img> :
                             <AccountCircleIcon className="icon"/>
+                            // <img src={props.urlvar}></img> 
                     }
                     <Hover>
                         <SignOut onClick={handleLogout}>

@@ -55,10 +55,10 @@ export default function Signup() {
                     }
 
                     <form onSubmit={handleSubmit} >
-                        <Name>
+                        {/* <Name>
                             <label htmlFor="name">Name</label>
                             <input id="name" type="text"  ref={nameRef} required/> 
-                        </Name>
+                        </Name> */}
                         <Email>
                             <label htmlFor="email">Email Address</label>
                             <input id="email" type="email" ref={emailRef} required />
