@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link } from 'react-router-dom'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
+// import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
 
 import { useAuth } from '../contexts/AuthContext'
-import UpdateProfile from './UpdateProfile';
 
 function Header() {
 
@@ -16,7 +15,9 @@ function Header() {
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
-    const { signoutProps, updateProp, isOpen, setIsOpen } = useDropdownMenu(2)
+    // const { signoutProps, updateProp, isOpen, setIsOpen } = useDropdownMenu(2)
+
+    
 
     const handleLogout = async () => {
         setError('')
@@ -30,6 +31,10 @@ function Header() {
         }
     }
     
+    // const email = currentUser.email
+    // const name = email.substring(0, email.indexOf("." || '@'))
+    
+
     return (
         <Container>
             <Logo>
@@ -37,9 +42,9 @@ function Header() {
             </Logo>
             <Profile>
                 <UserName>
-                    <h5>{currentUser.displayName && currentUser.displayName}</h5>
+                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
                 </UserName>
-                <UserIcon {...signoutProps} className={isOpen ? 'visible' : ''} role='menu' >
+                <UserIcon >
                     {
                             currentUser.photoURL ? 
                             <img src={currentUser.photoURL}></img> :
