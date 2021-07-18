@@ -75,7 +75,7 @@ export default function UpdateProfile() {
             promises.push(updatePassword(passwordRef.current.value))
         }
         if (file){
-            promises.push(updateProfilePicture(url.imgUrl))
+            promises.push(updateProfilePicture(url))
             
             console.log(JSON.stringify(currentUser))
             console.log(url)
