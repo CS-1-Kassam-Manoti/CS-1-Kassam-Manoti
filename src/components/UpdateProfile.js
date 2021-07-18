@@ -38,6 +38,7 @@ export default function UpdateProfile() {
             return  setError('The Passswords Do Not Match')
         }
 
+        
         const ref = storage.ref(`/images/${file.name}`)
         
         console.log('start of upload')
@@ -61,6 +62,7 @@ export default function UpdateProfile() {
                 })
             })
 
+
         const promises = []
         setLoading(true)
         setError('')
@@ -74,7 +76,8 @@ export default function UpdateProfile() {
             promises.push(updatePassword(passwordRef.current.value))
         }
         if (file){
-            promises.push(updateProfilePicture(url))
+            const storedurl = url.imgUrl
+            promises.push(updateProfilePicture(storedurl))
             
             console.log(JSON.stringify(currentUser))
             console.log(url)
@@ -89,6 +92,8 @@ export default function UpdateProfile() {
         }).finally(() => {
             setLoading(false)
         })
+
+        
 
     }
 
