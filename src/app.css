@@ -2,12 +2,12 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
-    /* border: 1px solid grey; */
 }
 
 body{
     height: 100%;
     margin: 0;
+    padding: 5px;
     font-family: 'Roboto', sans-serif;
 }
 

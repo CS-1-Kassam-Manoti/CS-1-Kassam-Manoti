@@ -1,12 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
+import Header from './Header'
+
 
 function Home() {
+
+
     return (
-        <div>
-            This is the home page
-        </div>
+        <Container>
+            <Header/>
+        
+            
+        </Container>
     )
 }
 
 export default Home
+
+const Container = styled.div`
+
+`

@@ -3,46 +3,100 @@ import styled from 'styled-components' //installed via "npm install styled-compo
 import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
+import { storage } from '../firebase'
 
-export default function Signup() {
+export default function UpdateProfile() {
 
     const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup, updateName } = useAuth()
+    const pictureRef = useRef()
+    const { currentUser, updateName, updateEmail, updatePassword, updateProfilePicture } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
 
+    const allInputs = {imgUrl: ''}
+    const [file, setFile] = useState("")
+    const [url, setURL] = useState(allInputs)
 
-    async function handleSubmit (e){
+    
+    // const email = currentUser.email
+    // const name = email.substring(0, email.indexOf("." || '@'));
+
+    // console.log(file)
+    const handleImageAsFile = (e) => {
+        const image = e.target.files[0]
+        setFile(imageFile => (image))
+    }
+
+
+    function handleSubmit (e){
         e.preventDefault()
         if(passwordRef.current.value !== confirmPasswordRef.current.value){
             return  setError('The Passswords Do Not Match')
         }
-        try{
-            setError('')
-            setLoading(true)  
-            console.log('passwords match')
 
-            await signup(emailRef.current.value, passwordRef.current.value)
-            console.log('signup successful')
+        const ref = storage.ref(`/images/${file.name}`)
+        
+        console.log('start of upload')
+
+        if(file === '' ) {
+            console.error(`not an image, the image file is a ${typeof(file)}`)
+        }
+        const uploadTask = storage.ref(`/images/${file.name}`).put(file)
+        uploadTask.on('state_changed', 
+            (snapShot) => {
+        //takes a snap shot of the process as it is happening
+        console.log(snapShot)
+            }, (err) => {
+                console.log(err)
+                }, () => {
+      // gets the functions from storage refences the image storage in firebase by the children
+      // gets the download url then sets the image from firebase as the value for the imgUrl key:
+            storage.ref('images').child(file.name).getDownloadURL()
+                .then(fireBaseUrl => {
+                    setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+                })
+            })
+
+        const promises = []
+        setLoading(true)
+        setError('')
+        if ((nameRef.current.value !== currentUser.displayName)){
+            promises.push(updateName(nameRef.current.value))
+        }
+        if (emailRef.current.value !== currentUser.email){
+            promises.push(updateEmail(emailRef.current.value))
+        }
+        if (passwordRef.current.value){
+            promises.push(updatePassword(passwordRef.current.value))
+        }
+        if (file){
+            const urlderived = url.imgUrl
+            promises.push(updateProfilePicture(urlderived))
+            
+            console.log(JSON.stringify(currentUser))
+            console.log(url)
+            console.log(file)
+            
+        }
+
+        Promise.all(promises).then(() => {
             history.push('/')
-
-        }
-        catch{
-            setError('Account Creation Failed')
-            console.log(error)
-        }
-        setLoading(false)
+        }).catch(() => {
+            setError('Failed to update account')
+        }).finally(() => {
+            setLoading(false)
+        })
 
     }
 
     return (        
             <Container>
                 <RegisterContainer>
-                    <h3>Signup</h3>
+                    <h3>Update Profile</h3>
                     <hr/>
 
                      {/* // this code checks if theres error - it displays an error component */}
@@ -57,28 +111,32 @@ export default function Signup() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} required/> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={currentUser.displayName ? currentUser.displayName : currentUser.email } /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef} required />
+                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="password" ref={passwordRef} required  />
+                            <input id="password" type="password" ref={passwordRef} placeholder="Leave blank to keep the same" />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input id="confirm_password" type="password" ref={confirmPasswordRef}  required />
+                            <input id="confirm_password" type="password" ref={confirmPasswordRef} placeholder="Leave blank to keep the same" />
                         </ConfirmPassword>
+                        <UploadImage>
+                        <label>Profile Picture</label>
+                        <input type="file" className="upload-image" onChange={handleImageAsFile} ref={pictureRef}/>
+                        </UploadImage>
                         <Submit>
-                            <button disabled={loading} type="submit" >Sign Up</button>
+                            <button disabled={loading} type="submit" >Update Profile</button>
                         </Submit>
 
                     </form>
-                    <LoginText>
-                        <h6>Already Have an Account? <Link to="/login">Login</Link></h6>
-                    </LoginText>
+                    <CancelText>
+                        <h6> <Link to="/">Cancel</Link></h6>
+                    </CancelText>
                 </RegisterContainer>
 
                     
@@ -188,13 +246,33 @@ const Submit = styled.div`
         cursor: pointer;
     }
 `
-const LoginText = styled.div`
+const CancelText = styled.div`
     text-align: center;
     font-size: 17px;
+    margin-top: 5px;
     h6{
         a{
             text-decoration: underline;
             cursor: pointer;
         }
     }
+`
+const UploadImage = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+    
+    label{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+
+    }
+    
+    input[type="file"]{
+        
+    }
+        
+    
 `
