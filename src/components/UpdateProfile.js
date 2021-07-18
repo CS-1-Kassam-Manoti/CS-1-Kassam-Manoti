@@ -22,10 +22,11 @@ export default function UpdateProfile() {
     const [url, setURL] = useState(allInputs)
 
     
-    // const email = currentUser.email
-    // const name = email.substring(0, email.indexOf("." || '@'));
+    const email = currentUser.email
+    const name = email.substring(0, email.indexOf("." || '@'));
 
-    // console.log(file)
+    console.log(file)
+    console.log(url)
     const handleImageAsFile = (e) => {
         const image = e.target.files[0]
         setFile(imageFile => (image))
@@ -49,7 +50,7 @@ export default function UpdateProfile() {
         uploadTask.on('state_changed', 
             (snapShot) => {
         //takes a snap shot of the process as it is happening
-        console.log(snapShot)
+            console.log(snapShot)
             }, (err) => {
                 console.log(err)
                 }, () => {
@@ -58,14 +59,13 @@ export default function UpdateProfile() {
             storage.ref('images').child(file.name).getDownloadURL()
                 .then(fireBaseUrl => {
                     setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-                    
                 })
             })
 
         const promises = []
         setLoading(true)
         setError('')
-        if ((nameRef.current.value !== currentUser.displayName)){
+        if ((nameRef.current.value !== (currentUser.displayName ? currentUser.displayName : name))){
             promises.push(updateName(nameRef.current.value))
         }
         if (emailRef.current.value !== currentUser.email){
@@ -75,7 +75,6 @@ export default function UpdateProfile() {
             promises.push(updatePassword(passwordRef.current.value))
         }
         if (file){
-            const urlderived = url.imgUrl
             promises.push(updateProfilePicture(url.imgUrl))
             
             console.log(JSON.stringify(currentUser))
@@ -112,7 +111,7 @@ export default function UpdateProfile() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} defaultValue ={currentUser.displayName ? currentUser.displayName : currentUser.email } /> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={(currentUser.displayName ? currentUser.displayName : name)} /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
