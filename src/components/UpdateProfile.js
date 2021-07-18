@@ -40,7 +40,6 @@ export default function UpdateProfile() {
 
         const ref = storage.ref(`/images/${file.name}`)
         
-        
         console.log('start of upload')
 
         if(file === '' ) {
@@ -48,20 +47,19 @@ export default function UpdateProfile() {
         }
         const uploadTask = storage.ref(`/images/${file.name}`).put(file)
         uploadTask.on('state_changed', 
-        (snapShot) => {
-      //takes a snap shot of the process as it is happening
-      console.log(snapShot)
-    }, (err) => {
-      //catches the errors
-      console.log(err)
-    }, () => {
+            (snapShot) => {
+        //takes a snap shot of the process as it is happening
+            console.log(snapShot)
+            }, (err) => {
+                console.log(err)
+                }, () => {
       // gets the functions from storage refences the image storage in firebase by the children
       // gets the download url then sets the image from firebase as the value for the imgUrl key:
-      storage.ref('images').child(file.name).getDownloadURL()
-       .then(fireBaseUrl => {
-         setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-       })
-    })
+            storage.ref('images').child(file.name).getDownloadURL()
+                .then(fireBaseUrl => {
+                    setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+                })
+            })
 
         const promises = []
         setLoading(true)

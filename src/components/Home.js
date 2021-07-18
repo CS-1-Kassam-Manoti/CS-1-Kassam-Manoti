@@ -13,18 +13,6 @@ function Home() {
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
-    const handleLogout = async () => {
-        setError('')
-
-        try{
-            await logout()
-            history.push('/login')
-        }
-        catch{
-            setError('Failed to log out')
-        }
-    }
-
     
     console.log(JSON.stringify(currentUser))
     const email = currentUser.email
@@ -43,16 +31,13 @@ function Home() {
                         </ErrorComponent>
                     }
             
-            <Button>
-                <button onClick={handleLogout} >SignOut</button>
-            </Button>
             <Button> 
                 <button>
                     <Link to="/update-profile">Update Profile</Link>
                 </button>
             </Button>
 
-            {JSON.stringify(currentUser)}
+            {/* {JSON.stringify(currentUser)} */}
             
         </Container>
     )
