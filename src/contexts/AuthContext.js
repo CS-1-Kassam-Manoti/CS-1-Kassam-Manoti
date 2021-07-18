@@ -55,6 +55,11 @@ export function AuthProvider({children}) {
             displayName: name
         })
     }
+    function updateProfilePicture(profilePicture){
+        return currentUser.updateProfile({
+            photoURL: profilePicture
+        })
+    }
 
     useEffect(() =>{
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -74,7 +79,8 @@ export function AuthProvider({children}) {
         resetPassword,
         updateName,
         updateEmail,
-        updatePassword
+        updatePassword,
+        updateProfilePicture
     }
 
     return (

@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import app from '../firebase'
 import { useAuth } from '../contexts/AuthContext'
 import {useHistory, Link} from 'react-router-dom'
-import ErrorIcon from '@material-ui/icons/Error';
+import ErrorIcon from '@material-ui/icons/Error'
+import Header from './Header'
 
 
 function Home() {
@@ -27,12 +28,13 @@ function Home() {
     
     console.log(JSON.stringify(currentUser))
     const email = currentUser.email
-    const name = email.substring(0, email.lastIndexOf("@"));
+    const name = email.substring(0, email.indexOf("." || '@'));
+    
 
 
     return (
         <Container>
-            <Header>
+            <Header/>
             { 
                     error && 
                         <ErrorComponent>
@@ -40,8 +42,7 @@ function Home() {
                             {error}
                         </ErrorComponent>
                     }
-            This is the home page
-            </Header>
+            
             <Button>
                 <button onClick={handleLogout} >SignOut</button>
             </Button>
@@ -51,7 +52,7 @@ function Home() {
                 </button>
             </Button>
 
-                {currentUser.displayName ? currentUser.displayName : name}
+            {JSON.stringify(currentUser)}
             
         </Container>
     )
@@ -60,9 +61,6 @@ function Home() {
 export default Home
 
 const Container = styled.div`
-
-`
-const Header = styled.div`
 
 `
 const Button = styled.div`

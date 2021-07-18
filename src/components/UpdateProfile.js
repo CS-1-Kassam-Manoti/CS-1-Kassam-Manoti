@@ -3,6 +3,7 @@ import styled from 'styled-components' //installed via "npm install styled-compo
 import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
+import { storage } from '../firebase'
 
 export default function UpdateProfile() {
 
@@ -10,10 +11,25 @@ export default function UpdateProfile() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { currentUser, updateName, updateEmail, updatePassword } = useAuth()
+    const pictureRef = useRef()
+    const { currentUser, updateName, updateEmail, updatePassword, updateProfilePicture } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
+
+    const allInputs = {imgUrl: ''}
+    const [file, setFile] = useState("")
+    const [url, setURL] = useState(allInputs)
+
+    
+    const email = currentUser.email
+    const name = email.substring(0, email.indexOf("." || '@'));
+
+    console.log(file)
+    const handleImageAsFile = (e) => {
+        const image = e.target.files[0]
+        setFile(imageFile => (image))
+    }
 
 
     function handleSubmit (e){
@@ -22,10 +38,35 @@ export default function UpdateProfile() {
             return  setError('The Passswords Do Not Match')
         }
 
+        const ref = storage.ref(`/images/${file.name}`)
+        
+        
+        console.log('start of upload')
+
+        if(file === '' ) {
+            console.error(`not an image, the image file is a ${typeof(file)}`)
+        }
+        const uploadTask = storage.ref(`/images/${file.name}`).put(file)
+        uploadTask.on('state_changed', 
+        (snapShot) => {
+      //takes a snap shot of the process as it is happening
+      console.log(snapShot)
+    }, (err) => {
+      //catches the errors
+      console.log(err)
+    }, () => {
+      // gets the functions from storage refences the image storage in firebase by the children
+      // gets the download url then sets the image from firebase as the value for the imgUrl key:
+      storage.ref('images').child(file.name).getDownloadURL()
+       .then(fireBaseUrl => {
+         setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+       })
+    })
+
         const promises = []
         setLoading(true)
         setError('')
-        if (nameRef.current.value !== currentUser.displayName){
+        if ((nameRef.current.value !== (currentUser.displayName ? currentUser.displayName : name))){
             promises.push(updateName(nameRef.current.value))
         }
         if (emailRef.current.value !== currentUser.email){
@@ -33,6 +74,14 @@ export default function UpdateProfile() {
         }
         if (passwordRef.current.value){
             promises.push(updatePassword(passwordRef.current.value))
+        }
+        if (file){
+            promises.push(updateProfilePicture(url))
+            
+            console.log(JSON.stringify(currentUser))
+            console.log(url)
+            console.log(file)
+            
         }
 
         Promise.all(promises).then(() => {
@@ -63,7 +112,7 @@ export default function UpdateProfile() {
                     <form onSubmit={handleSubmit} >
                         <Name>
                             <label htmlFor="name">Name</label>
-                            <input id="name" type="text"  ref={nameRef} defaultValue ={currentUser.displayName} /> 
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={(currentUser.displayName ? currentUser.displayName : name)} /> 
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
@@ -77,6 +126,10 @@ export default function UpdateProfile() {
                             <label htmlFor="confirm_password">Confirm Password</label>
                             <input id="confirm_password" type="password" ref={confirmPasswordRef} placeholder="Leave blank to keep the same" />
                         </ConfirmPassword>
+                        <UploadImage>
+                        <label>Profile Picture</label>
+                        <input type="file" className="upload-image" onChange={handleImageAsFile} ref={pictureRef}/>
+                        </UploadImage>
                         <Submit>
                             <button disabled={loading} type="submit" >Update Profile</button>
                         </Submit>
@@ -197,10 +250,30 @@ const Submit = styled.div`
 const CancelText = styled.div`
     text-align: center;
     font-size: 17px;
+    margin-top: 5px;
     h6{
         a{
             text-decoration: underline;
             cursor: pointer;
         }
     }
+`
+const UploadImage = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+    
+    label{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+
+    }
+    
+    input[type="file"]{
+        
+    }
+        
+    
 `
