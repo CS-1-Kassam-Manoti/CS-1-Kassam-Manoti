@@ -96,7 +96,7 @@ export default function UpdateProfile() {
 
     return (        
             <Container>
-                <Header urlvar={url}/>
+                {/* <Header urlvar={url}/> */}
                 <RegisterContainer>
                     <h3>Update Profile</h3>
                     <hr/>
