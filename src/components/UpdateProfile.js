@@ -58,6 +58,7 @@ export default function UpdateProfile() {
             storage.ref('images').child(file.name).getDownloadURL()
                 .then(fireBaseUrl => {
                     setURL(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+                    
                 })
             })
 
@@ -75,7 +76,7 @@ export default function UpdateProfile() {
         }
         if (file){
             const urlderived = url.imgUrl
-            promises.push(updateProfilePicture(urlderived))
+            promises.push(updateProfilePicture(url.imgUrl))
             
             console.log(JSON.stringify(currentUser))
             console.log(url)
