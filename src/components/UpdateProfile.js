@@ -52,10 +52,11 @@ export default function UpdateProfile() {
               setURL(url);
               console.log('url is ' + url)
               promises.push(updateProfilePicture(url))
-            }).then(() =>{
-                history.push('/')
+            }).then(() => {
                 
-
+            }).then(() => {
+                history.push('/')
+                window.location.reload();
             })
         });
 
@@ -63,7 +64,7 @@ export default function UpdateProfile() {
         // promises.push(updateProfilePicture(url))
         }
 
-        // Promise.all(promises).then(() => {
+        Promise.all(promises).then(() => {
         //     storage.ref(`/images/${file.name}`).put(file)
         // .on("state_changed", console.log("success"), alert, () => {
         //   // Getting Download Link
@@ -75,20 +76,21 @@ export default function UpdateProfile() {
         //     console.log(JSON.stringify(currentUser))
         //     })
         // });
-
+        setLoading(true);
             
-        // }).then(() => {
-        //     history.push('/')
-        // }).
-        // catch(() => {
-        //     setError('Failed to update account')
-        // }).finally(() => {
-        //     setLoading(false)
-        // })
+        }).then(() => {
+            
+        history.push('/')
+        }).
+        catch(() => {
+            setError('Failed to update account')
+        }).finally(() => {
+            setLoading(false)
+        })
         // setLoading(false)
         
                 console.log('url first is ' + url)
-                history.push('/')
+                // history.push('/')
                 // window.location.reload()
         
         
