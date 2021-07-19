@@ -17,7 +17,7 @@ function Header(props) {
     const history = useHistory()
 
 
-    
+    console.log(JSON.stringify(currentUser))
 
     const handleLogout = async () => {
         setError('')

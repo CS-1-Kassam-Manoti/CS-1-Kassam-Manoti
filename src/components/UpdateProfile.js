@@ -57,6 +57,7 @@ export default function UpdateProfile() {
             }).then(() => {
                 history.push('/')
                 window.location.reload();
+                // console.log(JSON.stringify(currentUser))
             })
         });
 
@@ -92,7 +93,7 @@ export default function UpdateProfile() {
                 console.log('url first is ' + url)
                 // history.push('/')
                 // window.location.reload()
-        
+                // console.log(JSON.stringify(currentUser))
         
     }
 
