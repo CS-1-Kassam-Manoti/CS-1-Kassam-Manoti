@@ -23,7 +23,7 @@ export default function ForgotPassword() {
             setMessage('Check your inbox for further instructions')
         }
         catch{
-            setError('Failed to Reset Password')
+            setError("Email doesn't seem to exist")
         }
         setLoading(false)
 
@@ -102,9 +102,9 @@ const MessageComponent = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: green;
+    color: black;
     font-weight: bold;
-    background-color: #ffc1c1;
+    background-color: #a3d6b4;
     margin: 0 11%;
 
 `

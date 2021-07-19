@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import Article from './Article'
+import Footer from './Footer'
 
 
 function Home() {
@@ -10,6 +12,9 @@ function Home() {
         <Container>
             <Header/>
         
+            <Article/>
+
+            <Footer/>
             
         </Container>
     )

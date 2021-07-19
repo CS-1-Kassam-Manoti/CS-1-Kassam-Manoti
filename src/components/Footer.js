@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 function Footer() {
     return (
         <Container>
-            Footer here
+            <SocialMedia>
+                <Instagram>
+                    <AccessTimeIcon/>
+                </Instagram>
+            </SocialMedia>
+
         </Container>
     )
 }
@@ -17,4 +23,11 @@ const Container = styled.section`
     border: 1px solid black;
     margin-bottom: 0;
     height: 100px;
+`
+
+const SocialMedia = styled.div`
+
+`
+const Instagram = styled.div`
+
 `
