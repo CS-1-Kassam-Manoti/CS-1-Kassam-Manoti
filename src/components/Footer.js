@@ -6,6 +6,8 @@ import CopyrightIcon from '@material-ui/icons/Copyright';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
+import PhoneIcon from '@material-ui/icons/Phone';
+import MailIcon from '@material-ui/icons/Mail';
 function Footer() {
     return (
         <Container>
@@ -30,6 +32,16 @@ function Footer() {
             <Twitter>
                <TwitterIcon/>
             </Twitter>
+
+            <Phone>
+               <PhoneIcon/>
+            </Phone>
+
+            <Gmail>
+               <MailIcon/>
+            </Gmail>
+
+
 
         </Container>
     )
@@ -61,5 +73,11 @@ const Facebook = styled.div`
 
 `
 const Twitter = styled.div`
+
+`
+const Phone = styled.div`
+
+`
+const Gmail = styled.div`
 
 `
