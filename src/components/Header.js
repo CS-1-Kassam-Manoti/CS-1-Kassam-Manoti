@@ -131,7 +131,7 @@ const Profile = styled.div`
 `
 const Hover = styled.div`
     position: absolute;
-    top: 60px;
+    top: 56px;
     right: 52px;
     display: flex;
     flex-direction: column;
