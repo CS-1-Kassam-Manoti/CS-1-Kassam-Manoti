@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory, Link, useLocation } from 'react-router-dom'
 import { storage } from '../firebase'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
@@ -14,6 +14,11 @@ function Header(props) {
     const [error, setError] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
+    const location = useLocation()
+
+    const { pathname } = location
+
+    const splitLocation = pathname.split("/")
 
     console.log(JSON.stringify(currentUser))
 
@@ -42,10 +47,10 @@ function Header(props) {
             <Links>
 
                 <NavigationLinks>
-                    <a>Home</a>
-                    <a>About</a>
-                    <a>Subjects</a>
-                    <a>Write</a>
+                    <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
+                    <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
+                    <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Subjects</Link> </a>
+                    <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
                 </NavigationLinks>
 
                 <Profile>
@@ -114,12 +119,12 @@ const NavigationLinks = styled.div`
     justify-content: space-between;
     width: 80%;
 
-    nav {
-        display: flex;
-        /* justify-content: space-between; */
-        align-items: center;
-        border: 1px solid grey;
-        width: 100%;
+    a{
+        cursor: pointer;
+    }
+
+    .active a{
+        border-bottom: 1px solid grey;
     }
 `
 

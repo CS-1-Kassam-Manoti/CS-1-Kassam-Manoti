@@ -67,6 +67,7 @@ const Container = styled.div`
 const Articles = styled.div`
     width: 60%;
     overflow-y: scroll;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
     ::-webkit-scrollbar{
         display: none;

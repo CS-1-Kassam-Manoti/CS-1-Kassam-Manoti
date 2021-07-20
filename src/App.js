@@ -7,6 +7,7 @@ import Home from './components/Home'
 import UpdateProfile from './components/UpdateProfile'
 import PrivateRoute from './components/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword';
+import CreatePost from './components/CreatePost';
 import { AuthProvider } from './contexts/AuthContext'
 
 
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/login" component={Login}/>
                 <PrivateRoute path="/update-profile" component={UpdateProfile}/>
                 <Route path="/forgot-password" component={ForgotPassword}/>
+                <Route path="/create-post" component={CreatePost}/>
               </Switch>
             </AuthProvider>
         </Router>
