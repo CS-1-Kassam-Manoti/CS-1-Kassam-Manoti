@@ -11,35 +11,34 @@ import MailIcon from '@material-ui/icons/Mail';
 function Footer() {
     return (
         <Container>
+
+
+            <Contact>
+                <Phone>
+                    <PhoneIcon className="social-media-icon"/>
+                    <p>+254 701 234 567</p>
+                </Phone>
+                <Email>
+                    <MailIcon className="social-media-icon"/>
+                    <p>info@webapp.com</p>
+                </Email>
+            </Contact>
+
             <SocialMedia>
-                <Instagram>
-                    <InstagramIcon/>
-                </Instagram>
+                <InstagramIcon className="social-media-icon"/>
+                <LinkedInIcon className="social-media-icon"/>
+                <FacebookIcon className="social-media-icon"/>
+                <TwitterIcon className="social-media-icon"/>
             </SocialMedia>
-
-            <Copyright>
+        
+            <CopyRight>
                 <CopyrightIcon/>
-            </Copyright>
+                Copyright
+            </CopyRight>
+        
 
-            <LinkedIn>
-               <LinkedInIcon/>
-            </LinkedIn>
-
-            <Facebook>
-               <FacebookIcon/>
-            </Facebook>
-
-            <Twitter>
-               <TwitterIcon/>
-            </Twitter>
-
-            <Phone>
-               <PhoneIcon/>
-            </Phone>
-
-            <Gmail>
-               <MailIcon/>
-            </Gmail>
+        
+            
 
 
 
@@ -50,34 +49,51 @@ function Footer() {
 export default Footer
 
 const Container = styled.section`
+    border-top: 1px solid black;
+    position: relative;
     bottom: 0;
-    border: 1px solid black;
-    margin-bottom: 0;
-    height: 100px;
-    margin-top:600px;
+    padding: 5px;
+`
+const Contact = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 14%;
+    justify-content: space-around;
+`
+const Phone = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+
+`
+const Email = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
 `
 
 const SocialMedia = styled.div`
+    margin: 10px 0;
+    width: 14%;
+    display: flex;
+    justify-content: space-around;
 
+    .social-media-icon {
+        cursor: pointer;
+
+        :hover{
+        color: grey;
+        cursor: pointer;
+        }
+    }
 `
-const Instagram = styled.div`
-
-`
-const Copyright = styled.div`
-
-`
-const LinkedIn = styled.div`
-
-`
-const Facebook = styled.div`
-
-`
-const Twitter = styled.div`
-
-`
-const Phone = styled.div`
-
-`
-const Gmail = styled.div`
-
+const CopyRight = styled.div`
+    border-top: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    margin: 30px 4% 0 4%;
 `

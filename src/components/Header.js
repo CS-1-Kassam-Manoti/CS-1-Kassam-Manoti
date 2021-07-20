@@ -38,32 +38,43 @@ function Header(props) {
             <Logo>
                 <img src='/images/logo.png' /> 
             </Logo>
-            <Profile>
-                {/* <UserName>
-                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                </UserName> */}
-                <UserIcon >
-                    {
-                            currentUser.photoURL ? 
-                            <img src={currentUser.photoURL}></img> :
-                            <AccountCircleIcon className="icon"/>
-                            // <img src={props.urlvar}></img> 
-                    }
-                    <Hover>
-                        <UserName>
-                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                        </UserName>
-                        <UpdateProfileButton >
-                            <Link to="/update-profile">Update Profile</Link>
-                        </UpdateProfileButton>
-                        <SignOut onClick={handleLogout}>
-                            <a>Sign out</a>
-                        </SignOut>
-                    </Hover>
+
+            <Links>
+
+                <NavigationLinks>
+                    <a>Home</a>
+                    <a>About</a>
+                    <a>Subjects</a>
+                    <a>Write</a>
+                </NavigationLinks>
+
+                <Profile>
+                    {/* <UserName>
+                        <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                    </UserName> */}
+                    <UserIcon >
+                        {
+                                currentUser.photoURL ? 
+                                <img src={currentUser.photoURL}></img> :
+                                <AccountCircleIcon className="icon"/>
+                                // <img src={props.urlvar}></img> 
+                        }
+                        <Hover>
+                            <UserName>
+                                <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                            </UserName>
+                            <UpdateProfileButton >
+                                <Link to="/update-profile">Update Profile</Link>
+                            </UpdateProfileButton>
+                            <SignOut onClick={handleLogout}>
+                                <a>Sign out</a>
+                            </SignOut>
+                        </Hover>
+                        
+                    </UserIcon>
                     
-                </UserIcon>
-                
-            </Profile>
+                </Profile>
+            </Links>
         </Container>
     )
 }
@@ -72,9 +83,10 @@ export default Header
 
 const Container = styled.section`
     height: 60px;
-    padding: 5px 3px;
+    padding: 5px 100px;
     display: flex;
     justify-content: space-between;
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 `
 const Logo = styled.div`
     width: 60px;
@@ -88,8 +100,30 @@ const Logo = styled.div`
         transform: scale(1.8);
     }
 `
+const Links = styled.div`
+    display: flex;
+    /* border: 1px solid grey; */
+    width: 40%;
+    justify-content: space-between;
+
+`
+const NavigationLinks = styled.div`
+    /* border: 1px solid grey; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+
+    nav {
+        display: flex;
+        /* justify-content: space-between; */
+        align-items: center;
+        border: 1px solid grey;
+        width: 100%;
+    }
+`
+
 const Profile = styled.div`
-    width: 25%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -98,7 +132,7 @@ const Profile = styled.div`
 const Hover = styled.div`
     position: absolute;
     top: 60px;
-    right: 0;
+    right: 52px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -112,10 +146,12 @@ const Hover = styled.div`
     display: none;
     /* height: 100px; */
     width: 120px;
+    background-color: white;
 `
 
 const UpdateProfileButton = styled.div`
     width: 100%;
+    margin-top: 5px;
     text-align: center;
     border-bottom: 1px solid grey;
 
