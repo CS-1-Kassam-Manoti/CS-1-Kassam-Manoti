@@ -11,11 +11,9 @@ import { useAuth } from '../contexts/AuthContext'
 
 function Header(props) {
 
-    
     const [error, setError] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
-
 
     console.log(JSON.stringify(currentUser))
 
@@ -41,9 +39,9 @@ function Header(props) {
                 <img src='/images/logo.png' /> 
             </Logo>
             <Profile>
-                <UserName>
+                {/* <UserName>
                     <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                </UserName>
+                </UserName> */}
                 <UserIcon >
                     {
                             currentUser.photoURL ? 
@@ -52,16 +50,18 @@ function Header(props) {
                             // <img src={props.urlvar}></img> 
                     }
                     <Hover>
-                        <SignOut onClick={handleLogout}>
-                            <a>Sign out</a>
-                        </SignOut>
+                        <UserName>
+                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                        </UserName>
                         <UpdateProfileButton >
                             <Link to="/update-profile">Update Profile</Link>
                         </UpdateProfileButton>
+                        <SignOut onClick={handleLogout}>
+                            <a>Sign out</a>
+                        </SignOut>
                     </Hover>
                     
                 </UserIcon>
-                
                 
             </Profile>
         </Container>
@@ -117,6 +117,7 @@ const Hover = styled.div`
 const UpdateProfileButton = styled.div`
     width: 100%;
     text-align: center;
+    border-bottom: 1px solid grey;
 
     :hover{
         background-color: lightgrey;
@@ -132,7 +133,6 @@ const UpdateProfileButton = styled.div`
 const SignOut = styled.div`
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid grey;
     cursor: pointer !important;
 
     a{
