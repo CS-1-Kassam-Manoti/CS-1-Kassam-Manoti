@@ -7,27 +7,25 @@ function Article() {
         
         
         <Container>
+            <ArticleSearchbar>  
+                        {/* <ArticleTextDetails>              */}
+                        <SearchTitle>
+                            Search Here                          
+                        </SearchTitle> 
+                        <Bar>
+                        <div className="search">   
+                        <input type="text" placeholder="Search Article..."/>                        
+                        </div> 
+                        </Bar> 
+                        {/* </ArticleTextDetails>                     */}
+             
+             </ArticleSearchbar>
             
             
             <Articles>
-            <ArticleCard>
-                    <ArticleTextDetails>                        
-                        
-                        <ArticleTitle>
-                            Search Here
-                        </ArticleTitle>
+            
 
-                        <ArticleSubTitle>
-                        <div className="search">   
-                        <input type="text" placeholder="Search Article..."/>
-                        <SearchIcon className="Search-icon"/>
-                        </div>
-                        </ArticleSubTitle>                       
-                        
-                    </ArticleTextDetails>
 
-                    
-                </ArticleCard>
                 <ArticleCard>
                     <ArticleTextDetails>                        
                         <Author>
@@ -70,6 +68,49 @@ function Article() {
                     </ArticlePicture>
                 </ArticleCard>
 
+                <ArticleCard>
+                    <ArticleTextDetails>                        
+                        <Author>
+                            <AuthorProfilePicture>
+                                <img src="/images/logo.png" alt="" />
+                            </AuthorProfilePicture>
+                            <AuthorUserName>
+                                John Doe
+                            </AuthorUserName>
+                        </Author>
+
+                        <ArticleTitle>
+                            Title here
+                        </ArticleTitle>
+
+                        <ArticleSubTitle>
+                            Subtitle here
+                        </ArticleSubTitle>
+
+                        <ArticleFooter>
+                            <ArticleDatePosted>
+                                <p>01/01/2020</p>
+                            </ArticleDatePosted>
+                            <ArticleClassTag>
+                                <p>Class 7</p>
+                            </ArticleClassTag>
+                            <ArticleSubjectTag>
+                                <p>Maths</p>
+                            </ArticleSubjectTag>
+                            <ArticleTopicTag>
+                                <p>Division</p>
+                            </ArticleTopicTag>
+                            
+                        </ArticleFooter>
+                        
+                    </ArticleTextDetails>
+
+                    <ArticlePicture>
+                        <img src="images/logo.png" alt="" />
+                    </ArticlePicture>
+                </ArticleCard>
+
+
                 
                 
             </Articles>
@@ -83,9 +124,7 @@ function Article() {
 
 export default Article
 
-const Search=styled.div`
 
-`
 const Container = styled.div`
     height: 85vh;
     padding: 10px 100px;
@@ -100,6 +139,31 @@ const Articles = styled.div`
         display: none;
     }
 `
+const ArticleSearchbar=styled.div`
+    margin: 20px;
+    display: flex;
+    // justify-content: space-between;
+    height: 170px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    // text-align: center;
+
+`
+const SearchTitle = styled.div`
+    margin-top: 14px;
+    font-weight: bold;
+    font-size: 24px;
+    text-align:center;
+    // padding: 20px 20px;
+    width: 80%;
+
+   
+`
+const Bar=styled.div`
+
+`
+
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -108,6 +172,7 @@ const ArticleCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    display: inline-block;
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
@@ -142,6 +207,9 @@ const ArticleTitle = styled.div`
 `
 const ArticleSubTitle = styled.div`
     text-align:center;
+    .Search{
+        display:inline-block;
+    }
 
 ` 
 const ArticleFooter = styled.div`
