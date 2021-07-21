@@ -1,10 +1,33 @@
 import React from 'react'
 import styled from 'styled-components'
+import SearchIcon from '@material-ui/icons/Search';
 
 function Article() {
     return (
+        
+        
         <Container>
+            
+            
             <Articles>
+            <ArticleCard>
+                    <ArticleTextDetails>                        
+                        
+                        <ArticleTitle>
+                            Search Here
+                        </ArticleTitle>
+
+                        <ArticleSubTitle>
+                        <div className="search">   
+                        <input type="text" placeholder="Search Article..."/>
+                        <SearchIcon className="Search-icon"/>
+                        </div>
+                        </ArticleSubTitle>                       
+                        
+                    </ArticleTextDetails>
+
+                    
+                </ArticleCard>
                 <ArticleCard>
                     <ArticleTextDetails>                        
                         <Author>
@@ -46,6 +69,8 @@ function Article() {
                         <img src="images/logo.png" alt="" />
                     </ArticlePicture>
                 </ArticleCard>
+
+                
                 
             </Articles>
 
@@ -58,14 +83,17 @@ function Article() {
 
 export default Article
 
+const Search=styled.div`
+
+`
 const Container = styled.div`
     height: 85vh;
     padding: 10px 100px;
-    display: flex;
+    // display: inline-block;
     justify-content: space-between;
 `
 const Articles = styled.div`
-    width: 60%;
+    // width: 60%;
     overflow-y: scroll;
 
     ::-webkit-scrollbar{
@@ -110,9 +138,11 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    text-align: center;
 `
 const ArticleSubTitle = styled.div`
-    font-size: 14px;
+    text-align:center;
+
 ` 
 const ArticleFooter = styled.div`
     display: flex;
