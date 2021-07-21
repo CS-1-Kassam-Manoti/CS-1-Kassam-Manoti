@@ -14,7 +14,7 @@ function Home() {
         
             <Article/>
 
-            {/* <Footer/> */}
+            <Footer/>
             
         </Container>
     )

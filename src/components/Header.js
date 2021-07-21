@@ -49,7 +49,7 @@ function Header(props) {
                 <NavigationLinks>
                     <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
                     <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
-                    <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Subjects</Link> </a>
+                    <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
                     <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
                 </NavigationLinks>
 
