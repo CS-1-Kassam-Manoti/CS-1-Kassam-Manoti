@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import Header from './Header'
 // npm install draft-js
 import { Editor , EditorState } from 'draft-js'
+import { database } from '../firebase'
+import BlogDataService from "../firebaseDatabase";
+
 
 // import RichTextEditor from 'react-rte'
 
@@ -21,39 +24,57 @@ export default function CreatePost() {
     const topicRef = useRef()
     const blogRef = useRef()
 
+    const handleHeadingChange = (e) => {
+        setHeading(headingRef.current.value)
+    }
+    const handleSubHeadingChange = (e) => {
+        setSubHeading(subHeadingRef.current.value)
+    }
     const handleLevelChange = (e) =>{
         setLevel(e.target.value)
-        // setClass(e.target.value)
     }
     const handleClassChange = (e) =>{
         setClass(e.target.value)
-        // setClass(e.target.value)
     }
     const handleSubjectChange = (e) =>{
         setSubject(e.target.value)
-        // setClass(e.target.value)
+    }
+    const handleTopicChange = (e) =>{
+        setTopic(e.target.value)
+    }
+    const handleBlogContentChange = (e) =>{
+        setBlog(e.target.value)
+    }
+    var today = new Date()
+    // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
+    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
+
+    let data = {
+        heading: heading,
+        subHeading: subHeading,
+        level: level,
+        Bclass: Bclass,
+        subject: subject,
+        topic: topic,
+        blog: blog,
+        datePosted: date
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // console.log('Level Chosen is: ' + level);
-        // console.log('Your class is: ' + Bclass);
-        // console.log('Your Subject is: ' + subject);
-        setHeading(headingRef.current.value)
-        setSubHeading(subHeadingRef.current.value)
-        setTopic(topicRef.current.value)
-        setBlog(blogRef.current.value)
 
-        console.log(heading, subHeading, topic)
-        console.log(blog)
-    }
+        BlogDataService.create(data).then(() =>{
+            console.log("Uploaded blog to firebase successfully")
+
+        }).catch((e)=>{
+            console.log(e)
+        })
 
 
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty()
-    )
 
-    
+        console.log(data)
+
+    }    
 
     return (
         <Container>
@@ -65,17 +86,14 @@ export default function CreatePost() {
                 
                 
                     <TitleInput>
-                        <input type="text" placeholder="Blog Title" ref={headingRef} ></input>
+                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} ></input>
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} ></input>
+                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} ></input>
                     </SubTitleInput>
 
                     <Horizontal>
-
-                    
-
                     <DropDown>
                         <BlogLevel> <p>Level</p>
                             <select value={level} onChange={handleLevelChange}>
@@ -141,7 +159,7 @@ export default function CreatePost() {
 
                         <BlogSubjectTopic>
                             <p>Topic</p>
-                            <input type="text" placeholder="Topic" ref={topicRef} ></input>
+                            <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} ></input>
                         </BlogSubjectTopic>
                     
                     </Horizontal>
@@ -149,9 +167,7 @@ export default function CreatePost() {
                     
 
                     <BlogContent>
-                        {/* <Editor className="editor" editorState={editorState} onChange={setEditorState} placeholder="hello"/> */}
-                        {/* <RichTextEditor/> */}
-                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." ref={blogRef} ></textarea>
+                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." ref={blogRef} onChange={handleBlogContentChange} ></textarea>
                     </BlogContent>
 
                     <PostButton>
