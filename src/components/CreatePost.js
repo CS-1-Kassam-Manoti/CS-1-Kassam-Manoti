@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import Header from './Header'
 // npm install draft-js
 import { Editor , EditorState } from 'draft-js'
-import { database } from '../firebase'
 import BlogDataService from "../firebaseDatabase";
 
-
+import { useAuth } from '../contexts/AuthContext'
 // import RichTextEditor from 'react-rte'
 
 export default function CreatePost() {
@@ -23,6 +22,9 @@ export default function CreatePost() {
     const subHeadingRef = useRef()
     const topicRef = useRef()
     const blogRef = useRef()
+
+    
+    const { currentUser, logout } = useAuth()
 
     const handleHeadingChange = (e) => {
         setHeading(headingRef.current.value)
@@ -48,8 +50,11 @@ export default function CreatePost() {
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
     var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
+    const username = currentUser.displayName ? currentUser.displayName : currentUser.email
 
     let data = {
+        postedByName: username,
+        postedByProfilePic: currentUser.photoURL,
         heading: heading,
         subHeading: subHeading,
         level: level,
@@ -63,9 +68,10 @@ export default function CreatePost() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        BlogDataService.create(data).then(() =>{
+        BlogDataService.create(data)
+        .then(() =>{
             console.log("Uploaded blog to firebase successfully")
-
+            alert("Article Posted Successfully")
         }).catch((e)=>{
             console.log(e)
         })

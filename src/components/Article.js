@@ -1,469 +1,110 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
+import { database } from '../firebase';
+
+import BlogDataService from "../firebaseDatabase";
+
 function Article() {
+
+    // console.log(JSON.stringify(BlogDataService.getAll()))
+
+    const [blogs, setBlogs] = useState([])
+    // this.state = {
+    //     ...
+    //     blogs: []
+    // };
+
+    
+        const blog = BlogDataService.getAll()
+        useState(() => {
+            database.ref('/blogs').on('value', snapshot => {
+                let allBlogs = [];
+                snapshot.forEach(snap => {
+                    allBlogs.push(snap.val())
+                })
+                setBlogs(allBlogs)
+            })
+        }, [])
+
+        // componentDidMount() {
+        //     database.ref('/blogs').on('value', snapshot => {
+        //         let allBlogs = [];
+        //         snapshot.forEach(snap => {
+        //             allBlogs.push(snap.val())
+        //         })
+        //         setBlogs(allBlogs)
+        //     })
+        // }
+        
+    
+    // const blog = BlogDataService.getAll()
+    // console.log(BlogDataService.getAll())
+
+    
     return (
         <Container>
             <Articles>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
+            {
+                blogs.map((blog, key) => (
+                    <ArticleCard key={key}>
+                    
+                                
+                        <ArticleTextDetails>                        
+                            <Author>
+                                <AuthorProfilePicture>
+                                
+                                    <img src="/images/logo.png" alt="" />
+                                </AuthorProfilePicture>
+                                <AuthorUserName>
+                                    Username
+                                    {/* {blog.dateCreated} */}
+                                </AuthorUserName>
+                            </Author>
 
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
+                            <ArticleTitle>
+                                {blog.heading}
+                            </ArticleTitle>
+                                        
+                            <ArticleSubTitle>
+                                {blog.subHeading}
+                            </ArticleSubTitle>
 
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
+                            <ArticleFooter>
+                                <ArticleDatePosted>
+                                    <p>{blog.datePosted}</p>
+                                </ArticleDatePosted>
+                                <ArticleClassTag>
+                                    <p>{blog.Bclass}</p>
+                                </ArticleClassTag>
+                                <ArticleSubjectTag>
+                                    <p>{blog.subject}</p>
+                                </ArticleSubjectTag>
+                                <ArticleTopicTag>
+                                    <p>{blog.topic}</p>
+                                </ArticleTopicTag>
+                                
+                            </ArticleFooter>
                             
-                        </ArticleFooter>
+                        </ArticleTextDetails>
+
+                        <ArticlePicture>
+                            <img src="images/logo.png" alt="" />
+                        </ArticlePicture>
                         
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                <ArticleCard>
-                    <ArticleTextDetails>                        
-                        <Author>
-                            <AuthorProfilePicture>
-                                <img src="/images/logo.png" alt="" />
-                            </AuthorProfilePicture>
-                            <AuthorUserName>
-                                John Doe
-                            </AuthorUserName>
-                        </Author>
-
-                        <ArticleTitle>
-                            Title here
-                        </ArticleTitle>
-
-                        <ArticleSubTitle>
-                            Subtitle here
-                        </ArticleSubTitle>
-
-                        <ArticleFooter>
-                            <ArticleDatePosted>
-                                <p>01/01/2020</p>
-                            </ArticleDatePosted>
-                            <ArticleClassTag>
-                                <p>Class 7</p>
-                            </ArticleClassTag>
-                            <ArticleSubjectTag>
-                                <p>Maths</p>
-                            </ArticleSubjectTag>
-                            <ArticleTopicTag>
-                                <p>Division</p>
-                            </ArticleTopicTag>
-                            
-                        </ArticleFooter>
-                        
-                    </ArticleTextDetails>
-
-                    <ArticlePicture>
-                        <img src="images/logo.png" alt="" />
-                    </ArticlePicture>
-                </ArticleCard>
-                
+                    </ArticleCard>
+            
+            )
+            )
+        }
             </Articles>
 
             <RightSideBar>
                 Something on the side
             </RightSideBar>
         </Container>
-    )
+    );
+
 }
 
 export default Article

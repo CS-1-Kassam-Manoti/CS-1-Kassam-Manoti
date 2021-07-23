@@ -5,7 +5,7 @@ const db = database.ref('/blogs')
 
 class BlogDataService {
     getAll() {
-      return db;
+      return db;       
     }
   
     create(blog) {
