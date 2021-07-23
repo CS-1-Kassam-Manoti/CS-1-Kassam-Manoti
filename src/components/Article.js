@@ -54,10 +54,10 @@ function Article() {
                             <Author>
                                 <AuthorProfilePicture>
                                 
-                                    <img src="/images/logo.png" alt="" />
+                                    <img src={blog.postedByProfilePic} alt="" />
                                 </AuthorProfilePicture>
                                 <AuthorUserName>
-                                    Username
+                                    {blog.postedByName}
                                     {/* {blog.dateCreated} */}
                                 </AuthorUserName>
                             </Author>

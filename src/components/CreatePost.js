@@ -53,6 +53,7 @@ export default function CreatePost() {
     const username = currentUser.displayName ? currentUser.displayName : currentUser.email
 
     let data = {
+        postedByUid: currentUser.uid,
         postedByName: username,
         postedByProfilePic: currentUser.photoURL,
         heading: heading,
