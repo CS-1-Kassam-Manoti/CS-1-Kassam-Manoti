@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 import { database } from '../firebase';
 
@@ -10,6 +11,8 @@ function Article() {
     // console.log(JSON.stringify(BlogDataService.getAll()))
 
     const [blogs, setBlogs] = useState([])
+    const [currentBlog, setCurrentBlog] = useState({})
+    const history = useHistory()
     // this.state = {
     //     ...
     //     blogs: []
@@ -47,7 +50,15 @@ function Article() {
             <Articles>
             {
                 blogs.map((blog, key) => (
-                    <ArticleCard key={key}>
+                    <ArticleCard key={key} onClick={() => {
+                        localStorage.setItem('blog', JSON.stringify(blog))
+                            history.push(`/blog:${blog.blogId}`)
+                        
+
+                        
+                    }
+                    }>
+                        
                     
                                 
                         <ArticleTextDetails>                        
@@ -133,6 +144,7 @@ const ArticleCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
