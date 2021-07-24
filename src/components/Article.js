@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { Link , useHistory } from 'react-router-dom'
 
 import { database } from '../firebase';
 
 import BlogDataService from "../firebaseDatabase";
 
+export const MContext = React.createContext();
+
 function Article() {
 
     // console.log(JSON.stringify(BlogDataService.getAll()))
+    const postedByNameRef = useRef()
+    // console.log(document.getElementsByClassName('.author-user-name'))
 
     const [blogs, setBlogs] = useState([])
-    // this.state = {
-    //     ...
-    //     blogs: []
-    // };
+    
+    const [currentBlog, setCurrentBlog] = useState({})
+
+    const history = useHistory()
 
     
         const blog = BlogDataService.getAll()
@@ -24,46 +29,62 @@ function Article() {
                     allBlogs.push(snap.val())
                 })
                 setBlogs(allBlogs)
+                Object.keys(allBlogs).forEach(key => {
+                    var documentKey = key
+                })
             })
         }, [])
 
-        // componentDidMount() {
-        //     database.ref('/blogs').on('value', snapshot => {
-        //         let allBlogs = [];
-        //         snapshot.forEach(snap => {
-        //             allBlogs.push(snap.val())
-        //         })
-        //         setBlogs(allBlogs)
-        //     })
-        // }
-        
-    
-    // const blog = BlogDataService.getAll()
-    // console.log(BlogDataService.getAll())
-
-    
     return (
+        <MContext.Provider value={currentBlog}>
         <Container>
-            <Articles>
+            {console.log(JSON.stringify(currentBlog))}
+            <Articles >
+            
             {
-                blogs.map((blog, key) => (
-                    <ArticleCard key={key}>
+                blogs.slice(0).reverse().map((blog, key) => (
+
+                    <ArticleCard key={key} 
+                    onClick={() => {
+                        setCurrentBlog({
+                            Bclass: blog.Bclass,
+                            blog: blog.blog,
+                            blogId: blog.blogId,
+                            datePosted: blog.datePosted,
+                            level: blog.level,
+                            heading: blog.heading,
+                            postedByUid: blog.postedByUid,
+                            subject: blog.subject,
+                            subHeading: blog.subHeading,
+                            topic: blog.topic,
+                            postedByName: blog.postedByName,
+                        })
+                            console.log(currentBlog)
+                            history.push('/blog:currentBlog')
+                        
+                    }
+                    }>
                     
                                 
                         <ArticleTextDetails>                        
                             <Author>
-                                <AuthorProfilePicture>
+                                <AuthorProfilePicture value={blog.postedByProfilePic} >
                                 
                                     <img src={blog.postedByProfilePic} alt="" />
                                 </AuthorProfilePicture>
-                                <AuthorUserName>
+                                <AuthorUserName className="author-user-name" value={blog.postedByName} ref={postedByNameRef} >
                                     {blog.postedByName}
                                     {/* {blog.dateCreated} */}
                                 </AuthorUserName>
                             </Author>
 
                             <ArticleTitle>
-                                {blog.heading}
+                            {/* {blog.heading} */}
+                                
+                                    <Link to={{
+                                        pathname: `/blog:${currentBlog}`
+                                        
+                                    }} >{blog.heading}</Link>
                             </ArticleTitle>
                                         
                             <ArticleSubTitle>
@@ -103,6 +124,7 @@ function Article() {
                 Something on the side
             </RightSideBar>
         </Container>
+        </MContext.Provider>
     );
 
 }
@@ -120,7 +142,7 @@ const Articles = styled.div`
     overflow-y: scroll;
     /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }

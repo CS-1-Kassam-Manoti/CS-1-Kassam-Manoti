@@ -1,14 +1,20 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
+
 import Header from './Header'
-// npm install draft-js
-import { Editor , EditorState } from 'draft-js'
-import BlogDataService from "../firebaseDatabase";
-
 import { useAuth } from '../contexts/AuthContext'
-// import RichTextEditor from 'react-rte'
+import BlogDataService from "../firebaseDatabase";
+import Article from './Article'
 
-export default function CreatePost() {
+import {MContext} from './Article'
+
+export default function CurrentBlog(props) {
+    // console.log(props.match.params.key)
+    // console.log(props.state.blogHeading)
+    console.log(props.match.params.currentBlog[0].heading)
+    // console.log(JSON.stringify(props.match.params.currentBlog))
+    
+    console.log(JSON.stringify(MContext.currentBlog))
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
@@ -23,8 +29,12 @@ export default function CreatePost() {
     const topicRef = useRef()
     const blogRef = useRef()
 
-    
     const { currentUser, logout } = useAuth()
+    var today = new Date()
+    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
+    const username = currentUser.displayName ? currentUser.displayName : currentUser.email
+    const blogId = Date.now()
+
 
     const handleHeadingChange = (e) => {
         setHeading(headingRef.current.value)
@@ -47,12 +57,7 @@ export default function CreatePost() {
     const handleBlogContentChange = (e) =>{
         setBlog(e.target.value)
     }
-    var today = new Date()
-    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
-    const username = currentUser.displayName ? currentUser.displayName : currentUser.email
-    const blogId = Date.now()
 
-    console.log(blogId)
     let data = {
         blogId: blogId,
         postedByUid: currentUser.uid,
@@ -79,23 +84,34 @@ export default function CreatePost() {
             console.log(e)
         })
 
-
-
         console.log(data)
 
     }    
+
+
 
     return (
         <Container>
             <Header/> 
 
+            <MContext.Consumer>
+                {(context) => (
+                    <p>
+
+                    {/* {context.currentBlog} */}
+                    {/* {console.log(context.currentBlog)} */}
+                    </p>
+                    
+                )}
+            </MContext.Consumer>
+
+            {/* <Article/> */}
+
             <WritePostContainer>
                 <form onSubmit={handleSubmit}>
 
-                
-                
                     <TitleInput>
-                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} ></input>
+                        <input type="text" placeholder="Blog Title" ref={headingRef} defaultValue={blog.heading} onChange={handleHeadingChange} ></input>
                     </TitleInput>
 
                     <SubTitleInput>
@@ -187,6 +203,7 @@ export default function CreatePost() {
         </Container>
     )
 }
+
 
 const Container = styled.div`
 
