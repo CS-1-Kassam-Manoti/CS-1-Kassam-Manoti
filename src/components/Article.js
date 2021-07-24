@@ -49,7 +49,7 @@ function Article() {
         <Container>
             <Articles>
             {
-                blogs.map((blog, key) => (
+                blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} onClick={() => {
                         localStorage.setItem('blog', JSON.stringify(blog))
                             history.push(`/blog:${blog.blogId}`)
