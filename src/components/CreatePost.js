@@ -93,11 +93,11 @@ export default function CreatePost() {
                 
                 
                     <TitleInput>
-                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} ></input>
+                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} ></input>
+                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
@@ -166,7 +166,7 @@ export default function CreatePost() {
 
                         <BlogSubjectTopic>
                             <p>Topic</p>
-                            <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} ></input>
+                            <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} required></input>
                         </BlogSubjectTopic>
                     
                     </Horizontal>
@@ -174,7 +174,7 @@ export default function CreatePost() {
                     
 
                     <BlogContent>
-                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." ref={blogRef} onChange={handleBlogContentChange} ></textarea>
+                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
                     </BlogContent>
 
                     <PostButton>

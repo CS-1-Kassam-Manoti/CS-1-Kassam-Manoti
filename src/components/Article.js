@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import { database } from '../firebase';
 
@@ -64,8 +65,12 @@ function Article() {
                         <ArticleTextDetails>                        
                             <Author>
                                 <AuthorProfilePicture>
-                                
-                                    <img src={blog.postedByProfilePic} alt="" />
+                                {
+                                    blog.postedByProfilePic ? 
+                                    <img src={blog.postedByProfilePic} alt="" /> :
+                                    <AccountCircleIcon className="icon"/>
+                                }
+                                    
                                 </AuthorProfilePicture>
                                 <AuthorUserName>
                                     {blog.postedByName}
@@ -102,7 +107,7 @@ function Article() {
                         <ArticlePicture>
                             <img src="images/logo.png" alt="" />
                         </ArticlePicture>
-                        
+                    
                     </ArticleCard>
             
             )
@@ -158,12 +163,18 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid grey;
+    
     width: 30px;
     height: 30px;
     margin-right: 8px;
 
     img{
+        width: 30px;
+        height: 30px;
+        border: 1px solid grey;
+    }
+    .icon{
+        /* width: 100%; */
         width: 30px;
         height: 30px;
     }
