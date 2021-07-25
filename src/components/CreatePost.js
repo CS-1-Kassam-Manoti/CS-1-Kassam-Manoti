@@ -5,6 +5,8 @@ import Header from './Header'
 import { Editor , EditorState } from 'draft-js'
 import BlogDataService from "../firebaseDatabase";
 
+import { database } from '../firebase';
+
 import { useAuth } from '../contexts/AuthContext'
 // import RichTextEditor from 'react-rte'
 
@@ -65,12 +67,15 @@ export default function CreatePost() {
         blog: blog,
         datePosted: date
     }
+    const personalBlogPost = database.ref(`/personalblogs/${currentUser.uid}`)
+    const allBlogPost = database.ref(`/blogs`)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        BlogDataService.create(data)
+        allBlogPost.push(data)
         .then(() =>{
+            personalBlogPost.push(data)
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
         }).catch((e)=>{

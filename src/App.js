@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword';
 import CreatePost from './components/CreatePost';
 import ViewBlog from './components/ViewBlog';
+import Profile from './components/Profile';
 import { AuthProvider } from './contexts/AuthContext'
 
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/signup" component={Signup}/>
                 <Route path="/login" component={Login}/>
                 <PrivateRoute path="/update-profile" component={UpdateProfile}/>
+                <PrivateRoute path="/myBlogs" component={Profile}/>
                 <Route path="/forgot-password" component={ForgotPassword}/>
                 <Route path="/create-post" component={CreatePost}/>
                 <Route path="/blog:blogId" component={ViewBlog}/>

@@ -15,22 +15,14 @@ export default function ViewBlog() {
     return (
         <Container>
             {
-            
-
             console.log(JSON.parse(blog))
-
-            
-            
             }
 
 <Header/> 
 
 <WritePostContainer>
     
-{
-    console.log(currentBlog.heading)
 
-}
     
         <Title>
             <h2 >{currentBlog.heading}</h2>
@@ -42,20 +34,24 @@ export default function ViewBlog() {
 
         <Horizontal>
         <DropDown>
-            <BlogLevel> <p>{currentBlog.level}</p>
-                
+            <BlogLevel> 
+                <p>Level:</p>
+                <p>{currentBlog.level}</p>
             </BlogLevel>
 
-            <BlogClass> <p>{currentBlog.Bclass}</p>                            
-                
+            <BlogClass> 
+                <p>Class:</p>
+                <p>{currentBlog.Bclass}</p>                            
             </BlogClass>
 
-            <BlogSubject> <p>{currentBlog.subject}</p>
-                
+            <BlogSubject> 
+                <p>Subject:</p>
+                <p>{currentBlog.subject}</p>
             </BlogSubject>
             </DropDown>
 
             <BlogSubjectTopic>
+                <p>Topic:</p>
                 <p>{currentBlog.topic}</p>
             </BlogSubjectTopic>
         
@@ -118,6 +114,12 @@ const Horizontal = styled.div`
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+/* 
+    p{
+        background-color: lightgrey;
+        padding: 5px;
+        border-radius: 10px;
+    } */
     /* border: 1px solid grey; */
 `
 const DropDown = styled.div`
@@ -164,9 +166,9 @@ const BlogSubjectTopic = styled.div`
 const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
-    
-    border: 1px solid grey;
-        padding: 30px;
+    margin-top: 40px;
+    /* border: 1px solid grey; */
+        /* padding: 30px; */
 
 
     ::-webkit-scrollbar{

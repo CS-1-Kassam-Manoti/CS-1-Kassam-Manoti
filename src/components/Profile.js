@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState} from 'react'
+import Header from './Header'
 import styled from 'styled-components'
+
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
@@ -9,9 +11,7 @@ import BlogDataService from "../firebaseDatabase";
 
 import { useAuth } from '../contexts/AuthContext'
 
-function Article() {
-
-    // console.log(JSON.stringify(BlogDataService.getAll()))
+export default function Profile() {
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
@@ -22,8 +22,8 @@ function Article() {
     
         const blog = BlogDataService.getAll()
         useState(() => {
-            // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
-            const storing = database.ref(`/blogs`)
+            const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+            // const storing = database.ref(`/blogs`)
             const key = storing.key
             storing.on('value', snapshot => {
                 let allBlogs = [];
@@ -36,23 +36,12 @@ function Article() {
             })
         }, [])
 
-        // componentDidMount() {
-        //     database.ref('/blogs').on('value', snapshot => {
-        //         let allBlogs = [];
-        //         snapshot.forEach(snap => {
-        //             allBlogs.push(snap.val())
-        //         })
-        //         setBlogs(allBlogs)
-        //     })
-        // }
-        
-    
-    // const blog = BlogDataService.getAll()
-    // console.log(BlogDataService.getAll())
-
-    
     return (
-        <Container>
+        <ParentContainer>
+
+        
+            <Header/>
+            <Container>
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
@@ -122,11 +111,12 @@ function Article() {
                 Something on the side
             </RightSideBar>
         </Container>
-    );
-
+        </ParentContainer>
+    )
 }
+const ParentContainer = styled.div`
 
-export default Article
+`
 
 const Container = styled.div`
     height: 85vh;
@@ -166,7 +156,7 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid grey;
+    
     width: 30px;
     height: 30px;
     margin-right: 8px;
@@ -174,15 +164,12 @@ const AuthorProfilePicture = styled.div`
     img{
         width: 30px;
         height: 30px;
-        /* border: 1px solid grey; */
-        border-radius: 50%;
-        overflow: hidden;
+        border: 1px solid grey;
     }
     .icon{
         /* width: 100%; */
         width: 30px;
         height: 30px;
-        border-radius: 50%;
     }
 `
 const AuthorUserName = styled.div`
