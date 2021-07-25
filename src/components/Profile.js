@@ -156,7 +156,7 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    
+    border: 1px solid grey;
     width: 30px;
     height: 30px;
     margin-right: 8px;
@@ -164,12 +164,16 @@ const AuthorProfilePicture = styled.div`
     img{
         width: 30px;
         height: 30px;
-        border: 1px solid grey;
+        border-radius: 50%;
+        overflow: hidden;
+        /* border: 1px solid grey; */
     }
     .icon{
         /* width: 100%; */
         width: 30px;
         height: 30px;
+        border-radius: 50%;
+    overflow: hidden;
     }
 `
 const AuthorUserName = styled.div`

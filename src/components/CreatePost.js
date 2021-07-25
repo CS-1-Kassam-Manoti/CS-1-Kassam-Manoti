@@ -53,8 +53,10 @@ export default function CreatePost() {
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
     var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
     const username = currentUser.displayName ? currentUser.displayName : currentUser.email
+    const time = today.getTime()
 
     let data = {
+        blogId: time,
         postedByUid: currentUser.uid,
         postedByName: username,
         postedByProfilePic: currentUser.photoURL,
@@ -67,7 +69,6 @@ export default function CreatePost() {
         blog: blog,
         datePosted: date
     }
-    const personalBlogPost = database.ref(`/personalblogs/${currentUser.uid}`)
     const allBlogPost = database.ref(`/blogs`)
 
     const handleSubmit = (e) => {
@@ -75,7 +76,6 @@ export default function CreatePost() {
 
         allBlogPost.push(data)
         .then(() =>{
-            personalBlogPost.push(data)
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
         }).catch((e)=>{
