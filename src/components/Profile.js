@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState} from 'react'
+import Header from './Header'
 import styled from 'styled-components'
+
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import Footer from './Footer'
+import UpdateProfile from './UpdateProfile'
 
 import { database } from '../firebase';
 
@@ -10,9 +12,10 @@ import BlogDataService from "../firebaseDatabase";
 
 import { useAuth } from '../contexts/AuthContext'
 
-function Article() {
-
-    // console.log(JSON.stringify(BlogDataService.getAll()))
+export default function Profile() {
+    
+    const blogRetrieved = localStorage.getItem('blog')
+    const blogToDelete = JSON.parse(blogRetrieved)
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
@@ -23,8 +26,8 @@ function Article() {
     
         const blog = BlogDataService.getAll()
         useState(() => {
-            // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
-            const storing = database.ref(`/blogs`)
+            const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+            // const storing = database.ref(`/blogs`)
             const key = storing.key
             storing.on('value', snapshot => {
                 let allBlogs = [];
@@ -37,69 +40,75 @@ function Article() {
             })
         }, [])
 
-        // componentDidMount() {
-        //     database.ref('/blogs').on('value', snapshot => {
-        //         let allBlogs = [];
-        //         snapshot.forEach(snap => {
-        //             allBlogs.push(snap.val())
-        //         })
-        //         setBlogs(allBlogs)
-        //     })
-        // }
+        const dialogFunction = () => {
+        const dialog = window.confirm("Are you sure you want to delete?")
+            if(dialog == true){
+                console.log("yes, i want to delete")
+                const databaseRef = database.ref(`/blogs`)
+                databaseRef.child(`${blogToDelete.blogId}`).remove()
+                    .then(() =>{
+                        console.log("Deleted successfully")
+                        // console.log(theData)
+                        alert("Blog Deleted")
+                    }).catch((e)=>{
+                        console.log(e)
+                    })
+                    // console.log(theData)
+            }
+            else{
+                console.log("No, it was by mistake")
+                }
+        }
         
-    
-    // const blog = BlogDataService.getAll()
-    // console.log(BlogDataService.getAll())
 
-    
     return (
+        <ParentContainer>
+
         
-        
-        <Container>
-            <ArticleSearchbar>  
-                        {/* <ArticleTextDetails>              */}
-                        <SearchTitle>
-                            Search Here                          
-                        </SearchTitle> 
-                        <Bar>
-                        <div className="search">   
-                        <input type="text" placeholder="Search Article..."/>                        
-                        </div> 
-                        </Bar> 
-                        {/* </ArticleTextDetails>                     */}
-             
-             </ArticleSearchbar>
-            
-            
+            <Header/>
+            <Container>
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
-                    <ArticleCard key={key} onClick={() => {
+                    <ArticleCard key={key} >
+                        
+                        <ArticleTextDetails>                        
+                            <AuthorContainer>
+                                <Author>                                    
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName}
+                                        {/* {blog.dateCreated} */}
+                                    </AuthorUserName>
+                                </Author>
+                                <Buttons>
+                                    <p onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        history.push(`/edit-blog:${blog.blogId}`)
+                                        console.log("edit button selected for" + blog.heading)
+                                    }} 
+                                    >Edit</p>
+                                    <p className="delete" onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
+                                        dialogFunction()
+                                    }}>Delete</p>
+                                </Buttons>
+                            </AuthorContainer>
+
+                            <ArticleTitle onClick={() => {
                         localStorage.setItem('blog', JSON.stringify(blog))
                             history.push(`/blog:${blog.blogId}`)
                         
-
-                        
                     }
-                    }>
-                        
-                        <ArticleTextDetails>                        
-                            <Author>
-                                <AuthorProfilePicture>
-                                {
-                                    blog.postedByProfilePic ? 
-                                    <img src={blog.postedByProfilePic} alt="" /> :
-                                    <AccountCircleIcon className="icon"/>
-                                }
-                                    
-                                </AuthorProfilePicture>
-                                <AuthorUserName>
-                                    {blog.postedByName}
-                                    {/* {blog.dateCreated} */}
-                                </AuthorUserName>
-                            </Author>
-
-                            <ArticleTitle>
+                    } >
                                 {blog.heading}
                             </ArticleTitle>
                                         
@@ -137,60 +146,32 @@ function Article() {
             </Articles>
 
             <RightSideBar>
-                <Advert>
-                    <img src="images/logo.png" alt="" />
-                </Advert>
-                <Footer/>
+                {/* <UpdateProfile className="update-profile"/> */}
             </RightSideBar>
         </Container>
-    );
-
+        </ParentContainer>
+    )
 }
+const ParentContainer = styled.div`
 
-export default Article
-
+`
 
 const Container = styled.div`
     height: 85vh;
     padding: 10px 100px;
-    // display: inline-block;
+    display: flex;
     justify-content: space-between;
 `
 const Articles = styled.div`
-    // width: 60%;
+    width: 60%;
     overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
-    /* border: 1px solid grey; */
+    border: 1px solid grey;
     ::-webkit-scrollbar{
         display: none;
     }
 `
-const ArticleSearchbar=styled.div`
-    margin: 20px;
-    display: flex;
-    // justify-content: space-between;
-    height: 170px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    // text-align: center;
-
-`
-const SearchTitle = styled.div`
-    margin-top: 14px;
-    font-weight: bold;
-    font-size: 24px;
-    text-align:center;
-    // padding: 20px 20px;
-    width: 80%;
-
-   
-`
-const Bar=styled.div`
-
-`
-
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -199,11 +180,17 @@ const ArticleCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
     /* border: 1px solid grey; */
+`
+const AuthorContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `
 const Author = styled.div`
     display: flex;
@@ -220,32 +207,57 @@ const AuthorProfilePicture = styled.div`
     img{
         width: 30px;
         height: 30px;
-        /* border: 1px solid grey; */
         border-radius: 50%;
         overflow: hidden;
+        /* border: 1px solid grey; */
     }
     .icon{
         /* width: 100%; */
         width: 30px;
         height: 30px;
         border-radius: 50%;
+    overflow: hidden;
     }
 `
 const AuthorUserName = styled.div`
     font-size: 13px;
 `
+const Buttons = styled.div`
+    display: flex;
+    /* border: 1px solid grey; */
+    width: 17%;
+    justify-content: space-between;
+
+    .delete{
+            color: red !important;
+            
+        }
+
+    p{
+        border: 1px solid grey;
+        padding: 3px;
+        font-size: 13px;
+        cursor: pointer;
+
+        :hover{
+            background-color: lightgrey;
+        }
+
+    }
+`
 const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
-    text-align: center;
+    cursor: pointer;
+
+    :hover{
+        text-decoration: underline;
+        color: darkgrey;
+    }
 `
 const ArticleSubTitle = styled.div`
-    text-align:center;
-    .Search{
-        display:inline-block;
-    }
-
+    font-size: 14px;
 ` 
 const ArticleFooter = styled.div`
     display: flex;
@@ -282,18 +294,8 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
-    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
-    /* border: 1px solid grey; */
-    display: relative;
-`
-const Advert = styled.div`
-    height: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* height: 700px; */
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 
-    img{
-        /* padding: 30px; */
-    }
+    
 `

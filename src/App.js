@@ -7,6 +7,10 @@ import Home from './components/Home'
 import UpdateProfile from './components/UpdateProfile'
 import PrivateRoute from './components/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword';
+import CreatePost from './components/CreatePost';
+import ViewBlog from './components/ViewBlog';
+import Profile from './components/Profile';
+import EditBlog from './components/EditBlog';
 import { AuthProvider } from './contexts/AuthContext'
 
 
@@ -19,10 +23,14 @@ function App() {
               <Switch>
                 <PrivateRoute exact path="/" component={Home}/>
                 {/* <Route exact path="/" component={Home}/> */}
-                <Route exact path="/signup" component={Signup}/>
-                <Route exact path="/login" component={Login}/>
-                <PrivateRoute exact path="/update-profile" component={UpdateProfile}/>
-                <Route exact path="/forgot-password" component={ForgotPassword}/>
+                <Route path="/signup" component={Signup}/>
+                <Route path="/login" component={Login}/>
+                <PrivateRoute path="/update-profile" component={UpdateProfile}/>
+                <PrivateRoute path="/myBlogs" component={Profile}/>
+                <PrivateRoute path="/edit-blog:blogId" component={EditBlog}/>
+                <Route path="/forgot-password" component={ForgotPassword}/>
+                <Route path="/create-post" component={CreatePost}/>
+                <Route path="/blog:blogId" component={ViewBlog}/>
               </Switch>
             </AuthProvider>
         </Router>

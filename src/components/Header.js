@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory, Link, useLocation } from 'react-router-dom'
 import { storage } from '../firebase'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
@@ -14,8 +14,13 @@ function Header(props) {
     const [error, setError] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
+    const location = useLocation()
 
-    console.log(JSON.stringify(currentUser))
+    const { pathname } = location
+
+    const splitLocation = pathname.split("/")
+
+    // console.log(JSON.stringify(currentUser))
 
     const handleLogout = async () => {
         setError('')
@@ -42,10 +47,10 @@ function Header(props) {
             <Links>
 
                 <NavigationLinks>
-                    <a>Home</a>
-                    <a>About</a>
-                    <a>Subjects</a>
-                    <a>Write</a>
+                    <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
+                    <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
+                    <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
+                    <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
                 </NavigationLinks>
 
                 <Profile>
@@ -66,6 +71,9 @@ function Header(props) {
                             <UpdateProfileButton >
                                 <Link to="/update-profile">Update Profile</Link>
                             </UpdateProfileButton>
+                            <MyBlogs >
+                                <Link to='/myblogs'>My Blogs</Link>
+                            </MyBlogs>
                             <SignOut onClick={handleLogout}>
                                 <a>Sign out</a>
                             </SignOut>
@@ -114,12 +122,12 @@ const NavigationLinks = styled.div`
     justify-content: space-between;
     width: 80%;
 
-    nav {
-        display: flex;
-        /* justify-content: space-between; */
-        align-items: center;
-        border: 1px solid grey;
-        width: 100%;
+    a{
+        cursor: pointer;
+    }
+
+    .active a{
+        border-bottom: 1px solid grey;
     }
 `
 
@@ -131,7 +139,7 @@ const Profile = styled.div`
 `
 const Hover = styled.div`
     position: absolute;
-    top: 60px;
+    top: 56px;
     right: 52px;
     display: flex;
     flex-direction: column;
@@ -150,6 +158,23 @@ const Hover = styled.div`
 `
 
 const UpdateProfileButton = styled.div`
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+    border-bottom: 1px solid grey;
+
+    :hover{
+        background-color: lightgrey;
+    }
+
+    a{
+        :hover{
+            cursor: pointer;
+        }
+    }
+`
+
+const MyBlogs = styled.div`
     width: 100%;
     margin-top: 5px;
     text-align: center;
