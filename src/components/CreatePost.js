@@ -69,12 +69,13 @@ export default function CreatePost() {
         blog: blog,
         datePosted: date
     }
-    const allBlogPost = database.ref(`/blogs`)
+    const rootRef = database.ref(`blogs`)
+    // const allBlogPost = database.ref('/blogs' + blogToEdit.blogId)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        allBlogPost.push(data)
+        database.ref('/blogs/' + data.blogId).set(data)
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
