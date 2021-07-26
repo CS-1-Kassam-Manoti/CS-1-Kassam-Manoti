@@ -5,15 +5,12 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import UpdateProfile from './UpdateProfile'
-
 import { database } from '../firebase';
-
 import BlogDataService from "../firebaseDatabase";
-
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Profile() {
-    
+
     const blogRetrieved = localStorage.getItem('blog')
     const blogToDelete = JSON.parse(blogRetrieved)
 
