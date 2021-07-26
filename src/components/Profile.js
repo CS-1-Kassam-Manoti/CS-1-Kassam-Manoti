@@ -39,13 +39,14 @@ export default function Profile() {
                 
             })
         }, [])
+        const rootRef = database.ref(`blogs`)
 
         const dialogFunction = () => {
         const dialog = window.confirm("Are you sure you want to delete?")
             if(dialog == true){
                 console.log("yes, i want to delete")
                 const databaseRef = database.ref(`/blogs`)
-                databaseRef.child(`${blogToDelete.blogId}`).remove()
+                rootRef.child(blogToDelete.blogId).remove()
                     .then(() =>{
                         console.log("Deleted successfully")
                         // console.log(theData)
