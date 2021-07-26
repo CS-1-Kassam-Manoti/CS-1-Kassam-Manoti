@@ -53,7 +53,25 @@ function Article() {
 
     
     return (
+        
+        <ParentContainer>
+            <ArticleSearchbar>  
+                        {/* <ArticleTextDetails>              */}
+                        <SearchTitle>
+                            Search Here                          
+                        </SearchTitle> 
+                        <Bar>
+                        <div className="search">   
+                        <input type="text" placeholder="Search Article..."/>                        
+                        </div> 
+                        </Bar> 
+                        {/* </ArticleTextDetails>                     */}
+             
+             </ArticleSearchbar>
         <Container>
+            
+            
+            
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
@@ -126,11 +144,16 @@ function Article() {
                 <Footer/>
             </RightSideBar>
         </Container>
+        </ParentContainer>
     );
 
 }
 
 export default Article
+
+const ParentContainer = styled.div`
+
+`
 
 const Container = styled.div`
     height: 85vh;
@@ -143,11 +166,31 @@ const Articles = styled.div`
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
-    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }
 `
+const ArticleSearchbar=styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+`
+const SearchTitle = styled.div`
+    font-weight: bold;
+    font-size: 24px;
+    margin-right: 20px;
+    text-align:center;
+   
+`
+const Bar=styled.div`
+
+`
+
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -156,7 +199,6 @@ const ArticleCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
@@ -178,12 +220,10 @@ const AuthorProfilePicture = styled.div`
     img{
         width: 30px;
         height: 30px;
-        /* border: 1px solid grey; */
         border-radius: 50%;
         overflow: hidden;
     }
     .icon{
-        /* width: 100%; */
         width: 30px;
         height: 30px;
         border-radius: 50%;
@@ -199,6 +239,7 @@ const ArticleTitle = styled.div`
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
+
 ` 
 const ArticleFooter = styled.div`
     display: flex;
