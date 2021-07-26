@@ -54,8 +54,7 @@ function Article() {
     
     return (
         
-        
-        <Container>
+        <ParentContainer>
             <ArticleSearchbar>  
                         {/* <ArticleTextDetails>              */}
                         <SearchTitle>
@@ -69,6 +68,8 @@ function Article() {
                         {/* </ArticleTextDetails>                     */}
              
              </ArticleSearchbar>
+        <Container>
+            
             
             
             <Articles>
@@ -143,48 +144,47 @@ function Article() {
                 <Footer/>
             </RightSideBar>
         </Container>
+        </ParentContainer>
     );
 
 }
 
 export default Article
 
+const ParentContainer = styled.div`
+
+`
 
 const Container = styled.div`
     height: 85vh;
     padding: 10px 100px;
-    // display: inline-block;
+    display: flex;
     justify-content: space-between;
 `
 const Articles = styled.div`
-    // width: 60%;
+    width: 60%;
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
-    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }
 `
 const ArticleSearchbar=styled.div`
-    margin: 20px;
     display: flex;
-    // justify-content: space-between;
-    height: 170px;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    text-align: center;
     border-radius: 15px;
-    overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    // text-align: center;
 
 `
 const SearchTitle = styled.div`
-    margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    margin-right: 20px;
     text-align:center;
-    // padding: 20px 20px;
-    width: 80%;
-
    
 `
 const Bar=styled.div`
@@ -220,12 +220,10 @@ const AuthorProfilePicture = styled.div`
     img{
         width: 30px;
         height: 30px;
-        /* border: 1px solid grey; */
         border-radius: 50%;
         overflow: hidden;
     }
     .icon{
-        /* width: 100%; */
         width: 30px;
         height: 30px;
         border-radius: 50%;
@@ -238,13 +236,9 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
-    text-align: center;
 `
 const ArticleSubTitle = styled.div`
-    text-align:center;
-    .Search{
-        display:inline-block;
-    }
+    font-size: 14px;
 
 ` 
 const ArticleFooter = styled.div`
