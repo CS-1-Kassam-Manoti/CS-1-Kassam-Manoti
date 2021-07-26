@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import UpdateProfile from './UpdateProfile'
 
 import { database } from '../firebase';
 
@@ -12,6 +13,9 @@ import BlogDataService from "../firebaseDatabase";
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Profile() {
+    
+    const blogRetrieved = localStorage.getItem('blog')
+    const blogToDelete = JSON.parse(blogRetrieved)
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
@@ -36,6 +40,27 @@ export default function Profile() {
             })
         }, [])
 
+        const dialogFunction = () => {
+        const dialog = window.confirm("Are you sure you want to delete?")
+            if(dialog == true){
+                console.log("yes, i want to delete")
+                const databaseRef = database.ref(`/blogs`)
+                databaseRef.child(`${blogToDelete.blogId}`).remove()
+                    .then(() =>{
+                        console.log("Deleted successfully")
+                        // console.log(theData)
+                        alert("Blog Deleted")
+                    }).catch((e)=>{
+                        console.log(e)
+                    })
+                    // console.log(theData)
+            }
+            else{
+                console.log("No, it was by mistake")
+                }
+        }
+        
+
     return (
         <ParentContainer>
 
@@ -45,32 +70,45 @@ export default function Profile() {
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
-                    <ArticleCard key={key} onClick={() => {
+                    <ArticleCard key={key} >
+                        
+                        <ArticleTextDetails>                        
+                            <AuthorContainer>
+                                <Author>                                    
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName}
+                                        {/* {blog.dateCreated} */}
+                                    </AuthorUserName>
+                                </Author>
+                                <Buttons>
+                                    <p onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        history.push(`/edit-blog:${blog.blogId}`)
+                                        console.log("edit button selected for" + blog.heading)
+                                    }} 
+                                    >Edit</p>
+                                    <p className="delete" onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
+                                        dialogFunction()
+                                    }}>Delete</p>
+                                </Buttons>
+                            </AuthorContainer>
+
+                            <ArticleTitle onClick={() => {
                         localStorage.setItem('blog', JSON.stringify(blog))
                             history.push(`/blog:${blog.blogId}`)
                         
-
-                        
                     }
-                    }>
-                        
-                        <ArticleTextDetails>                        
-                            <Author>
-                                <AuthorProfilePicture>
-                                {
-                                    blog.postedByProfilePic ? 
-                                    <img src={blog.postedByProfilePic} alt="" /> :
-                                    <AccountCircleIcon className="icon"/>
-                                }
-                                    
-                                </AuthorProfilePicture>
-                                <AuthorUserName>
-                                    {blog.postedByName}
-                                    {/* {blog.dateCreated} */}
-                                </AuthorUserName>
-                            </Author>
-
-                            <ArticleTitle>
+                    } >
                                 {blog.heading}
                             </ArticleTitle>
                                         
@@ -108,7 +146,7 @@ export default function Profile() {
             </Articles>
 
             <RightSideBar>
-                Something on the side
+                {/* <UpdateProfile className="update-profile"/> */}
             </RightSideBar>
         </Container>
         </ParentContainer>
@@ -149,6 +187,11 @@ const ArticleTextDetails = styled.div`
     width: 80%;
     /* border: 1px solid grey; */
 `
+const AuthorContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 const Author = styled.div`
     display: flex;
     align-items: center;
@@ -179,10 +222,39 @@ const AuthorProfilePicture = styled.div`
 const AuthorUserName = styled.div`
     font-size: 13px;
 `
+const Buttons = styled.div`
+    display: flex;
+    /* border: 1px solid grey; */
+    width: 17%;
+    justify-content: space-between;
+
+    .delete{
+            color: red !important;
+            
+        }
+
+    p{
+        border: 1px solid grey;
+        padding: 3px;
+        font-size: 13px;
+        cursor: pointer;
+
+        :hover{
+            background-color: lightgrey;
+        }
+
+    }
+`
 const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    cursor: pointer;
+
+    :hover{
+        text-decoration: underline;
+        color: darkgrey;
+    }
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
@@ -222,5 +294,8 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
+    /* height: 700px; */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+
+    
 `

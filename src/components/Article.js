@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import Footer from './Footer'
 
 import { database } from '../firebase';
 
@@ -119,7 +120,10 @@ function Article() {
             </Articles>
 
             <RightSideBar>
-                Something on the side
+                <Advert>
+                    <img src="images/logo.png" alt="" />
+                </Advert>
+                <Footer/>
             </RightSideBar>
         </Container>
     );
@@ -137,9 +141,9 @@ const Container = styled.div`
 const Articles = styled.div`
     width: 60%;
     overflow-y: scroll;
-    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }
@@ -231,5 +235,18 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    /* border: 1px solid grey; */
+    display: relative;
+`
+const Advert = styled.div`
+    height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img{
+        /* padding: 30px; */
+    }
 `
