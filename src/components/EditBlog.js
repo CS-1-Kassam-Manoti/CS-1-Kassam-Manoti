@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 // npm install draft-js
-import { Editor , EditorState } from 'draft-js'
-import BlogDataService from "../firebaseDatabase";
+// import { Editor , EditorState } from 'draft-js'
+// import BlogDataService from "../firebaseDatabase";
 
 import { database } from '../firebase';
 
