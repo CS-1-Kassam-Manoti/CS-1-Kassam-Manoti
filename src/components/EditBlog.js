@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Header from './Header'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
-import BlogDataService from "../firebaseDatabase";
+// import BlogDataService from "../firebaseDatabase";
 
 import { database } from '../firebase';
 
@@ -71,12 +71,14 @@ export default function EditBlog() {
         blog: blog ? blog : blogToEdit.blog,
         datePosted: date
     }
-    const allBlogPost = database.ref(`/blogs/${blogToEdit.blogId}`)
+    const allBlogPost = database.ref('/blogs')
+    // const allBlogPost = database.ref(`/blogs`).orderByChild(`${blogToEdit.blogId}`).equalTo(blogToEdit.blogId)
+    // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        allBlogPost.set(data)
+        allBlogPost.child(blogToEdit.blogId).update(data)
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
