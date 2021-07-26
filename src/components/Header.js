@@ -20,7 +20,7 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
-    console.log(JSON.stringify(currentUser))
+    // console.log(JSON.stringify(currentUser))
 
     const handleLogout = async () => {
         setError('')
@@ -71,6 +71,9 @@ function Header(props) {
                             <UpdateProfileButton >
                                 <Link to="/update-profile">Update Profile</Link>
                             </UpdateProfileButton>
+                            <MyBlogs >
+                                <Link to='/myblogs'>My Blogs</Link>
+                            </MyBlogs>
                             <SignOut onClick={handleLogout}>
                                 <a>Sign out</a>
                             </SignOut>
@@ -155,6 +158,23 @@ const Hover = styled.div`
 `
 
 const UpdateProfileButton = styled.div`
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+    border-bottom: 1px solid grey;
+
+    :hover{
+        background-color: lightgrey;
+    }
+
+    a{
+        :hover{
+            cursor: pointer;
+        }
+    }
+`
+
+const MyBlogs = styled.div`
     width: 100%;
     margin-top: 5px;
     text-align: center;

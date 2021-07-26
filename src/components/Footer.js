@@ -57,7 +57,7 @@ const Container = styled.section`
 const Contact = styled.div`
     display: flex;
     flex-direction: column;
-    width: 14%;
+    width: 80%;
     justify-content: space-around;
 `
 const Phone = styled.div`
@@ -75,10 +75,14 @@ const Email = styled.div`
 `
 
 const SocialMedia = styled.div`
-    margin: 10px 0;
-    width: 14%;
+    margin: 20px 0 0 0;
+    /* padding: 10px ; */
+    width: 100%;
     display: flex;
     justify-content: space-around;
+    /* border: 1px solid black; */
+    text-align: center;
+    align-items: center;
 
     .social-media-icon {
         cursor: pointer;

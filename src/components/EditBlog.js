@@ -8,9 +8,11 @@ import Header from './Header'
 import { database } from '../firebase';
 
 import { useAuth } from '../contexts/AuthContext'
-// import RichTextEditor from 'react-rte'
 
-export default function CreatePost() {
+export default function EditBlog() {
+
+    const blogRetrieved = localStorage.getItem('blog')
+    const blogToEdit = JSON.parse(blogRetrieved)
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
@@ -60,35 +62,34 @@ export default function CreatePost() {
         postedByUid: currentUser.uid,
         postedByName: username,
         postedByProfilePic: currentUser.photoURL,
-        heading: heading,
-        subHeading: subHeading,
-        level: level,
-        Bclass: Bclass,
-        subject: subject,
-        topic: topic,
-        blog: blog,
+        heading: heading ? heading : blogToEdit.heading,
+        subHeading: subHeading ? subHeading : blogToEdit.subHeading,
+        level: level ? level : blogToEdit.level,
+        Bclass: Bclass ? Bclass : blogToEdit.Bclass,
+        subject: subject ? subject : blogToEdit.subject,
+        topic: topic ? topic : blogToEdit.topic,
+        blog: blog ? blog : blogToEdit.blog,
         datePosted: date
     }
-    const rootRef = database.ref(`blogs`)
-    // const allBlogPost = database.ref('/blogs' + blogToEdit.blogId)
+    const allBlogPost = database.ref('/blogs')
+    // const allBlogPost = database.ref(`/blogs`).orderByChild(`${blogToEdit.blogId}`).equalTo(blogToEdit.blogId)
+    // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        database.ref('/blogs/' + data.blogId).set(data)
+        allBlogPost.child(blogToEdit.blogId).update(data)
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
         }).catch((e)=>{
             console.log(e)
         })
-
-
-
         console.log(data)
-
     }    
 
+
+    
     return (
         <Container>
             <Header/> 
@@ -99,24 +100,24 @@ export default function CreatePost() {
                 
                 
                     <TitleInput>
-                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
+                        <input type="text" defaultValue={blogToEdit.heading} ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="Blog SubTitle" defaultValue={blogToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
                     <DropDown>
                         <BlogLevel> <p>Level</p>
-                            <select value={level} onChange={handleLevelChange}>
+                            <select value={blogToEdit.level} onChange={handleLevelChange}>
                                 <option value="primary">Primary</option>
                                 <option value="highschool">Highschool</option>
                             </select>
                         </BlogLevel>
 
                         <BlogClass> <p>Class</p>                            
-                            <select value={Bclass} onChange={handleClassChange}>
+                            <select value={blogToEdit.Bclass} onChange={handleClassChange}>
                                 {
                                 level === "primary" ? 
                                     <>
@@ -141,7 +142,7 @@ export default function CreatePost() {
                         </BlogClass>
 
                         <BlogSubject> <p>Subject</p>
-                            <select value={subject} onChange={handleSubjectChange}>
+                            <select value={blogToEdit.subject} onChange={handleSubjectChange}>
                             {
                                 level === "primary" ? 
                                     <>
@@ -172,7 +173,7 @@ export default function CreatePost() {
 
                         <BlogSubjectTopic>
                             <p>Topic</p>
-                            <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} required></input>
+                            <input type="text" defaultValue={blogToEdit.topic} ref={topicRef} onChange={handleTopicChange} required></input>
                         </BlogSubjectTopic>
                     
                     </Horizontal>
@@ -180,7 +181,7 @@ export default function CreatePost() {
                     
 
                     <BlogContent>
-                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
+                        <textarea rows="20" columns="80" defaultValue={blogToEdit.blog} placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
                     </BlogContent>
 
                     <PostButton>
@@ -191,6 +192,7 @@ export default function CreatePost() {
         </Container>
     )
 }
+
 
 const Container = styled.div`
 

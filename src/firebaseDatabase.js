@@ -1,9 +1,14 @@
 import firebase from './firebase';
 import { database } from './firebase';
 
+// import { useAuth } from '/contexts/AuthContext'
+
+// const { currentUser, logout } = useAuth()
+
 const db = database.ref('/blogs')
 
 class BlogDataService {
+
     getAll() {
       return db;       
     }
