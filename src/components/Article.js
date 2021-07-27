@@ -24,18 +24,31 @@ function Article() {
         const blog = BlogDataService.getAll()
         useState(() => {
             // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+
             const storing = database.ref(`/blogs`)
-            const key = storing.key
-            storing.on('value', snapshot => {
-                let allBlogs = [];
-                snapshot.forEach(snap => { 
-                    allBlogs.push(snap.val())
+                    const key = storing.key
+                    storing.on('value', snapshot => {
+                        let allBlogs = [];
+                        snapshot.forEach(snap => { 
+                            allBlogs.push(snap.val())
+                        })
+                        setBlogs(allBlogs)
+                        console.log(storing)
+                        
+                    })
+
+                database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid).once("value", function(snapshot){
+                    snapshot.forEach(function(child){
+                        child.ref.update({
+                            postedByUid: currentUser.uid,
+                            postedByName: currentUser.displayName,
+                            postedByProfilePic: currentUser.photoURL
+                        })
+                    })
                 })
-                setBlogs(allBlogs)
-                console.log(storing)
-                
-            })
-        }, [])
+                })
+            
+        
 
         // componentDidMount() {
         //     database.ref('/blogs').on('value', snapshot => {

@@ -20,7 +20,7 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
-    // console.log(JSON.stringify(currentUser))
+    console.log(JSON.stringify(currentUser))
 
     const handleLogout = async () => {
         setError('')

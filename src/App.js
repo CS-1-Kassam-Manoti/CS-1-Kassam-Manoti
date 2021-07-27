@@ -11,6 +11,8 @@ import CreatePost from './components/CreatePost';
 import ViewBlog from './components/ViewBlog';
 import Profile from './components/Profile';
 import EditBlog from './components/EditBlog';
+import Admin from './components/Admin';
+import AdminLogin from './components/AdminLogin';
 import { AuthProvider } from './contexts/AuthContext'
 
 
@@ -31,6 +33,7 @@ function App() {
                 <Route path="/forgot-password" component={ForgotPassword}/>
                 <Route path="/create-post" component={CreatePost}/>
                 <Route path="/blog:blogId" component={ViewBlog}/>
+                <Route path="/admin" component={AdminLogin}/>
               </Switch>
             </AuthProvider>
         </Router>
