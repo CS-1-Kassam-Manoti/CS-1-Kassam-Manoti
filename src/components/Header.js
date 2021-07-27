@@ -244,6 +244,8 @@ const UserIcon = styled.div`
 const UserName = styled.div`
     /* border: 1px solid grey; */
     display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
 `

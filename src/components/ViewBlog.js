@@ -22,7 +22,9 @@ export default function ViewBlog() {
 
 <WritePostContainer>
     
+        <AuthorDetails>
 
+        </AuthorDetails>
     
         <Title>
             <h2 >{currentBlog.heading}</h2>
@@ -78,6 +80,10 @@ const WritePostContainer = styled.div`
     margin: 30px;
     padding: 30px;
 `
+const AuthorDetails = styled.div`
+
+`
+
 const Title = styled.div`
     /* width: 100%; */
     /* border: 1px solid grey; */
