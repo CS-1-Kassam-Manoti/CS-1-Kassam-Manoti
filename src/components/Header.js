@@ -39,58 +39,66 @@ function Header(props) {
     
 
     return (
-        <Container>
-            <Logo>
-                <img src='/images/logo.png' /> 
-            </Logo>
+        <ParentContainer>
+            <Container>
+                <Logo>
+                    <img src='/images/logo.png' /> 
+                </Logo>
 
-            <Links>
+                <Links>
 
-                <NavigationLinks>
-                    <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
-                    <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
-                    <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
-                    <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
-                </NavigationLinks>
+                    <NavigationLinks>
+                        <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
+                        <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
+                        <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
+                        <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
+                    </NavigationLinks>
 
-                <Profile>
-                    {/* <UserName>
-                        <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                    </UserName> */}
-                    <UserIcon >
-                        {
-                                currentUser.photoURL ? 
-                                <img src={currentUser.photoURL}></img> :
-                                <AccountCircleIcon className="icon"/>
-                                // <img src={props.urlvar}></img> 
-                        }
-                        <Hover>
-                            <UserName>
-                                <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                            </UserName>
-                            <UpdateProfileButton >
-                                <Link to="/update-profile">Update Profile</Link>
-                            </UpdateProfileButton>
-                            <MyBlogs >
-                                <Link to='/myblogs'>My Blogs</Link>
-                            </MyBlogs>
-                            <SignOut onClick={handleLogout}>
-                                <a>Sign out</a>
-                            </SignOut>
-                        </Hover>
+                    <Profile>
+                        {/* <UserName>
+                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                        </UserName> */}
+                        <UserIcon >
+                            {
+                                    currentUser.photoURL ? 
+                                    <img src={currentUser.photoURL}></img> :
+                                    <AccountCircleIcon className="icon"/>
+                                    // <img src={props.urlvar}></img> 
+                            }
+                            <Hover>
+                                <UserName>
+                                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                                </UserName>
+                                <UpdateProfileButton >
+                                    <Link to="/update-profile">Update Profile</Link>
+                                </UpdateProfileButton>
+                                <MyBlogs >
+                                    <Link to='/myblogs'>My Blogs</Link>
+                                </MyBlogs>
+                                <SignOut onClick={handleLogout}>
+                                    <a>Sign out</a>
+                                </SignOut>
+                            </Hover>
+                            
+                        </UserIcon>
                         
-                    </UserIcon>
-                    
-                </Profile>
-            </Links>
-        </Container>
+                    </Profile>
+                </Links>
+            </Container>
+        </ParentContainer>
     )
 }
 
 export default Header
 
+const ParentContainer = styled.div`
+    /* position: absolute;
+    width: 100%;
+    height: 60px; */
+`
 const Container = styled.section`
     height: 60px;
+    /* margin-top: 60px; */
     padding: 5px 100px;
     display: flex;
     justify-content: space-between;
