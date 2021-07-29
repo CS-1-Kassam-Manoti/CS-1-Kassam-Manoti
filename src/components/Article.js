@@ -28,10 +28,6 @@ function Article() {
             // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
         useState(() => {
 
-            
-            
-
-
             const storing = database.ref(`/blogs`)
             const key = storing.key
             storing.on('value', snapshot => {

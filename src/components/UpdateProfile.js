@@ -130,8 +130,8 @@ export default function UpdateProfile() {
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <p>{currentUser.email}</p>
-                            {/* <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} /> */}
+                            {/* <p>{currentUser.email}</p> */}
+                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>

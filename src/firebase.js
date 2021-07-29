@@ -4,6 +4,11 @@ import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/database'
 
+// const functions = require('firebase-functions');
+// const admin = require('firebase-admin')
+
+// admin.initializeApp()
+
 const app = firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
