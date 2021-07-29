@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import { useHistory } from 'react-router-dom'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
 // import BlogDataService from "../firebaseDatabase";
@@ -27,6 +28,7 @@ export default function EditBlog() {
     const topicRef = useRef()
     const blogRef = useRef()
 
+    const history = useHistory()
     
     const { currentUser, logout } = useAuth()
 
@@ -82,6 +84,7 @@ export default function EditBlog() {
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
+            // history.push('/myBlogs')
         }).catch((e)=>{
             console.log(e)
         })

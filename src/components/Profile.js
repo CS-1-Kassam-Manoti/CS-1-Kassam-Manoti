@@ -54,6 +54,7 @@ export default function Profile() {
             }
             else{
                 console.log("No, it was by mistake")
+                // history.push(`/Profile`)
                 }
         }
         
