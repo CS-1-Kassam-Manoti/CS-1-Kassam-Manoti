@@ -1,51 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react';
-import styled from 'styled-components' //installed via "npm install styled-components"
-import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
-import { useAuth } from '../contexts/AuthContext'
-import ErrorIcon from '@material-ui/icons/Error';
+import React, { useState, useRef } from 'react'
+import styled from 'styled-components'
+import {Link} from 'react-router-dom'
+import ErrorIcon from '@material-ui/icons/Error'
 
-export default function Login() {
+function AdminLogin() {
 
+    const [loading, setLoading] = useState("")
+    const [error, setError] = useState("")
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { login } = useAuth()
-    const[error, setError] = useState('')
-    const[loading, setLoading] = useState(false)
-    const history = useHistory()
 
-    
-    const { currentUser, logout } = useAuth()
+    const handleSubmit = () => {
 
-
-    async function handleSubmit (e){
-        e.preventDefault()
-        
-        try{
-            setError('')
-            setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/')
-        }
-        catch{
-            setError('Failed to Log In')
-        }
-        setLoading(false)
 
     }
 
-    
-    // if(currentUser.email == "ishaq.kassam@gmail.com"){
-    //     currentUser.providerData[0].isAdmin = "true"
-    // }
-    // else{
-    //     currentUser.providerDataisAdmin = "false"
-    // }
 
-    // currentUser.isDisabled = "false"
-    
-
-    return (        
-            <Container>
+    return (
+        <Container>
                 <RegisterContainer>
                     <h3>log In</h3>
                     <hr/>
@@ -71,6 +43,7 @@ export default function Login() {
                        
                         <Submit>
                             <button disabled={loading} type="submit" >Log In</button>
+                            {/* <button> <Link to="Admin"></Link>Log In</button> */}
                         </Submit>
 
                     </form>
@@ -88,6 +61,8 @@ export default function Login() {
         
     )
 }
+
+export default AdminLogin
 
 
 const Container = styled.div`
@@ -197,3 +172,4 @@ const ForgotPasswordText = styled.div`
         }
     }
 `
+    

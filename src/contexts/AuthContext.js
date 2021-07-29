@@ -12,26 +12,17 @@ export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
 
+
     function signup(email, password){
-        // const username = JSON.stringify(name)
-        // console.log(username)
-        // currentUser.updateProfile({
-        //     displayName: name,
-        //     photoURL: "https://example.com/jane-q-user/profile.jpg"
-        // }).then(() => {
-        //     // Update successful
-        //     // ...
-        // }).catch((error) => {
-        //     // An error occurred
-        //     // ...
-        // }); 
-        
         
         auth.createUserWithEmailAndPassword(email, password)
+
     }
 
     function login(email, password){
+        
         return auth.signInWithEmailAndPassword(email, password)
+            
     }
 
     function logout(){
@@ -60,11 +51,35 @@ export function AuthProvider({children}) {
             photoURL: profilePicture
         })
     }
+    function setIsAdminFunction(isAdmin){
+        return currentUser.updateProfile({
+            providerData : {
+                isAdmin: isAdmin
+            } 
+            
+        })
+        // return currentUser.providerData[0].isAdmin = isAdmin
+    }
+    function setIsDisabledFunction(isDisabled){
+        // return currentUser.updateProfile({
+        //     isDisabled: isDisabled
+        // })
+        // return currentUser.providerData[0].isDisabled = isDisabled
+    }
 
     useEffect(() =>{
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
             setLoading(false)
+
+            // if(user.email == "ishaq.kassam@gmail.com"){
+            //     currentUser.providerData[0].isAdmin = "true"
+            // }
+            // else{
+            //     currentUser.isAdmin = "false"
+            // }
+
+            // currentUser.isDisabled = "false"
         })
 
         return unsubscribe
@@ -80,7 +95,9 @@ export function AuthProvider({children}) {
         updateName,
         updateEmail,
         updatePassword,
-        updateProfilePicture
+        updateProfilePicture, 
+        setIsAdminFunction,
+        setIsDisabledFunction
     }
 
     return (

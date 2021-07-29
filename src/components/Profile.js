@@ -17,7 +17,6 @@ export default function Profile() {
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
-
     
     const { currentUser, logout } = useAuth()
     

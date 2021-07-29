@@ -10,14 +10,20 @@ export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup, updateName } = useAuth()
+    const { signup, setIsDisabledFunction, setIsAdminFunction, updateName } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
+    const[isAdmin, setIsAdmin] = useState("false")
+    const[isDisabled, setIsDisabled] = useState("false")
     const history = useHistory()
 
+    const { currentUser, logout } = useAuth()
 
     async function handleSubmit (e){
         e.preventDefault()
+        if(emailRef.current.value == "ishaq.kassam@gmail.com"){
+            setIsAdmin(true)
+        }
         if(passwordRef.current.value !== confirmPasswordRef.current.value){
             return  setError('The Passswords Do Not Match')
         }
@@ -28,15 +34,16 @@ export default function Signup() {
 
             await signup(emailRef.current.value, passwordRef.current.value)
             console.log('signup successful')
-            history.push('/')
+            
+            history.push('/')           
 
         }
         catch{
-            setError('Account Creation Failed')
+            setError('Account Creation Failed' + error)
             console.log(error)
         }
         setLoading(false)
-
+        
     }
 
     return (        

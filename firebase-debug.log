@@ -1,0 +1,39 @@
+[debug] [2021-07-29T04:28:04.308Z] ----------------------------------------------------------------------
+[debug] [2021-07-29T04:28:04.310Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ishaq\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2021-07-29T04:28:04.310Z] CLI Version:   9.16.0
+[debug] [2021-07-29T04:28:04.310Z] Platform:      win32
+[debug] [2021-07-29T04:28:04.310Z] Node Version:  v15.14.0
+[debug] [2021-07-29T04:28:04.366Z] Time:          Thu Jul 29 2021 07:28:04 GMT+0300 (East Africa Time)
+[debug] [2021-07-29T04:28:04.366Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-07-29T04:28:04.407Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2021-07-29T04:28:04.626Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-07-29T04:28:04.626Z] > authorizing via signed-in user (ishaq.kassam@gmail.com)
+[debug] [2021-07-29T04:28:04.627Z] [iam] checking project reactblog-d33f3 for permissions ["firebase.projects.get"]
+[debug] [2021-07-29T04:28:04.628Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-07-29T04:28:04.628Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-07-29T04:28:05.425Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Thu, 29 Jul 2021 04:28:13 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-07-29T04:28:06.352Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/reactblog-d33f3:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2021-07-29T04:28:07.803Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 29 Jul 2021 04:28:15 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=1283","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-07-29T04:28:07.804Z] > refreshing access token with scopes: []
+[debug] [2021-07-29T04:28:07.804Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-07-29T04:28:07.894Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-07-29T04:28:07.894Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2021-07-29T04:28:08.458Z] <<< HTTP RESPONSE 200 {"date":"Thu, 29 Jul 2021 04:28:16 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-07-29T04:28:08.981Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3 [none]
+[debug] [2021-07-29T04:28:09.392Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3 200
+[debug] [2021-07-29T04:28:09.392Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3 {"projectId":"reactblog-d33f3","projectNumber":"673443901180","displayName":"ReactBlog","name":"projects/reactblog-d33f3","resources":{"hostingSite":"reactblog-d33f3","realtimeDatabaseInstance":"reactblog-d33f3-default-rtdb","storageBucket":"reactblog-d33f3.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] 
+[info] === Serving from 'C:\Users\ishaq\OneDrive\Desktop\Strathmore\IS Project\CS-1-Kassam-Manoti'...
+[info] 
+[debug] [2021-07-29T04:28:09.394Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/reactblog-d33f3/sites 
+[debug] [2021-07-29T04:28:11.020Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/reactblog-d33f3/sites 200
+[debug] [2021-07-29T04:28:11.021Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/reactblog-d33f3/sites {"sites":[{"name":"projects/673443901180/sites/reactblog-d33f3","defaultUrl":"https://reactblog-d33f3.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2021-07-29T04:28:11.021Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3/webApps/-/config [none]
+[debug] [2021-07-29T04:28:11.874Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3/webApps/-/config 200
+[debug] [2021-07-29T04:28:11.874Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/reactblog-d33f3/webApps/-/config {"projectId":"reactblog-d33f3","appId":"1:673443901180:web:7b86725f434ed5d5fb7179","databaseURL":"https://reactblog-d33f3-default-rtdb.firebaseio.com","storageBucket":"reactblog-d33f3.appspot.com","locationId":"us-central","apiKey":"AIzaSyANJ3t57DeSYUa-2BvFV60ef4h3_xZUSXg","authDomain":"reactblog-d33f3.firebaseapp.com","messagingSenderId":"673443901180"}
+[info] i  hosting: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] +  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}

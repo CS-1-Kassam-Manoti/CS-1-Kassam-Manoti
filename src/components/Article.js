@@ -18,12 +18,20 @@ function Article() {
     const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
 
+
     
     const { currentUser, logout } = useAuth()
+
     
         const blog = BlogDataService.getAll()
-        useState(() => {
+        
             // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+        useState(() => {
+
+            
+            
+
+
             const storing = database.ref(`/blogs`)
             const key = storing.key
             storing.on('value', snapshot => {
@@ -32,10 +40,23 @@ function Article() {
                     allBlogs.push(snap.val())
                 })
                 setBlogs(allBlogs)
-                console.log(storing)
                 
             })
-        }, [])
+
+        database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid).once("value", function(snapshot){
+            snapshot.forEach(function(child){
+                child.ref.update({
+                    postedByUid: currentUser.uid,
+                    postedByName: currentUser.displayName,
+                    postedByProfilePic: currentUser.photoURL
+                })
+            })
+        })
+        })
+            
+                
+            
+        
 
         // componentDidMount() {
         //     database.ref('/blogs').on('value', snapshot => {
@@ -152,11 +173,11 @@ function Article() {
 export default Article
 
 const ParentContainer = styled.div`
-
+    
 `
 
 const Container = styled.div`
-    height: 85vh;
+    height: 80vh;
     padding: 10px 100px;
     display: flex;
     justify-content: space-between;
@@ -171,6 +192,7 @@ const Articles = styled.div`
     }
 `
 const ArticleSearchbar=styled.div`
+/* margin-top: 60px; */
     display: flex;
     justify-content: center;
     align-items: center;

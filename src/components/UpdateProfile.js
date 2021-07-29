@@ -6,6 +6,8 @@ import ErrorIcon from '@material-ui/icons/Error';
 import { storage } from '../firebase'
 import Header from './Header'
 
+import { database } from '../firebase';
+
 export default function UpdateProfile() {
 
     const nameRef = useRef()
@@ -54,13 +56,21 @@ export default function UpdateProfile() {
               promises.push(updateProfilePicture(url))
             }).then(() => {
                 
-            }).then(() => {
                 history.push('/')
                 window.location.reload();
-                // console.log(JSON.stringify(currentUser))
             })
         });
 
+        const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+                storing.once("value", function(snapshot){
+                    snapshot.forEach(function(child){
+                        child.ref.update({
+                            postedByUid: currentUser.uid,
+                            postedByName: currentUser.displayName,
+                            postedByProfilePic: currentUser.photoURL
+                        })
+                    })
+                })
             
         // promises.push(updateProfilePicture(url))
         }
@@ -120,7 +130,8 @@ export default function UpdateProfile() {
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
+                            <p>{currentUser.email}</p>
+                            {/* <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} /> */}
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>
@@ -220,8 +231,16 @@ const Name = styled.div`
 const Email = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-top: 20px;
     height: 30px;
+
+    p{
+        width: 250px;
+        margin-right: 10px;
+        font-size: 15px;
+        
+    }
 `
 const Password = styled.div`
     display: flex;
