@@ -283,5 +283,5 @@ const UserName = styled.div`
     flex-wrap: start;
     overflow: hidden;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
 `
