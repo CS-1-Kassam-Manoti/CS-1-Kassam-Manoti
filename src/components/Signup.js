@@ -6,24 +6,23 @@ import ErrorIcon from '@material-ui/icons/Error';
 
 export default function Signup() {
 
-    const nameRef = useRef()
+    // const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup, setIsDisabledFunction, setIsAdminFunction, updateName } = useAuth()
+    const { signup } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
-    const[isAdmin, setIsAdmin] = useState("false")
-    const[isDisabled, setIsDisabled] = useState("false")
+    // const[isAdmin, setIsAdmin] = useState("false")
     const history = useHistory()
 
-    const { currentUser, logout } = useAuth()
+    // const { currentUser, logout } = useAuth()
 
     async function handleSubmit (e){
         e.preventDefault()
-        if(emailRef.current.value == "ishaq.kassam@gmail.com"){
-            setIsAdmin(true)
-        }
+        // if(emailRef.current.value == "ishaq.kassam@gmail.com"){
+        //     setIsAdmin(true)
+        // }
         if(passwordRef.current.value !== confirmPasswordRef.current.value){
             return  setError('The Passswords Do Not Match')
         }
@@ -155,12 +154,12 @@ const RegisterContainer = styled.div`
         }
     }
 `
-const Name = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    height: 30px;
-`
+// const Name = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     padding-top: 20px;
+//     height: 30px;
+// `
 const Email = styled.div`
     display: flex;
     justify-content: space-between;

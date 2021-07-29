@@ -1,4 +1,4 @@
-import firebase from './firebase';
+// import firebase from './firebase';
 import { database } from './firebase';
 
 // import { useAuth } from '/contexts/AuthContext'

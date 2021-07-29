@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
-import { storage } from '../firebase'
+// import { storage } from '../firebase'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
@@ -31,12 +31,14 @@ function Header(props) {
     
     if(currentUser.email == "ishaq.kassam@gmail.com"){
         currentUser.providerData[0].isAdmin = "true"
+        currentUser.isDisabled = "false"
     }
     else{
         currentUser.providerDataisAdmin = "false"
+        currentUser.isDisabled = "false"
     }
 
-    currentUser.isDisabled = "false"
+    // currentUser.isDisabled = "false"
     
     
     
@@ -69,10 +71,10 @@ function Header(props) {
                 <Links>
 
                     <NavigationLinks>
-                        <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
-                        <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
-                        <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
-                        <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
+                        <p className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></p>
+                        <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p>
+                        <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p>
+                        <p className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </p>
                     </NavigationLinks>
 
                     <Profile>

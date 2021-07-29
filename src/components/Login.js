@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
@@ -12,9 +12,7 @@ export default function Login() {
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
-
-    
-    const { currentUser, logout } = useAuth()
+    // const { currentUser, logout } = useAuth()
 
 
     async function handleSubmit (e){

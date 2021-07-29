@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 import { storage } from '../firebase'
-import Header from './Header'
+// import Header from './Header'
 
 import { database } from '../firebase';
 
