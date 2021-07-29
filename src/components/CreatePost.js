@@ -181,6 +181,7 @@ export default function CreatePost() {
 
                     <BlogContent>
                         <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
+                    
                     </BlogContent>
 
                     <PostButton>

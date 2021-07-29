@@ -5,22 +5,18 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import UpdateProfile from './UpdateProfile'
-
 import { database } from '../firebase';
-
 import BlogDataService from "../firebaseDatabase";
-
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Profile() {
-    
+
     const blogRetrieved = localStorage.getItem('blog')
     const blogToDelete = JSON.parse(blogRetrieved)
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
-
     
     const { currentUser, logout } = useAuth()
     
@@ -39,13 +35,14 @@ export default function Profile() {
                 
             })
         }, [])
+        const rootRef = database.ref(`blogs`)
 
         const dialogFunction = () => {
         const dialog = window.confirm("Are you sure you want to delete?")
             if(dialog == true){
                 console.log("yes, i want to delete")
                 const databaseRef = database.ref(`/blogs`)
-                databaseRef.child(`${blogToDelete.blogId}`).remove()
+                rootRef.child(blogToDelete.blogId).remove()
                     .then(() =>{
                         console.log("Deleted successfully")
                         // console.log(theData)
