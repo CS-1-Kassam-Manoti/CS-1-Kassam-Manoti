@@ -18,35 +18,43 @@ function Article() {
     const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
 
+
     
     const { currentUser, logout } = useAuth()
+
     
         const blog = BlogDataService.getAll()
-        useState(() => {
+        
             // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+        useState(() => {
+
+            
+            
+
 
             const storing = database.ref(`/blogs`)
-                    const key = storing.key
-                    storing.on('value', snapshot => {
-                        let allBlogs = [];
-                        snapshot.forEach(snap => { 
-                            allBlogs.push(snap.val())
-                        })
-                        setBlogs(allBlogs)
-                        console.log(storing)
-                        
-                    })
+            const key = storing.key
+            storing.on('value', snapshot => {
+                let allBlogs = [];
+                snapshot.forEach(snap => { 
+                    allBlogs.push(snap.val())
+                })
+                setBlogs(allBlogs)
+                
+            })
 
-                database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid).once("value", function(snapshot){
-                    snapshot.forEach(function(child){
-                        child.ref.update({
-                            postedByUid: currentUser.uid,
-                            postedByName: currentUser.displayName,
-                            postedByProfilePic: currentUser.photoURL
-                        })
-                    })
+        database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid).once("value", function(snapshot){
+            snapshot.forEach(function(child){
+                child.ref.update({
+                    postedByUid: currentUser.uid,
+                    postedByName: currentUser.displayName,
+                    postedByProfilePic: currentUser.photoURL
                 })
-                })
+            })
+        })
+        })
+            
+                
             
         
 

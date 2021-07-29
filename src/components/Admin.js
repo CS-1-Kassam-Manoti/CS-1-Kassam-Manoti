@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import Header from './Header'
 
 function Admin() {
     return (
         <Container>
+            <Header/>
             <LeftBlogSection>
 
             </LeftBlogSection>

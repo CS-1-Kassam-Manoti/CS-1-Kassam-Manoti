@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
@@ -17,6 +17,8 @@ function Header(props) {
     const history = useHistory()
     const location = useLocation()
 
+    
+    
     const { pathname } = location
 
     const splitLocation = pathname.split("/")
@@ -24,10 +26,20 @@ function Header(props) {
     // currentUser.providerData[0].isAdmin = "false"
     // currentUser.isAdmin = "false"
     // currentUser.providerData[0].disabled = "true"
-    // console.log(JSON.stringify(currentUser.disabled))
     console.log(JSON.stringify(currentUser))
     
+    
+    if(currentUser.email == "ishaq.kassam@gmail.com"){
+        currentUser.providerData[0].isAdmin = "true"
+    }
+    else{
+        currentUser.providerDataisAdmin = "false"
+    }
 
+    currentUser.isDisabled = "false"
+    
+    
+    
 
     const handleLogout = async () => {
         setError('')
@@ -40,6 +52,8 @@ function Header(props) {
             setError('Failed to log out')
         }
     }
+
+    console.log(JSON.stringify(currentUser))
     
     // const email = currentUser.email
     // const name = email.substring(0, email.indexOf("." || '@'))
@@ -83,8 +97,7 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    currentUser.providerData[0].isAdmin === "true" && 
-
+                                    currentUser.providerData[0].isAdmin == "true" && 
                                     <Admin>
                                         <a> <Link to='/admin'>Admin</Link></a>
                                     </Admin>

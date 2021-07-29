@@ -2,24 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
-import Footer from './Footer'
 
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
 function Home() {
-
     
-    const { currentUser, logout } = useAuth()
-
-    currentUser.providerData[0].isAdmin = "false"
-    currentUser.providerData[0].isDisabled = "false"
-    console.log(JSON.stringify(currentUser))
+    const { currentUser } = useAuth()
 
     return (
         <Container>
             {
-                currentUser.providerData[0].isDisabled === "false" ? 
+                currentUser.providerData[0].isDisabled !== "false" ? 
                 
                     <Content>
                         <Header/>
