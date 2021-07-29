@@ -20,7 +20,13 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
+    // currentUser.providerData[0].isAdmin = "false"
+    // currentUser.isAdmin = "false"
+    // currentUser.providerData[0].disabled = "true"
+    // console.log(JSON.stringify(currentUser.disabled))
     console.log(JSON.stringify(currentUser))
+    
+
 
     const handleLogout = async () => {
         setError('')

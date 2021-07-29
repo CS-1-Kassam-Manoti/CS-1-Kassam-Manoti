@@ -25,9 +25,9 @@ export function AuthProvider({children}) {
         //     // An error occurred
         //     // ...
         // }); 
-        
-        
         auth.createUserWithEmailAndPassword(email, password)
+
+        currentUser.isAdmin = "false"
     }
 
     function login(email, password){

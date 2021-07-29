@@ -20,7 +20,6 @@ export default function Login() {
         try{
             setError('')
             setLoading(true)
-              
             await login(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         }
