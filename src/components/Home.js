@@ -12,10 +12,14 @@ function Home() {
     
     const { currentUser, logout } = useAuth()
 
+    currentUser.providerData[0].isAdmin = "false"
+    currentUser.providerData[0].isDisabled = "false"
+    console.log(JSON.stringify(currentUser))
+
     return (
         <Container>
             {
-                currentUser.providerData[0].disabled === true ? 
+                currentUser.providerData[0].isDisabled === "false" ? 
                 
                     <Content>
                         <Header/>

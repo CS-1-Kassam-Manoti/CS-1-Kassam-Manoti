@@ -9,7 +9,10 @@ export default function PrivateRoute( {component: Component, ...rest}) {
         <Route
         {...rest}
         render={props => {
-            return currentUser ? <Component {...props}/> : <Redirect to="/login"/>
+
+
+// || (currentUser.providerData[0].isDisabled && currentUser.providerData[0].isDisabled === "false")
+            return currentUser  ? <Component {...props}/> : <Redirect to="/login"/>
         }}
         >
             

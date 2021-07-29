@@ -8,6 +8,7 @@ import { storage } from '../firebase'
 
 
 import { useAuth } from '../contexts/AuthContext'
+// import Admin from './Admin'
 
 function Header(props) {
 
@@ -81,9 +82,17 @@ function Header(props) {
                                 <MyBlogs >
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
+                                {
+                                    currentUser.providerData[0].isAdmin === "true" && 
+
+                                    <Admin>
+                                        <a> <Link to='/admin'>Admin</Link></a>
+                                    </Admin>
+                                }
                                 <SignOut onClick={handleLogout}>
                                     <a>Sign out</a>
                                 </SignOut>
+                                
                             </Hover>
                             
                         </UserIcon>
@@ -157,6 +166,7 @@ const Hover = styled.div`
     right: 52px;
     display: flex;
     flex-direction: column;
+    /* flex-wrap: wrap; */
     justify-content: center;
     align-items: center;
     margin-right: 10px;
@@ -167,7 +177,7 @@ const Hover = styled.div`
     padding: 5px;
     display: none;
     /* height: 100px; */
-    width: 120px;
+    /* width: 120px; */
     background-color: white;
 `
 
@@ -205,8 +215,26 @@ const MyBlogs = styled.div`
     }
 `
 
+const Admin = styled.div`
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+    border-bottom: 1px solid grey;
+
+    :hover{
+        background-color: lightgrey;
+    }
+
+    a{
+        :hover{
+            cursor: pointer;
+        }
+    }
+`
+
 const SignOut = styled.div`
     width: 100%;
+    margin-top: 5px;
     text-align: center;
     cursor: pointer !important;
 
@@ -249,9 +277,11 @@ const UserIcon = styled.div`
 `
 const UserName = styled.div`
     /* border: 1px solid grey; */
+    margin: 5px 0 !important;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: start;
     overflow: hidden;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
 `

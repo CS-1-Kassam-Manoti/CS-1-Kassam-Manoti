@@ -33,7 +33,7 @@ function App() {
                 <Route path="/forgot-password" component={ForgotPassword}/>
                 <Route path="/create-post" component={CreatePost}/>
                 <Route path="/blog:blogId" component={ViewBlog}/>
-                <Route path="/admin" component={AdminLogin}/>
+                <PrivateRoute path="/admin" component={Admin}/>
               </Switch>
             </AuthProvider>
         </Router>

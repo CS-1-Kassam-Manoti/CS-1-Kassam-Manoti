@@ -43,6 +43,7 @@ function AdminLogin() {
                        
                         <Submit>
                             <button disabled={loading} type="submit" >Log In</button>
+                            {/* <button> <Link to="Admin"></Link>Log In</button> */}
                         </Submit>
 
                     </form>
