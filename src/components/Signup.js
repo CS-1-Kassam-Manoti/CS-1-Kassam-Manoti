@@ -4,6 +4,10 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
+
+import { database } from '../firebase';
+
+
 export default function Signup() {
 
     // const nameRef = useRef()
@@ -13,6 +17,9 @@ export default function Signup() {
     const { signup } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
+
+    
+    const [currentUser, setCurrentUser] = useState()
     // const[isAdmin, setIsAdmin] = useState("false")
     const history = useHistory()
 
@@ -34,8 +41,9 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             console.log('signup successful')
             
-            history.push('/')           
-
+            history.push('/')
+            
+            
         }
         catch{
             setError('Account Creation Failed' + error)

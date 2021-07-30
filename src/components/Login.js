@@ -4,6 +4,9 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
+
+import { database } from '../firebase';
+
 export default function Login() {
 
     const emailRef = useRef()
@@ -12,7 +15,7 @@ export default function Login() {
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
     const history = useHistory()
-    // const { currentUser, logout } = useAuth()
+    const { currentUser, logout } = useAuth()
 
 
     async function handleSubmit (e){
@@ -22,11 +25,38 @@ export default function Login() {
             setError('')
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            history.push('/')
+            
+
+
+
+            const time = new Date().getTime().toString()
+
+        // .then(() => {
+        //     const data = {
+        //     uid: currentUser.uid,
+        //     displayName: currentUser.displayName,
+        //     photoUrl: currentUser.photoUrl,
+        //     email: currentUser.email,
+        //     emailVerified: currentUser.emailVerified,
+        //     phoneNumber: currentUser.phoneNumber,
+        //     isAnonymous: currentUser.isAnonymous,
+        //     tenantId: currentUser.tenantId,
+        //     tenantId: currentUser.displayName,
+        // }
+        // database.ref('/users/' + data.uid).set(data)
+        // console.log("Uploaded a user to database successfully")
+        // console.log(data)
+        // })
+
+        
+        console.log(currentUser)
+        history.push('/')
+
         }
         catch{
             setError('Failed to Log In')
         }
+        
         setLoading(false)
 
     }

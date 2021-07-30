@@ -10,6 +10,7 @@ import { database } from '../firebase';
 function Admin() {
 
     const [blogs, setBlogs] = useState([])
+    const [users, setUsers] = useState([])
 
     const history = useHistory()
 
@@ -17,9 +18,9 @@ function Admin() {
     
 
     useEffect(() => {
-        const storing = database.ref(`/blogs`)
-        const key = storing.key
-        storing.on('value', snapshot => {
+        const blogsRetrieved = database.ref(`/blogs`)
+        // const key = blogsRetrieved.key
+        blogsRetrieved.on('value', snapshot => {
             let allBlogs = [];
             snapshot.forEach(snap => { 
                 allBlogs.push(snap.val())
@@ -27,7 +28,17 @@ function Admin() {
             setBlogs(allBlogs)
             
         })
-    })
+        const usersRetrieved = database.ref(`/users`)
+        // const key = usersRetrieved.key
+        usersRetrieved.on('value', snapshot => {
+            let allUsers = [];
+            snapshot.forEach(snap => { 
+                allUsers.push(snap.val())
+            })
+            setUsers(allUsers)
+            
+        })
+    }, [])
 
     
     const rootRef = database.ref(`blogs`)
@@ -165,10 +176,89 @@ function Admin() {
             </Articles>
 
             <RightSideBar>
-                <Advert>
-                    <img src="images/logo.png" alt="" />
-                </Advert>
-                {/* <Footer/> */}
+            {
+                users.slice(0).reverse().map((user, key) => (
+                    <ArticleCard key={key} 
+                    // onClick={() => {
+                    //     localStorage.setItem('blog', JSON.stringify(blog))
+                    //         history.push(`/blog:${blog.blogId}`)
+                        
+
+                        
+                    // }
+                    // }
+                    >
+                        
+                        <ArticleTextDetails>                        
+                            <Author>
+                                <AuthorProfilePicture>
+                                {
+                                    user.photoURL ? 
+                                    <img src={user.photoURL} alt="" /> :
+                                    <AccountCircleIcon className="icon"/>
+                                }
+                                    
+                                </AuthorProfilePicture>
+                                <AuthorUserName>
+                                    {user.displayName}
+                                    {/* {blog.dateCreated} */}
+                                </AuthorUserName>
+                                <Buttons>
+                                    <p onClick={() => {
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        history.push(`/edit-user:${user.uid}`)
+                                        console.log("edit button selected for" + user.displayName)
+                                    }} 
+                                    >Edit</p>
+                                    <p className="delete" onClick={() => {
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        console.log("delete button selected for" + user.displayName + "with ID of" + user.uid)
+                                        dialogFunction()
+                                    }}>Delete</p>
+                                </Buttons>
+                            </Author>
+
+                            <ArticleTitle 
+                            onClick={() => {
+                                    localStorage.setItem('user', JSON.stringify(user))
+                                        history.push(`/user:${user.uid}`)
+                                    
+            
+                                    
+                                }
+                                }
+                            >
+                                {user.displayName}
+                            </ArticleTitle>
+                                        
+                            <ArticleSubTitle>
+                                {user.email}
+                            </ArticleSubTitle>
+
+                            <ArticleFooter>
+                                <ArticleDatePosted>
+                                    <p>{user.isAdmin}</p>
+                                </ArticleDatePosted>
+                                <ArticleClassTag>
+                                    <p>{user.isDisabled}</p>
+                                </ArticleClassTag>
+                                <ArticleSubjectTag>
+                                    <p>{user.uid}</p>
+                                </ArticleSubjectTag>
+                                
+                            </ArticleFooter>
+                            
+                        </ArticleTextDetails>
+
+                        <ArticlePicture>
+                            <img src="images/logo.png" alt="" />
+                        </ArticlePicture>
+                    
+                    </ArticleCard>
+            
+            )
+            )
+        }
             </RightSideBar>
         </Container>
         </ParentContainer>
@@ -332,14 +422,4 @@ const RightSideBar = styled.div`
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     /* border: 1px solid grey; */
     display: relative;
-`
-const Advert = styled.div`
-    height: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img{
-        /* padding: 30px; */
-    }
 `

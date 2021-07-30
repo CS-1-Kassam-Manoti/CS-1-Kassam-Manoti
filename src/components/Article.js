@@ -112,7 +112,7 @@ function Article() {
                                     
                                 </AuthorProfilePicture>
                                 <AuthorUserName>
-                                    {blog.postedByName}
+                                    {blog.postedByName ? blog.postedByName : blog.postedByEmail}
                                     {/* {blog.dateCreated} */}
                                 </AuthorUserName>
                             </Author>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
@@ -8,6 +8,8 @@ import { useHistory, Link, useLocation } from 'react-router-dom'
 
 
 import { useAuth } from '../contexts/AuthContext'
+
+import { database } from '../firebase';
 // import Admin from './Admin'
 
 function Header(props) {
@@ -31,15 +33,32 @@ function Header(props) {
     
     if(currentUser.email == "ishaq.kassam@gmail.com"){
         currentUser.providerData[0].isAdmin = "true"
-        currentUser.isDisabled = "false"
+        currentUser.providerData[0].isDisabled = "false"
     }
     else{
         currentUser.providerDataisAdmin = "false"
-        currentUser.isDisabled = "false"
+        currentUser.providerData[0].isDisabled = "false"
     }
 
     // currentUser.isDisabled = "false"
-    
+    useEffect(() =>{
+        const data = {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            email: currentUser.email,
+            emailVerified: currentUser.emailVerified,
+            phoneNumber: currentUser.phoneNumber,
+            isAnonymous: currentUser.isAnonymous,
+            tenantId: currentUser.tenantId,
+            isAdmin: currentUser.providerData[0].isAdmin,
+            isDisabled: currentUser.providerData[0].isDisabled,
+
+        }
+        database.ref('/users/' + data.uid).set(data)
+        console.log("Uploaded a user to database successfully")
+        console.log(data)
+    }, [])
     
     
 

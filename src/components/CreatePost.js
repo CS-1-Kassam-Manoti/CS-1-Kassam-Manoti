@@ -58,7 +58,8 @@ export default function CreatePost() {
     let data = {
         blogId: time,
         postedByUid: currentUser.uid,
-        postedByName: username,
+        postedByName: currentUser.displayName,
+        postedByEmail: currentUser.email,
         postedByProfilePic: currentUser.photoURL,
         heading: heading,
         subHeading: subHeading,
