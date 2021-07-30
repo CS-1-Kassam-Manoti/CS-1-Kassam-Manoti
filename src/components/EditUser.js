@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import { useHistory } from 'react-router-dom'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
 // import BlogDataService from "../firebaseDatabase";
@@ -8,9 +9,11 @@ import Header from './Header'
 import { database } from '../firebase';
 
 import { useAuth } from '../contexts/AuthContext'
-// import RichTextEditor from 'react-rte'
 
-export default function CreatePost() {
+export default function EditUser() {
+
+    const userRetrieved = localStorage.getItem('user')
+    const userToEdit = JSON.parse(userRetrieved)
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
@@ -18,13 +21,14 @@ export default function CreatePost() {
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
-    const [blog, setBlog] = useState("")
+    const [user, setUser] = useState("")
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
     const topicRef = useRef()
-    const blogRef = useRef()
+    const userRef = useRef()
 
+    const history = useHistory()
     
     const { currentUser, logout } = useAuth()
 
@@ -46,8 +50,8 @@ export default function CreatePost() {
     const handleTopicChange = (e) =>{
         setTopic(e.target.value)
     }
-    const handleBlogContentChange = (e) =>{
-        setBlog(e.target.value)
+    const handleUserContentChange = (e) =>{
+        setUser(e.target.value)
     }
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
@@ -56,40 +60,39 @@ export default function CreatePost() {
     const time = today.getTime()
 
     let data = {
-        blogId: time,
+        userId: time,
         postedByUid: currentUser.uid,
-        postedByName: currentUser.displayName,
-        postedByEmail: currentUser.email,
+        postedByName: username,
         postedByProfilePic: currentUser.photoURL,
-        heading: heading,
-        subHeading: subHeading,
-        level: level,
-        Bclass: Bclass,
-        subject: subject,
-        topic: topic,
-        blog: blog,
+        heading: heading ? heading : userToEdit.heading,
+        subHeading: subHeading ? subHeading : userToEdit.subHeading,
+        level: level ? level : userToEdit.level,
+        Bclass: Bclass ? Bclass : userToEdit.Bclass,
+        subject: subject ? subject : userToEdit.subject,
+        topic: topic ? topic : userToEdit.topic,
+        user: user ? user : userToEdit.user,
         datePosted: date
     }
-    const rootRef = database.ref(`blogs`)
-    // const allBlogPost = database.ref('/blogs' + blogToEdit.blogId)
+    const allUserPost = database.ref('/users')
+    // const allUserPost = database.ref(`/users`).orderByChild(`${userToEdit.userId}`).equalTo(userToEdit.userId)
+    // const storing = database.ref(`/users`).orderByChild('postedByUid').equalTo(currentUser.uid)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        database.ref('/blogs/' + data.blogId).set(data)
+        allUserPost.child(userToEdit.userId).update(data)
         .then(() =>{
-            console.log("Uploaded blog to firebase successfully")
+            console.log("Uploaded user to firebase successfully")
             alert("Article Posted Successfully")
+            // history.push('/myUsers')
         }).catch((e)=>{
             console.log(e)
         })
-
-
-
         console.log(data)
-
     }    
 
+
+    
     return (
         <Container>
             <Header/> 
@@ -100,24 +103,24 @@ export default function CreatePost() {
                 
                 
                     <TitleInput>
-                        <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
+                        <input type="text" defaultValue={userToEdit.heading} ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="User SubTitle" defaultValue={userToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
                     <DropDown>
-                        <BlogLevel> <p>Level</p>
-                            <select value={level} onChange={handleLevelChange}>
+                        <UserLevel> <p>Level</p>
+                            <select value={userToEdit.level} onChange={handleLevelChange}>
                                 <option value="primary">Primary</option>
                                 <option value="highschool">Highschool</option>
                             </select>
-                        </BlogLevel>
+                        </UserLevel>
 
-                        <BlogClass> <p>Class</p>                            
-                            <select value={Bclass} onChange={handleClassChange}>
+                        <UserClass> <p>Class</p>                            
+                            <select value={userToEdit.Bclass} onChange={handleClassChange}>
                                 {
                                 level === "primary" ? 
                                     <>
@@ -139,10 +142,10 @@ export default function CreatePost() {
                                     </>
                                 }
                             </select> 
-                        </BlogClass>
+                        </UserClass>
 
-                        <BlogSubject> <p>Subject</p>
-                            <select value={subject} onChange={handleSubjectChange}>
+                        <UserSubject> <p>Subject</p>
+                            <select value={userToEdit.subject} onChange={handleSubjectChange}>
                             {
                                 level === "primary" ? 
                                     <>
@@ -168,22 +171,21 @@ export default function CreatePost() {
                                     </>
                                 }
                             </select>
-                        </BlogSubject>
+                        </UserSubject>
                         </DropDown>
 
-                        <BlogSubjectTopic>
+                        <UserSubjectTopic>
                             <p>Topic</p>
-                            <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} required></input>
-                        </BlogSubjectTopic>
+                            <input type="text" defaultValue={userToEdit.topic} ref={topicRef} onChange={handleTopicChange} required></input>
+                        </UserSubjectTopic>
                     
                     </Horizontal>
 
                     
 
-                    <BlogContent>
-                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
-                    
-                    </BlogContent>
+                    <UserContent>
+                        <textarea rows="20" columns="80" defaultValue={userToEdit.user} placeholder="Write your User here ..." required ref={userRef} onChange={handleUserContentChange} ></textarea>
+                    </UserContent>
 
                     <PostButton>
                         <input className="submit" type="submit" value="submit"></input>
@@ -193,6 +195,7 @@ export default function CreatePost() {
         </Container>
     )
 }
+
 
 const Container = styled.div`
 
@@ -248,19 +251,19 @@ const DropDown = styled.div`
     flex-wrap: wrap;
     margin: 10px 0;
 `
-const BlogLevel = styled.div`
+const UserLevel = styled.div`
     display: flex;
     p{
         margin-right: 10px;
     }
 `
-const BlogClass = styled.div`
+const UserClass = styled.div`
     display: flex;
     p{
         margin-right: 10px;
     }
 `
-const BlogSubject = styled.div`
+const UserSubject = styled.div`
     display: flex;
     p{
         margin-right: 10px;
@@ -270,7 +273,7 @@ const BlogSubject = styled.div`
         width: 100%;
     }
 `
-const BlogSubjectTopic = styled.div`
+const UserSubjectTopic = styled.div`
     display: flex;
     width: 40%;
     margin-left: 40px;
@@ -281,7 +284,7 @@ const BlogSubjectTopic = styled.div`
         width: 100%;
     }
 `
-const BlogContent = styled.div`
+const UserContent = styled.div`
     overflow-y: scroll;
     display: flex;
     

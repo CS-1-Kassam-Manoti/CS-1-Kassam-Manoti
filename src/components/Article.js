@@ -28,10 +28,6 @@ function Article() {
             // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
         useState(() => {
 
-            
-            
-
-
             const storing = database.ref(`/blogs`)
             const key = storing.key
             storing.on('value', snapshot => {
@@ -116,7 +112,7 @@ function Article() {
                                     
                                 </AuthorProfilePicture>
                                 <AuthorUserName>
-                                    {blog.postedByName}
+                                    {blog.postedByName ? blog.postedByName : blog.postedByEmail}
                                     {/* {blog.dateCreated} */}
                                 </AuthorUserName>
                             </Author>

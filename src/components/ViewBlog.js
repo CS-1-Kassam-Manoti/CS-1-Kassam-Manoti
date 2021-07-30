@@ -192,7 +192,7 @@ const BlogContent = styled.div`
         }
     }
 `
-const PostButton = styled.div`
-    margin-top: 20px;
-    text-align: center;
-`
+// const PostButton = styled.div`
+//     margin-top: 20px;
+//     text-align: center;
+// `

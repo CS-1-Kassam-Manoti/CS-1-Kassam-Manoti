@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
-import { storage } from '../firebase'
+// import { storage } from '../firebase'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
 
 import { useAuth } from '../contexts/AuthContext'
+
+import { database } from '../firebase';
 // import Admin from './Admin'
 
 function Header(props) {
@@ -31,13 +33,32 @@ function Header(props) {
     
     if(currentUser.email == "ishaq.kassam@gmail.com"){
         currentUser.providerData[0].isAdmin = "true"
+        currentUser.providerData[0].isDisabled = "false"
     }
     else{
         currentUser.providerDataisAdmin = "false"
+        currentUser.providerData[0].isDisabled = "false"
     }
 
-    currentUser.isDisabled = "false"
-    
+    // currentUser.isDisabled = "false"
+    useEffect(() =>{
+        const data = {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            email: currentUser.email,
+            emailVerified: currentUser.emailVerified,
+            phoneNumber: currentUser.phoneNumber,
+            isAnonymous: currentUser.isAnonymous,
+            tenantId: currentUser.tenantId,
+            isAdmin: currentUser.providerData[0].isAdmin,
+            isDisabled: currentUser.providerData[0].isDisabled,
+
+        }
+        database.ref('/users/' + data.uid).set(data)
+        console.log("Uploaded a user to database successfully")
+        console.log(data)
+    }, [])
     
     
 
@@ -69,10 +90,10 @@ function Header(props) {
                 <Links>
 
                     <NavigationLinks>
-                        <a className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></a>
-                        <a className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </a>
-                        <a className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </a>
-                        <a className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </a>
+                        <p className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></p>
+                        <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p>
+                        <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p>
+                        <p className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </p>
                     </NavigationLinks>
 
                     <Profile>

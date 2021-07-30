@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 import { storage } from '../firebase'
-import Header from './Header'
+// import Header from './Header'
 
 import { database } from '../firebase';
 
@@ -92,6 +92,7 @@ export default function UpdateProfile() {
         }).then(() => {
             
         history.push('/')
+        window.location.reload();
         }).
         catch(() => {
             setError('Failed to update account')
@@ -130,8 +131,8 @@ export default function UpdateProfile() {
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            <p>{currentUser.email}</p>
-                            {/* <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} /> */}
+                            {/* <p>{currentUser.email}</p> */}
+                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
                         </Email>
                         <Password>
                             <label htmlFor="password">Password</label>

@@ -4,26 +4,32 @@ import { Link, useHistory } from 'react-router-dom' //installed via "npm install
 import { useAuth } from '../contexts/AuthContext'
 import ErrorIcon from '@material-ui/icons/Error';
 
+
+import { database } from '../firebase';
+
+
 export default function Signup() {
 
-    const nameRef = useRef()
+    // const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
     const confirmPasswordRef = useRef()
-    const { signup, setIsDisabledFunction, setIsAdminFunction, updateName } = useAuth()
+    const { signup } = useAuth()
     const[error, setError] = useState('')
     const[loading, setLoading] = useState(false)
-    const[isAdmin, setIsAdmin] = useState("false")
-    const[isDisabled, setIsDisabled] = useState("false")
+
+    
+    const [currentUser, setCurrentUser] = useState()
+    // const[isAdmin, setIsAdmin] = useState("false")
     const history = useHistory()
 
-    const { currentUser, logout } = useAuth()
+    // const { currentUser, logout } = useAuth()
 
     async function handleSubmit (e){
         e.preventDefault()
-        if(emailRef.current.value == "ishaq.kassam@gmail.com"){
-            setIsAdmin(true)
-        }
+        // if(emailRef.current.value == "ishaq.kassam@gmail.com"){
+        //     setIsAdmin(true)
+        // }
         if(passwordRef.current.value !== confirmPasswordRef.current.value){
             return  setError('The Passswords Do Not Match')
         }
@@ -35,8 +41,9 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             console.log('signup successful')
             
-            history.push('/')           
-
+            history.push('/')
+            
+            
         }
         catch{
             setError('Account Creation Failed' + error)
@@ -155,12 +162,12 @@ const RegisterContainer = styled.div`
         }
     }
 `
-const Name = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    height: 30px;
-`
+// const Name = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     padding-top: 20px;
+//     height: 30px;
+// `
 const Email = styled.div`
     display: flex;
     justify-content: space-between;
