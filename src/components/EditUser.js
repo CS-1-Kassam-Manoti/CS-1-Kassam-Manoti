@@ -1,313 +1,297 @@
 import React, { useState, useRef } from 'react'
-import styled from 'styled-components'
-import Header from './Header'
-import { useHistory } from 'react-router-dom'
-// npm install draft-js
-// import { Editor , EditorState } from 'draft-js'
-// import BlogDataService from "../firebaseDatabase";
+import styled from 'styled-components' //installed via "npm install styled-components"
+import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
+import { useAuth } from '../contexts/AuthContext'
+import ErrorIcon from '@material-ui/icons/Error';
+import { storage } from '../firebase'
+// import Header from './Header'
 
 import { database } from '../firebase';
 
-import { useAuth } from '../contexts/AuthContext'
-
 export default function EditUser() {
 
-    const userRetrieved = localStorage.getItem('user')
-    const userToEdit = JSON.parse(userRetrieved)
-
-    const [heading, setHeading] = useState("")
-    const [subHeading, setSubHeading] = useState("")
-    const [topic, setTopic] = useState("")
-    const [level, setLevel] = useState("primary")
-    const [subject, setSubject] = useState("maths")
-    const [Bclass, setClass] = useState("class 1")
-    const [user, setUser] = useState("")
-
-    const headingRef = useRef()
-    const subHeadingRef = useRef()
-    const topicRef = useRef()
-    const userRef = useRef()
-
-    const history = useHistory()
     
-    const { currentUser, logout } = useAuth()
+    const nameRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const confirmPasswordRef = useRef()
+    const pictureRef = useRef()
+    const { currentUser, updateName, updateEmail, updatePassword, updateProfilePicture } = useAuth()
+    const[error, setError] = useState('')
+    const[loading, setLoading] = useState(false)
+    const history = useHistory()
 
-    const handleHeadingChange = (e) => {
-        setHeading(headingRef.current.value)
-    }
-    const handleSubHeadingChange = (e) => {
-        setSubHeading(subHeadingRef.current.value)
-    }
-    const handleLevelChange = (e) =>{
-        setLevel(e.target.value)
-    }
-    const handleClassChange = (e) =>{
-        setClass(e.target.value)
-    }
-    const handleSubjectChange = (e) =>{
-        setSubject(e.target.value)
-    }
-    const handleTopicChange = (e) =>{
-        setTopic(e.target.value)
-    }
-    const handleUserContentChange = (e) =>{
-        setUser(e.target.value)
-    }
-    var today = new Date()
-    // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
-    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
-    const username = currentUser.displayName ? currentUser.displayName : currentUser.email
-    const time = today.getTime()
+    const [file, setFile] = useState("")
+    const [url, setURL] = useState("")
 
-    let data = {
-        userId: time,
-        postedByUid: currentUser.uid,
-        postedByName: username,
-        postedByProfilePic: currentUser.photoURL,
-        heading: heading ? heading : userToEdit.heading,
-        subHeading: subHeading ? subHeading : userToEdit.subHeading,
-        level: level ? level : userToEdit.level,
-        Bclass: Bclass ? Bclass : userToEdit.Bclass,
-        subject: subject ? subject : userToEdit.subject,
-        topic: topic ? topic : userToEdit.topic,
-        user: user ? user : userToEdit.user,
-        datePosted: date
-    }
-    const allUserPost = database.ref('/users')
-    // const allUserPost = database.ref(`/users`).orderByChild(`${userToEdit.userId}`).equalTo(userToEdit.userId)
-    // const storing = database.ref(`/users`).orderByChild('postedByUid').equalTo(currentUser.uid)
+    const user = localStorage.getItem('user')
+    console.log(user)
 
-    const handleSubmit = (e) => {
+
+    function handleSubmit (e){
         e.preventDefault()
+        if(passwordRef.current.value !== confirmPasswordRef.current.value){
+            return  setError('The Passswords Do Not Match')
+        }
 
-        allUserPost.child(userToEdit.userId).update(data)
-        .then(() =>{
-            console.log("Uploaded user to firebase successfully")
-            alert("Article Posted Successfully")
-            // history.push('/myUsers')
-        }).catch((e)=>{
-            console.log(e)
+        const promises = []
+        setLoading(false)
+        setError('')
+        if ((nameRef.current.value)){
+            promises.push(updateName(nameRef.current.value))
+        }
+        if (emailRef.current.value !== currentUser.email){
+            promises.push(updateEmail(emailRef.current.value))
+        }
+        if (passwordRef.current.value){
+            promises.push(updatePassword(passwordRef.current.value))
+        }
+        if (pictureRef.current.value){
+            
+        storage.ref(`/images/${file.name}`).put(file)
+        .on("state_changed", console.log("success"), alert, () => {
+          // Getting Download Link
+          storage.ref("images").child(file.name).getDownloadURL()
+            .then((url) => {
+              setURL(url);
+              console.log('url is ' + url)
+              promises.push(updateProfilePicture(url))
+            }).then(() => {
+                
+                history.push('/')
+                window.location.reload();
+            })
+        });
+
+        const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
+                storing.once("value", function(snapshot){
+                    snapshot.forEach(function(child){
+                        child.ref.update({
+                            postedByUid: currentUser.uid,
+                            postedByName: currentUser.displayName,
+                            postedByProfilePic: currentUser.photoURL
+                        })
+                    })
+                })
+            
+        // promises.push(updateProfilePicture(url))
+        }
+
+        Promise.all(promises).then(() => {
+        //     storage.ref(`/images/${file.name}`).put(file)
+        // .on("state_changed", console.log("success"), alert, () => {
+        //   // Getting Download Link
+        //   storage.ref("images").child(file.name).getDownloadURL()
+        //     .then((url) => { 
+        //       setURL(url);
+        //       console.log('url is ' + url)
+              
+        //     console.log(JSON.stringify(currentUser))
+        //     })
+        // });
+        setLoading(true);
+            
+        }).then(() => {
+            
+        history.push('/')
+        window.location.reload();
+        }).
+        catch(() => {
+            setError('Failed to update account')
+        }).finally(() => {
+            setLoading(false)
         })
-        console.log(data)
-    }    
+        // setLoading(false)
+        
+                console.log('url first is ' + url)
+                // history.push('/')
+                // window.location.reload()
+                // console.log(JSON.stringify(currentUser))
+        
+    }
+
 
 
     
     return (
         <Container>
-            <Header/> 
+                {/* <Header urlvar={url}/> */}
+                <RegisterContainer>
+                    <h3>Update Profile</h3>
+                    <hr/>
 
-            <WritePostContainer>
-                <form onSubmit={handleSubmit}>
+                     {/* // this code checks if theres error - it displays an error component */}
+                    { 
+                    error && 
+                        <ErrorComponent>
+                            <ErrorIcon className="error_icon"/>
+                            {error}
+                        </ErrorComponent>
+                    }
 
-                
-                
-                    <TitleInput>
-                        <input type="text" defaultValue={userToEdit.heading} ref={headingRef} onChange={handleHeadingChange} required ></input>
-                    </TitleInput>
+                    <form onSubmit={handleSubmit} >
+                        <Name>
+                            <label htmlFor="name">Name</label>
+                            <input id="name" type="text"  ref={nameRef} defaultValue ={user.displayName} /> 
+                        </Name>
+                        <Email>
+                            <label htmlFor="email">Email Address</label>
+                            {/* <p>{currentUser.email}</p> */}
+                            <input id="email" type="email" ref={emailRef} defaultValue={user.email} />
+                        </Email>
+                        
+                        <Submit>
+                            <button disabled={loading} type="submit" >Update Profile</button>
+                        </Submit>
 
-                    <SubTitleInput>
-                        <input type="text" placeholder="User SubTitle" defaultValue={userToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
-                    </SubTitleInput>
-
-                    <Horizontal>
-                    <DropDown>
-                        <UserLevel> <p>Level</p>
-                            <select value={userToEdit.level} onChange={handleLevelChange}>
-                                <option value="primary">Primary</option>
-                                <option value="highschool">Highschool</option>
-                            </select>
-                        </UserLevel>
-
-                        <UserClass> <p>Class</p>                            
-                            <select value={userToEdit.Bclass} onChange={handleClassChange}>
-                                {
-                                level === "primary" ? 
-                                    <>
-                                    <option value="class 1">Class 1</option>
-                                    <option value="class 2">Class 2</option>
-                                    <option value="class 3">Class 3</option>
-                                    <option value="class 4">Class 4</option>
-                                    <option value="class 5">Class 5</option>
-                                    <option value="class 6">Class 6</option>
-                                    <option value="class 7">Class 7</option>
-                                    <option value="class 8">Class 8</option>
-                                    </>
-                                    :
-                                    <>
-                                    <option value="form 1">Form 1</option>
-                                    <option value="form 2">Form 2</option>
-                                    <option value="form 3">Form 3</option>
-                                    <option value="form 4">Form 4</option>
-                                    </>
-                                }
-                            </select> 
-                        </UserClass>
-
-                        <UserSubject> <p>Subject</p>
-                            <select value={userToEdit.subject} onChange={handleSubjectChange}>
-                            {
-                                level === "primary" ? 
-                                    <>
-                                    <option value="maths">Maths</option>
-                                    <option value="english">English</option>
-                                    <option value="kiswahili">Kiswahili</option>
-                                    <option value="science">Science</option>
-                                    <option value="social studies">Social Studies</option>
-                                    <option value="religious education">RE</option>
-                                    <option value="other">Other</option>
-                                    </>
-                                    :
-                                    <>
-                                    <option value="maths">Maths</option>
-                                    <option value="english">English</option>
-                                    <option value="kiswahili">Kiswahili</option>
-                                    <option value="biology">Biology</option>
-                                    <option value="chemistry">Chemistry</option>
-                                    <option value="physics">Physics</option>
-                                    <option value="history">History</option>
-                                    <option value="religious education">RE</option>
-                                    <option value="other">Other</option>
-                                    </>
-                                }
-                            </select>
-                        </UserSubject>
-                        </DropDown>
-
-                        <UserSubjectTopic>
-                            <p>Topic</p>
-                            <input type="text" defaultValue={userToEdit.topic} ref={topicRef} onChange={handleTopicChange} required></input>
-                        </UserSubjectTopic>
-                    
-                    </Horizontal>
-
-                    
-
-                    <UserContent>
-                        <textarea rows="20" columns="80" defaultValue={userToEdit.user} placeholder="Write your User here ..." required ref={userRef} onChange={handleUserContentChange} ></textarea>
-                    </UserContent>
-
-                    <PostButton>
-                        <input className="submit" type="submit" value="submit"></input>
-                    </PostButton>
                     </form>
-            </WritePostContainer>
-        </Container>
+                    <CancelText>
+                        <h6> <Link to="/">Cancel</Link></h6>
+                    </CancelText>
+                </RegisterContainer>
+
+                    
+            </Container>
+        
+        
     )
 }
 
 
 const Container = styled.div`
-
-`
-const WritePostContainer = styled.div`
-    border: 1px solid grey;
-    margin: 30px;
-    padding: 30px;
-`
-const TitleInput = styled.div`
-    /* width: 100%; */
-    /* border: 1px solid grey; */
-    /* display: flex;
-    justify-content: center; */
-    margin-bottom: 10px;
-
-    input{
-        width: 60%;
-        font-size: 24px;
-        padding: 5px;
-        font-weight: bold;
-
-        :focus{
-        outline: none;
-        }
-    }
-    
-`
-const SubTitleInput = styled.div`
-    display: flex;
-
-    input{
-        width: 100%;
-        font-size: 18px;
-
-        :focus{
-            outline: none;
-        }
-    } 
-`
-const Horizontal = styled.div`
+    width: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    /* border: 1px solid grey; */
+    justify-content: center;
 `
-const DropDown = styled.div`
+const ErrorComponent = styled.div`
     display: flex;
-    /* border: 1px solid grey; */
-    justify-content: space-between;
-    width: 50%;
-    flex-wrap: wrap;
-    margin: 10px 0;
-`
-const UserLevel = styled.div`
-    display: flex;
-    p{
-        margin-right: 10px;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-weight: bold;
+    background-color: #ffc1c1;
+    margin: 0 11%;
+
+    .error_icon{
+        transform: scale(0.8);
     }
 `
-const UserClass = styled.div`
-    display: flex;
-    p{
-        margin-right: 10px;
-    }
-`
-const UserSubject = styled.div`
-    display: flex;
-    p{
-        margin-right: 10px;
+
+const RegisterContainer = styled.div`
+    width: 450px;
+    margin: auto;
+    padding: 50px 0;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
+
+    h3{
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 24px;
     }
 
-    textarea{
-        width: 100%;
+    hr{
+        margin: 0 11%;
     }
-`
-const UserSubjectTopic = styled.div`
-    display: flex;
-    width: 40%;
-    margin-left: 40px;
-    p{
-        margin-right: 10px;
-    }
-    input{
-        width: 100%;
-    }
-`
-const UserContent = styled.div`
-    overflow-y: scroll;
-    display: flex;
     
-    border: 1px solid grey;
-        padding: 30px;
+    form{
+        margin:  15px;
 
-
-    ::-webkit-scrollbar{
-        display: none;
-    }
-
-    textarea{
-        width: 100%;
-        bottom: 0;
-        border: 1px solid grey;
-        padding: 30px;
-
-        :focus{
-            outline: none;
+        input{
+            width: 250px;
+            margin-right: 10px;
+            font-size: 15px;
+            cursor: text;
+            border: none;
+            border-bottom: 1px solid grey;
+            :focus{
+                outline: none;
+            }
+        }
+        label{
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
         }
     }
 `
-const PostButton = styled.div`
-    margin-top: 20px;
+const Name = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
+const Email = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    height: 30px;
+
+    p{
+        width: 250px;
+        margin-right: 10px;
+        font-size: 15px;
+        
+    }
+`
+const Password = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
+const ConfirmPassword = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+`
+const Submit = styled.div`
     text-align: center;
+    margin: 20px 10px 0 10px;
+    padding: 20px 0 5px 0;
+    height: 30px;
+    button{
+        height: 30px;
+        padding: 0;
+        margin-bottom: 5px;
+        background: transparent;
+        border: 1px solid blue;
+        border-radius: 4px;
+        width: 100%;
+        cursor: pointer;
+    }
+`
+const CancelText = styled.div`
+    text-align: center;
+    font-size: 17px;
+    margin-top: 5px;
+    h6{
+        a{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+`
+const UploadImage = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    height: 30px;
+    
+    label{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+
+    }
+    
+    input[type="file"]{
+        
+    }
+        
+    
 `

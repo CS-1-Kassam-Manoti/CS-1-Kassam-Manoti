@@ -69,19 +69,7 @@ function Admin() {
     return (
         <ParentContainer>
             <Header/>
-            <ArticleSearchbar>  
-                        {/* <ArticleTextDetails>              */}
-                        <SearchTitle>
-                            Search Here                          
-                        </SearchTitle> 
-                        <Bar>
-                        <div className="search">   
-                        <input type="text" placeholder="Search Article..."/>                        
-                        </div> 
-                        </Bar> 
-                        {/* </ArticleTextDetails>                     */}
-             
-             </ArticleSearchbar>
+            
         <Container>
             
             
@@ -92,35 +80,35 @@ function Admin() {
                     <ArticleCard key={key} 
                     // onClick={() => {
                     //     localStorage.setItem('blog', JSON.stringify(blog))
-                    //         history.push(`/blog:${blog.blogId}`)
-                        
-
-                        
+                    //         history.push(`/blog:${blog.blogId}`)                        
                     // }
                     // }
                     >
-                        
                         <ArticleTextDetails>                        
                             <Author>
-                                <AuthorProfilePicture>
-                                {
-                                    blog.postedByProfilePic ? 
-                                    <img src={blog.postedByProfilePic} alt="" /> :
-                                    <AccountCircleIcon className="icon"/>
-                                }
-                                    
-                                </AuthorProfilePicture>
-                                <AuthorUserName>
-                                    {blog.postedByName}
-                                    {/* {blog.dateCreated} */}
-                                </AuthorUserName>
+                                <AuthorProfileAndName>
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName}
+                                        {/* {blog.dateCreated} */}
+                                    </AuthorUserName>
+                                </AuthorProfileAndName>
                                 <Buttons>
-                                    <p onClick={() => {
+                                    {/* <p onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         history.push(`/edit-blog:${blog.blogId}`)
                                         console.log("edit button selected for" + blog.heading)
                                     }} 
-                                    >Edit</p>
+                                    >Edit</p> */}
+
+
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
@@ -133,11 +121,7 @@ function Admin() {
                             onClick={() => {
                                     localStorage.setItem('blog', JSON.stringify(blog))
                                         history.push(`/blog:${blog.blogId}`)
-                                    
-            
-                                    
-                                }
-                                }
+                                }}
                             >
                                 {blog.heading}
                             </ArticleTitle>
@@ -175,65 +159,47 @@ function Admin() {
         }
             </Articles>
 
+
+
+            
+
             <RightSideBar>
             {
                 users.slice(0).reverse().map((user, key) => (
-                    <ArticleCard key={key} 
-                    // onClick={() => {
-                    //     localStorage.setItem('blog', JSON.stringify(blog))
-                    //         history.push(`/blog:${blog.blogId}`)
-                        
-
-                        
-                    // }
-                    // }
-                    >
-                        
-                        <ArticleTextDetails>                        
+                    <ArticleCard key={key}>
+                        <UserDetails>                        
                             <Author>
-                                <AuthorProfilePicture>
-                                {
-                                    user.photoURL ? 
-                                    <img src={user.photoURL} alt="" /> :
-                                    <AccountCircleIcon className="icon"/>
-                                }
-                                    
-                                </AuthorProfilePicture>
-                                <AuthorUserName>
-                                    {user.displayName}
-                                    {/* {blog.dateCreated} */}
-                                </AuthorUserName>
-                                <Buttons>
-                                    <p onClick={() => {
-                                        localStorage.setItem('user', JSON.stringify(user))
-                                        history.push(`/edit-user:${user.uid}`)
-                                        console.log("edit button selected for" + user.displayName)
-                                    }} 
-                                    >Edit</p>
+                                <AuthorProfileAndName>
+                                    <AuthorProfilePicture>
+                                    {
+                                        user.photoURL ? 
+                                        <img src={user.photoURL} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+
+                                    <UserName>
+                                        {user.displayName}
+                                        {/* {blog.dateCreated} */}
+                                    </UserName>
+                                </AuthorProfileAndName>
+                                <UserButton>
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("delete button selected for" + user.displayName + "with ID of" + user.uid)
                                         dialogFunction()
                                     }}>Delete</p>
-                                </Buttons>
+                                </UserButton>
                             </Author>
 
-                            <ArticleTitle 
-                            onClick={() => {
-                                    localStorage.setItem('user', JSON.stringify(user))
-                                        history.push(`/user:${user.uid}`)
-                                    
-            
-                                    
-                                }
-                                }
-                            >
+                            <UserDisplayName>
                                 {user.displayName}
-                            </ArticleTitle>
+                            </UserDisplayName>
                                         
-                            <ArticleSubTitle>
+                            <UserEmail>
                                 {user.email}
-                            </ArticleSubTitle>
+                            </UserEmail>
 
                             <ArticleFooter>
                                 <ArticleDatePosted>
@@ -248,12 +214,7 @@ function Admin() {
                                 
                             </ArticleFooter>
                             
-                        </ArticleTextDetails>
-
-                        <ArticlePicture>
-                            <img src="images/logo.png" alt="" />
-                        </ArticlePicture>
-                    
+                        </UserDetails>                   
                     </ArticleCard>
             
             )
@@ -279,7 +240,7 @@ const Container = styled.div`
     justify-content: space-between;
 `
 const Articles = styled.div`
-    width: 60%;
+    width: 50%;
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
@@ -287,28 +248,6 @@ const Articles = styled.div`
         display: none;
     }
 `
-const ArticleSearchbar=styled.div`
-/* margin-top: 60px; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-
-`
-const SearchTitle = styled.div`
-    font-weight: bold;
-    font-size: 24px;
-    margin-right: 20px;
-    text-align:center;
-   
-`
-const Bar=styled.div`
-
-`
-
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -324,6 +263,11 @@ const ArticleTextDetails = styled.div`
     /* border: 1px solid grey; */
 `
 const Author = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+const AuthorProfileAndName = styled.div`
     display: flex;
     align-items: center;
 `
@@ -417,9 +361,52 @@ const ArticlePicture = styled.div`
 `
 
 const RightSideBar = styled.div`
-    width: 30%;
+    width: 45%;
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     /* border: 1px solid grey; */
     display: relative;
+    overflow-y: scroll;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+
+    ::-webkit-scrollbar{
+        display: none;
+    }
+`
+
+const UserDetails = styled.div`
+    padding: 20px 20px;
+    width: 80%;
+`
+const UserDisplayName = styled.div`
+
+`
+const UserEmail = styled.div`
+
+`
+const UserName = styled.div`
+    font-size: 13px;
+`
+const UserButton = styled.div`
+    display: flex;
+    /* border: 1px solid grey; */
+    width: 17%;
+    justify-content: space-between;
+
+    .delete{
+            color: red !important;
+            
+        }
+
+    p{
+        border: 1px solid grey;
+        padding: 3px;
+        font-size: 13px;
+        cursor: pointer;
+
+        :hover{
+            background-color: lightgrey;
+        }
+
+    }
 `
