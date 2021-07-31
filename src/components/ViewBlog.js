@@ -1,21 +1,40 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+// import   {htmlToText}  from 'html-to-text'
+
+
+import JoditEditor from 'jodit-react'
 
 export default function ViewBlog() {
 
     const [currentBlog, setCurrentBlog] = useState({})
     const blog = localStorage.getItem('blog')
+    const config = {
+        readonly: true
+    }
+    
 
     useEffect(() =>{
         setCurrentBlog(JSON.parse(blog))
     }, [])
+
+    console.log(blog.blog)
+
+    // var htmlString = currentBlog.blog.getPlaintext();
+// var plainString = htmlString.html().replace(/<[^>]+>/g, '');
+    
+    // var strippedHtml = currentBlog.blog.replace(/<[^>]+>/g, '');
+    // const text = htmlToText(currentBlog.blog, {
+    //     wordwrap: 130
+    // });
     
     // console.log(blog.topic)
     return (
         <Container>
             {
             console.log(JSON.parse(blog))
+            
             }
 
 <Header/> 
@@ -62,7 +81,14 @@ export default function ViewBlog() {
         
 
         <BlogContent>
-            <p>{currentBlog.blog}</p>
+        {/* <JoditEditor
+                        // ref={blogRef}
+                        value={currentBlog.blog}
+                        config={config}
+                        // onChange={handleBlogContentChange}
+            /> */}
+            {/* {currentBlog.blog} */}
+            <div dangerouslySetInnerHTML={{__html: currentBlog.blog}} />
         </BlogContent>
 
         

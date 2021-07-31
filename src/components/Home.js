@@ -12,7 +12,7 @@ function Home() {
 
     return (
         <Container>
-            {
+            {/* {
                 currentUser.providerData[0].isDisabled !== "false" ? 
                 
                     <Content>
@@ -20,8 +20,12 @@ function Home() {
         
                         <Article/>
                     </Content>
-                :
-            
+                : */}
+                <Content>
+                <Header/>
+
+                <Article/>
+            </Content>
             <Error>
                 <Card>
                     <ErrorHeading>
@@ -36,7 +40,7 @@ function Home() {
                 </Card>
             </Error>
 
-            }
+            {/* } */}
             
         </Container>
     )
