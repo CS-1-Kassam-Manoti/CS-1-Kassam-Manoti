@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
+import JoditEditor from 'jodit-react'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
 // import BlogDataService from "../firebaseDatabase";
@@ -18,12 +19,15 @@ export default function CreatePost() {
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
-    const [blog, setBlog] = useState("")
+    const [blog, setBlog] = useState("Start Writing...")
+
+    // const[editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
     const topicRef = useRef()
     const blogRef = useRef()
+
 
     
     const { currentUser, logout } = useAuth()
@@ -47,8 +51,15 @@ export default function CreatePost() {
         setTopic(e.target.value)
     }
     const handleBlogContentChange = (e) =>{
-        setBlog(e.target.value)
+        // setBlog(e.target.innerHTML)
+        setBlog(blogRef.current.value)
     }
+
+    const config = {
+        readonly: false
+    }
+
+
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
     var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
@@ -181,8 +192,16 @@ export default function CreatePost() {
                     
 
                     <BlogContent>
-                        <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
-                    
+                        {/* <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea> */}
+                    {/* <Editor editorState={ editorState } onChange={setEditorState}></Editor> */}
+                    <JoditEditor
+                        ref={blogRef}
+                        // value={blog}
+                        placeholder={blog}
+                        config={config}
+                        onBlur={handleBlogContentChange}
+            />
+                    {/* <div dangerouslySetInnerHTML={{__html: content}}></div> */}
                     </BlogContent>
 
                     <PostButton>
