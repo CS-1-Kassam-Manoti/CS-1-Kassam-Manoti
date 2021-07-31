@@ -36,7 +36,7 @@ function Header(props) {
         currentUser.providerData[0].isDisabled = "false"
     }
     else{
-        currentUser.providerDataisAdmin = "false"
+        currentUser.providerData[0].isAdmin = "false"
         currentUser.providerData[0].isDisabled = "false"
     }
 
