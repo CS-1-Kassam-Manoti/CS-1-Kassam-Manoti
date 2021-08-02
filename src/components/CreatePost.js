@@ -20,16 +20,12 @@ export default function CreatePost() {
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
     const [blog, setBlog] = useState("Start Writing...")
-
     // const[editorState, setEditorState] = useState(() => EditorState.createEmpty())
-
     const headingRef = useRef()
     const subHeadingRef = useRef()
     const topicRef = useRef()
     const blogRef = useRef()
 
-
-    
     const { currentUser, logout } = useAuth()
 
     const handleHeadingChange = (e) => {
@@ -58,7 +54,6 @@ export default function CreatePost() {
     const config = {
         readonly: false
     }
-
 
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
@@ -95,10 +90,7 @@ export default function CreatePost() {
             console.log(e)
         })
 
-
-
         console.log(data)
-
     }    
 
     return (
@@ -107,9 +99,6 @@ export default function CreatePost() {
 
             <WritePostContainer>
                 <form onSubmit={handleSubmit}>
-
-                
-                
                     <TitleInput>
                         <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
@@ -188,8 +177,6 @@ export default function CreatePost() {
                         </BlogSubjectTopic>
                     
                     </Horizontal>
-
-                    
 
                     <BlogContent>
                         {/* <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea> */}
@@ -306,7 +293,6 @@ const BlogContent = styled.div`
     
     border: 1px solid grey;
         padding: 30px;
-
 
     ::-webkit-scrollbar{
         display: none;

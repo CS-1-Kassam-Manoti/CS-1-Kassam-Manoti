@@ -53,7 +53,6 @@ function Header(props) {
             tenantId: currentUser.tenantId,
             isAdmin: currentUser.providerData[0].isAdmin,
             isDisabled: currentUser.providerData[0].isDisabled,
-
         }
         database.ref('/users/' + data.uid).set(data)
         console.log("Uploaded a user to database successfully")
