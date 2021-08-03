@@ -92,7 +92,7 @@ export default function UpdateProfile() {
         }).then(() => {
             
         history.push('/')
-        window.location.reload();
+        // window.location.reload();
         }).
         catch(() => {
             setError('Failed to update account')
