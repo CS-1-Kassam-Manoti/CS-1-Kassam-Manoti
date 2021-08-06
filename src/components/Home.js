@@ -6,26 +6,28 @@ import Article from './Article'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
+
+import { database } from '../firebase';
+
 function Home() {
     
     const { currentUser } = useAuth()
 
+    const databaseUser = database.ref('/users').child(currentUser.uid)
+                                            
+                                        // console.log(user)
+
     return (
         <Container>
-            {/* {
-                currentUser.providerData[0].isDisabled !== "false" ? 
+            
                 
                     <Content>
                         <Header/>
         
                         <Article/>
                     </Content>
-                : */}
-                <Content>
-                <Header/>
-
-                <Article/>
-            </Content>
+                
+                
             <Error>
                 <Card>
                     <ErrorHeading>
@@ -40,7 +42,7 @@ function Home() {
                 </Card>
             </Error>
 
-            {/* } */}
+            
             
         </Container>
     )

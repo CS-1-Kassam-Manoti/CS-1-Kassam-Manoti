@@ -9,15 +9,18 @@ import { database } from '../firebase';
 
 function Admin() {
 
+    // const blogRetrieved = localStorage.getItem('blogToDelete')
+    // const blogToDelete = JSON.parse(blogRetrieved)
+
     const [blogs, setBlogs] = useState([])
     const [users, setUsers] = useState([])
 
+    const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
-
     
-    
+    // const blogToDelete = JSON.parse(blogToDeleted)
 
-    useEffect(() => {
+    useState(() => {
         const blogsRetrieved = database.ref(`/blogs`)
         // const key = blogsRetrieved.key
         blogsRetrieved.on('value', snapshot => {
@@ -28,6 +31,7 @@ function Admin() {
             setBlogs(allBlogs)
             
         })
+
         const usersRetrieved = database.ref(`/users`)
         // const key = usersRetrieved.key
         usersRetrieved.on('value', snapshot => {
@@ -38,32 +42,15 @@ function Admin() {
             setUsers(allUsers)
             
         })
+        
     }, [])
 
-    
     const rootRef = database.ref(`blogs`)
 
-    const dialogFunction = () => {
-        const dialog = window.confirm("Are you sure you want to delete?")
-            if(dialog === true){ 
-                const blogRetrieved = localStorage.getItem('blog')
-                const blogToDelete = JSON.parse(blogRetrieved)
-                console.log("yes, i want to delete")
-                // const databaseRef = database.ref(`/blogs`)
-                rootRef.child(blogToDelete.blogId).remove()
-                    .then(() =>{
-                        console.log("Deleted successfully")
-                        // console.log(theData)
-                        alert("Blog Deleted")
-                    }).catch((e)=>{
-                        console.log(e)
-                    })
-                    // console.log(theData)
-            }
-            else{
-                console.log("No, it was by mistake")
-                // history.push(`/Profile`)
-                }
+    const deleteBlogFunction = () => {
+        // console.log(JSON.parse(blogToDeleted))
+        // const blogObject = JSON.parse(blogToDeleted)
+        
         }
 
     return (
@@ -97,6 +84,7 @@ function Admin() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName}
+                                        {/* {blog.postedByName} */}
                                         {/* {blog.dateCreated} */}
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
@@ -107,12 +95,30 @@ function Admin() {
                                         console.log("edit button selected for" + blog.heading)
                                     }} 
                                     >Edit</p> */}
-
-
                                     <p className="delete" onClick={() => {
-                                        localStorage.setItem('blog', JSON.stringify(blog))
-                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
-                                        dialogFunction()
+                                        setBlogToDeleted(blog)
+                                        // localStorage.setItem('blogToDelete', JSON.stringify(blog))
+                                        console.log("delete button selected for " + blog.heading + " with ID of " + blog.blogId)
+                                        console.log(blog)
+                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to delete")
+                                                // const databaseRef = database.ref(`/blogs`)
+                                                rootRef.child(blog.blogId).remove()
+                                                    .then(() =>{
+                                                        console.log("Deleted successfully")
+                                                        // console.log(theData)
+                                                        alert("Blog Deleted")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                                    // console.log(theData)
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                setBlogToDeleted("")
+                                                // history.push(`/Profile`)
+                                                }
                                     }}>Delete</p>
                                 </Buttons>
                             </Author>
@@ -187,9 +193,21 @@ function Admin() {
                                 <UserButton>
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('user', JSON.stringify(user))
-                                        console.log("delete button selected for" + user.displayName + "with ID of" + user.uid)
-                                        dialogFunction()
-                                    }}>Delete</p>
+                                        console.log("delete button selected for " + user.displayName + " with ID of " + user.uid)
+                                        const data = {
+                                            isDisabled: "true"
+                                        }
+                                        database.ref('/users').child(user.uid).update(data)
+                                            .then(() =>{
+                                                console.log("Uploaded blog to firebase successfully")
+                                                alert("Article Posted Successfully")
+                                                // history.push('/myBlogs')
+                                            }).catch((e)=>{
+                                                console.log(e)
+                                            })
+                                        console.log(user)
+                                        // dialogFunction()
+                                    }}>Disable</p>
                                 </UserButton>
                             </Author>
 

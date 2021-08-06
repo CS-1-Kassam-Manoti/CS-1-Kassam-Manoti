@@ -6,7 +6,6 @@ import { useHistory, Link, useLocation } from 'react-router-dom'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
-
 import { useAuth } from '../contexts/AuthContext'
 
 import { database } from '../firebase';
@@ -15,12 +14,11 @@ import { database } from '../firebase';
 function Header(props) {
 
     const [error, setError] = useState("")
+    const [userDb, setUserDb] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
 
-    
-    
     const { pathname } = location
 
     const splitLocation = pathname.split("/")
@@ -30,15 +28,14 @@ function Header(props) {
     // currentUser.providerData[0].disabled = "true"
     console.log(JSON.stringify(currentUser))
     
-    
-    if(currentUser.email == "ishaq.kassam@gmail.com"){
-        currentUser.providerData[0].isAdmin = "true"
-        currentUser.providerData[0].isDisabled = "false"
-    }
-    else{
-        currentUser.providerData[0].isAdmin = "false"
-        currentUser.providerData[0].isDisabled = "false"
-    }
+    // if(currentUser.email == "ishaq.kassam@gmail.com"){
+    //     currentUser.providerData[0].isAdmin = "true"
+    //     currentUser.providerData[0].isDisabled = "false"
+    // }
+    // else{
+    //     currentUser.providerData[0].isAdmin = "false"
+    //     currentUser.providerData[0].isDisabled = "false"
+    // }
 
     // currentUser.isDisabled = "false"
     useEffect(() =>{
@@ -51,17 +48,28 @@ function Header(props) {
             phoneNumber: currentUser.phoneNumber,
             isAnonymous: currentUser.isAnonymous,
             tenantId: currentUser.tenantId,
-            isAdmin: currentUser.providerData[0].isAdmin,
-            isDisabled: currentUser.providerData[0].isDisabled,
+            isAdmin: currentUser.providerData[0].isAdmin ? currentUser.providerData[0].isAdmin : "false",
+            isDisabled: currentUser.providerData[0].isDisabled ? currentUser.providerData[0].isDisabled : "false",
 
         }
         database.ref('/users/' + data.uid).set(data)
         console.log("Uploaded a user to database successfully")
-        console.log(data)
+
+        const dbRef = database.ref();
+        dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+            setUserDb(snapshot.val())
+          } else {
+            console.log("No data available");
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+        // console.log(data)
     }, [])
     
     
-
     const handleLogout = async () => {
         setError('')
 
@@ -79,6 +87,11 @@ function Header(props) {
     // const email = currentUser.email
     // const name = email.substring(0, email.indexOf("." || '@'))
     
+    useEffect(() => {
+        
+    }, [])
+
+    var ref = database.ref("/users");
 
     return (
         <ParentContainer>
@@ -109,7 +122,8 @@ function Header(props) {
                             }
                             <Hover>
                                 <UserName>
-                                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                                    <h5>{userDb.displayName}</h5>
+                                    {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>
@@ -118,7 +132,7 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    currentUser.providerData[0].isAdmin == "true" && 
+                                    userDb.isAdmin === "true" && 
                                     <Admin>
                                         <a> <Link to='/admin'>Admin</Link></a>
                                     </Admin>
