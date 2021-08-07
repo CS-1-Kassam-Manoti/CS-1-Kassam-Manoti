@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
-// import { storage } from '../firebase'
-// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-// import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
-
 import { useAuth } from '../contexts/AuthContext'
+import { database } from '../firebase'
 
-import { database } from '../firebase';
-// import Admin from './Admin'
-
-function Header(props) {
+function Header() {
 
     const [error, setError] = useState("")
-    // const [userDb, setUserDb] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
@@ -23,25 +16,8 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
-    const [userObject, setUserObject] = useState("")
-    // currentUser.providerData[0].isAdmin = "false"
-    // currentUser.isAdmin = "false"
-    // currentUser.providerData[0].disabled = "true"
-    // console.log(JSON.stringify(currentUser))
-    
-    // if(currentUser.email == "ishaq.kassam@gmail.com"){
-    //     currentUser.providerData[0].isAdmin = "true"
-    //     currentUser.providerData[0].isDisabled = "false"
-    // }
-    // else{
-    //     currentUser.providerData[0].isAdmin = "false"
-    //     currentUser.providerData[0].isDisabled = "false"
-    // }
+    const [userObject, setUserObject] = useState("")  
 
-    // currentUser.isDisabled = "false"
-    
-    
-    
     const handleLogout = async () => {
         setError('')
 
@@ -54,10 +30,6 @@ function Header(props) {
         }
     }
 
-    // console.log(JSON.stringify(currentUser))
-    
-    // const email = currentUser.email
-    // const name = email.substring(0, email.indexOf("." || '@'))
     
     useEffect(() => {
         database.ref("users")
@@ -66,7 +38,6 @@ function Header(props) {
         .then((snapshot) => {
             const value = snapshot.val()
             setUserObject(value)
-            // console.log(userObject)
          })
         .catch(error => ({
            errorCode: error.code,
@@ -97,20 +68,15 @@ function Header(props) {
                     </NavigationLinks>
 
                     <Profile>
-                        {/* <UserName>
-                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                        </UserName> */}
                         <UserIcon >
                             {
                                     currentUser.photoURL ? 
                                     <img src={currentUser.photoURL}></img> :
                                     <AccountCircleIcon className="icon"/>
-                                    // <img src={props.urlvar}></img> 
                             }
                             <Hover>
                                 <UserName>
                                     <h5>{currentUser.displayName}</h5>
-                                    {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>

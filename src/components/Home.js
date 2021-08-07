@@ -30,7 +30,6 @@ function Home() {
          }));
 
     }, [])                                           
-                                        // console.log(user)
 
     return (
         <Container>
@@ -44,11 +43,6 @@ function Home() {
                         <Article/>
                     </Content>
                 :
-
-                
-                
-                    
-                
                 
             <Error>
                 <Card>
