@@ -87,7 +87,7 @@ function Header() {
                                 {
                                     userObject.isAdmin === "true" && 
                                     <Admin>
-                                        <a> <Link to='/admin'>Admin</Link></a>
+                                        <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
                                 }
                                 <SignOut onClick={handleLogout}>

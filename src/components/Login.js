@@ -20,48 +20,7 @@ export default function Login() {
     
     const [userDb, setUserDb] = useState("")
 
-    async function handleSubmit (e){
-        e.preventDefault()
-        
-        try{
-            setError('')
-            setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
-            
-
-
-
-            const time = new Date().getTime().toString()
-
-        // .then(() => {
-        //     const data = {
-        //     uid: currentUser.uid,
-        //     displayName: currentUser.displayName,
-        //     photoUrl: currentUser.photoUrl,
-        //     email: currentUser.email,
-        //     emailVerified: currentUser.emailVerified,
-        //     phoneNumber: currentUser.phoneNumber,
-        //     isAnonymous: currentUser.isAnonymous,
-        //     tenantId: currentUser.tenantId,
-        //     tenantId: currentUser.displayName,
-        // }
-        // database.ref('/users/' + data.uid).set(data)
-        // console.log("Uploaded a user to database successfully")
-        // console.log(data)
-        // })
-
-        
-        console.log(currentUser)
-        history.push('/')
-
-        }
-        catch{
-            setError('Failed to Log In')
-        }
-        
-        setLoading(false)
-
-    }
+    
     useEffect(() =>{
         if(currentUser){
             const data = {
@@ -96,15 +55,30 @@ export default function Login() {
                 // console.log(data)
     }, [])
 
-    
-    // if(currentUser.email == "ishaq.kassam@gmail.com"){
-    //     currentUser.providerData[0].isAdmin = "true"
-    // }
-    // else{
-    //     currentUser.providerDataisAdmin = "false"
-    // }
+    async function handleSubmit (e){
+        e.preventDefault()
+        
+        try{
+            setError('')
+            setLoading(true)
+            await login(emailRef.current.value, passwordRef.current.value)
+            
 
-    // currentUser.isDisabled = "false"
+
+
+            const time = new Date().getTime().toString()
+
+        console.log(currentUser)
+        history.push('/')
+
+        }
+        catch{
+            setError('Failed to Log In')
+        }
+        
+        setLoading(false)
+
+    }
     
 
     return (        

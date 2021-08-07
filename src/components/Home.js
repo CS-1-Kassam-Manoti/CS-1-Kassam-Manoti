@@ -22,14 +22,13 @@ function Home() {
         .then((snapshot) => {
             const value = snapshot.val()
             setUserObject(value)
-            // console.log(userObject)
          })
         .catch(error => ({
            errorCode: error.code,
            errorMessage: error.message
          }));
 
-    }, [])                                           
+    }, [])                                         
 
     return (
         <Container>
