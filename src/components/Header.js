@@ -14,7 +14,7 @@ import { database } from '../firebase';
 function Header(props) {
 
     const [error, setError] = useState("")
-    const [userDb, setUserDb] = useState("")
+    // const [userDb, setUserDb] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
@@ -23,10 +23,11 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
+    const [userObject, setUserObject] = useState("")
     // currentUser.providerData[0].isAdmin = "false"
     // currentUser.isAdmin = "false"
     // currentUser.providerData[0].disabled = "true"
-    console.log(JSON.stringify(currentUser))
+    // console.log(JSON.stringify(currentUser))
     
     // if(currentUser.email == "ishaq.kassam@gmail.com"){
     //     currentUser.providerData[0].isAdmin = "true"
@@ -38,36 +39,7 @@ function Header(props) {
     // }
 
     // currentUser.isDisabled = "false"
-    useEffect(() =>{
-        const data = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            email: currentUser.email,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            isAnonymous: currentUser.isAnonymous,
-            tenantId: currentUser.tenantId,
-            isAdmin: currentUser.providerData[0].isAdmin ? currentUser.providerData[0].isAdmin : "false",
-            isDisabled: currentUser.providerData[0].isDisabled ? currentUser.providerData[0].isDisabled : "false",
-
-        }
-        database.ref('/users/' + data.uid).set(data)
-        console.log("Uploaded a user to database successfully")
-
-        const dbRef = database.ref();
-        dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log(snapshot.val());
-            setUserDb(snapshot.val())
-          } else {
-            console.log("No data available");
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-        // console.log(data)
-    }, [])
+    
     
     
     const handleLogout = async () => {
@@ -82,16 +54,31 @@ function Header(props) {
         }
     }
 
-    console.log(JSON.stringify(currentUser))
+    // console.log(JSON.stringify(currentUser))
     
     // const email = currentUser.email
     // const name = email.substring(0, email.indexOf("." || '@'))
     
     useEffect(() => {
-        
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            // console.log(userObject)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
     }, [])
 
-    var ref = database.ref("/users");
+
+       console.log(userObject)
+        
+    
 
     return (
         <ParentContainer>
@@ -122,7 +109,7 @@ function Header(props) {
                             }
                             <Hover>
                                 <UserName>
-                                    <h5>{userDb.displayName}</h5>
+                                    <h5>{currentUser.displayName}</h5>
                                     {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >
@@ -132,7 +119,7 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    userDb.isAdmin === "true" && 
+                                    userObject.isAdmin === "true" && 
                                     <Admin>
                                         <a> <Link to='/admin'>Admin</Link></a>
                                     </Admin>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
@@ -13,19 +13,41 @@ function Home() {
     
     const { currentUser } = useAuth()
 
-    const databaseUser = database.ref('/users').child(currentUser.uid)
-                                            
+    const [userObject, setUserObject] = useState("")
+
+    useEffect(() => {
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            // console.log(userObject)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])                                           
                                         // console.log(user)
 
     return (
         <Container>
             
+                {
+                userObject.isDisabled === "false" ?
                 
-                    <Content>
+                <Content>
                         <Header/>
         
                         <Article/>
                     </Content>
+                :
+
+                
+                
+                    
                 
                 
             <Error>
@@ -42,7 +64,7 @@ function Home() {
                 </Card>
             </Error>
 
-            
+                }
             
         </Container>
     )
