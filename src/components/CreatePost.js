@@ -59,7 +59,7 @@ export default function CreatePost() {
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
     var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + (today.getFullYear())
     const username = currentUser.displayName ? currentUser.displayName : currentUser.email
-    const time = today.getTime()
+    const time = today.getTime().toString()
 
     let data = {
         blogId: time,

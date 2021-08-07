@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
@@ -6,26 +6,50 @@ import Article from './Article'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
+
+import { database } from '../firebase';
+
 function Home() {
     
     const { currentUser } = useAuth()
 
+    const [userObject, setUserObject] = useState("")
+
+    useEffect(() => {
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            // console.log(userObject)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])                                           
+                                        // console.log(user)
+
     return (
         <Container>
-            {/* {
-                currentUser.providerData[0].isDisabled !== "false" ? 
+            
+                {
+                userObject.isDisabled === "false" ?
                 
-                    <Content>
+                <Content>
                         <Header/>
         
                         <Article/>
                     </Content>
-                : */}
-                <Content>
-                <Header/>
+                :
 
-                <Article/>
-            </Content>
+                
+                
+                    
+                
+                
             <Error>
                 <Card>
                     <ErrorHeading>
@@ -40,7 +64,7 @@ function Home() {
                 </Card>
             </Error>
 
-            {/* } */}
+                }
             
         </Container>
     )
