@@ -44,26 +44,7 @@ function Admin() {
     const rootRef = database.ref(`blogs`)
 
     const dialogFunction = () => {
-        const dialog = window.confirm("Are you sure you want to delete?")
-            if(dialog === true){ 
-                const blogRetrieved = localStorage.getItem('blog')
-                const blogToDelete = JSON.parse(blogRetrieved)
-                console.log("yes, i want to delete")
-                // const databaseRef = database.ref(`/blogs`)
-                rootRef.child(blogToDelete.blogId).remove()
-                    .then(() =>{
-                        console.log("Deleted successfully")
-                        // console.log(theData)
-                        alert("Blog Deleted")
-                    }).catch((e)=>{
-                        console.log(e)
-                    })
-                    // console.log(theData)
-            }
-            else{
-                console.log("No, it was by mistake")
-                // history.push(`/Profile`)
-                }
+        
         }
 
     return (
@@ -112,7 +93,26 @@ function Admin() {
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
-                                        dialogFunction()
+                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                            if(dialog === true){ 
+                                                const blogRetrieved = localStorage.getItem('blog')
+                                                const blogToDelete = JSON.parse(blogRetrieved)
+                                                console.log("yes, i want to delete")
+                                                // const databaseRef = database.ref(`/blogs`)
+                                                rootRef.child(blogToDelete.blogId).remove()
+                                                    .then(() =>{
+                                                        console.log("Deleted successfully")
+                                                        // console.log(theData)
+                                                        alert("Blog Deleted")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                                    // console.log(theData)
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                // history.push(`/Profile`)
+                                                }
                                     }}>Delete</p>
                                 </Buttons>
                             </Author>
@@ -187,9 +187,9 @@ function Admin() {
                                 <UserButton>
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('user', JSON.stringify(user))
-                                        console.log("delete button selected for" + user.displayName + "with ID of" + user.uid)
-                                        dialogFunction()
-                                    }}>Delete</p>
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
+                                        // dialogFunction()
+                                    }}>Disable</p>
                                 </UserButton>
                             </Author>
 

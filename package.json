@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.0.2",
     "draft-js": "^0.11.7",
-    "firebase": "^8.7.1",
+    "firebase": "^8.9.0",
     "firebase-admin": "^9.11.0",
     "html-to-text": "^8.0.0",
     "jodit": "^3.7.2",
