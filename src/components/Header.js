@@ -32,12 +32,13 @@ function Header() {
 
     
     useEffect(() => {
-        database.ref("users")
+        database.ref("/users")
         .child(currentUser.uid)
         .once("value")
         .then((snapshot) => {
             const value = snapshot.val()
             setUserObject(value)
+            console.log(value)
          })
         .catch(error => ({
            errorCode: error.code,

@@ -40,9 +40,7 @@ function Admin() {
                 allUsers.push(snap.val())
             })
             setUsers(allUsers)
-            
         })
-        
     }, [])
 
     const rootRef = database.ref(`blogs`)
@@ -58,9 +56,6 @@ function Admin() {
             <Header/>
             
         <Container>
-            
-            
-            
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
