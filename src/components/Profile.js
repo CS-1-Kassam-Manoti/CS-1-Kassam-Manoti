@@ -38,24 +38,7 @@ export default function Profile() {
         const rootRef = database.ref(`blogs`)
 
         const dialogFunction = () => {
-        const dialog = window.confirm("Are you sure you want to delete?")
-            if(dialog === true){
-                console.log("yes, i want to delete")
-                // const databaseRef = database.ref(`/blogs`)
-                rootRef.child(blogToDelete.blogId).remove()
-                    .then(() =>{
-                        console.log("Deleted successfully")
-                        // console.log(theData)
-                        alert("Blog Deleted")
-                    }).catch((e)=>{
-                        console.log(e)
-                    })
-                    // console.log(theData)
-            }
-            else{
-                console.log("No, it was by mistake")
-                // history.push(`/Profile`)
-                }
+        
         }
         
 
@@ -96,7 +79,24 @@ export default function Profile() {
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
-                                        dialogFunction()
+                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                        if(dialog === true){
+                                            console.log("yes, i want to delete")
+                                            // const databaseRef = database.ref(`/blogs`)
+                                            rootRef.child(blogToDelete.blogId).remove()
+                                                .then(() =>{
+                                                    console.log("Deleted successfully")
+                                                    // console.log(theData)
+                                                    alert("Blog Deleted")
+                                                }).catch((e)=>{
+                                                    console.log(e)
+                                                })
+                                                // console.log(theData)
+                                        }
+                                        else{
+                                            console.log("No, it was by mistake")
+                                            // history.push(`/Profile`)
+                                            }
                                     }}>Delete</p>
                                 </Buttons>
                             </AuthorContainer>

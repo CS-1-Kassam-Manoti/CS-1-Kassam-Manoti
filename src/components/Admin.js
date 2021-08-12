@@ -17,10 +17,8 @@ function Admin() {
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
-    
-    // const blogToDelete = JSON.parse(blogToDeleted)
 
-    useState(() => {
+    useEffect(() => {
         const blogsRetrieved = database.ref(`/blogs`)
         // const key = blogsRetrieved.key
         blogsRetrieved.on('value', snapshot => {
@@ -45,9 +43,7 @@ function Admin() {
 
     const rootRef = database.ref(`blogs`)
 
-    const deleteBlogFunction = () => {
-        // console.log(JSON.parse(blogToDeleted))
-        // const blogObject = JSON.parse(blogToDeleted)
+    const dialogFunction = () => {
         
         }
 
@@ -91,15 +87,15 @@ function Admin() {
                                     }} 
                                     >Edit</p> */}
                                     <p className="delete" onClick={() => {
-                                        setBlogToDeleted(blog)
-                                        // localStorage.setItem('blogToDelete', JSON.stringify(blog))
-                                        console.log("delete button selected for " + blog.heading + " with ID of " + blog.blogId)
-                                        console.log(blog)
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
                                         const dialog = window.confirm("Are you sure you want to delete?")
                                             if(dialog === true){ 
+                                                const blogRetrieved = localStorage.getItem('blog')
+                                                const blogToDelete = JSON.parse(blogRetrieved)
                                                 console.log("yes, i want to delete")
                                                 // const databaseRef = database.ref(`/blogs`)
-                                                rootRef.child(blog.blogId).remove()
+                                                rootRef.child(blogToDelete.blogId).remove()
                                                     .then(() =>{
                                                         console.log("Deleted successfully")
                                                         // console.log(theData)
@@ -111,7 +107,6 @@ function Admin() {
                                             }
                                             else{
                                                 console.log("No, it was by mistake")
-                                                setBlogToDeleted("")
                                                 // history.push(`/Profile`)
                                                 }
                                     }}>Delete</p>
@@ -162,7 +157,8 @@ function Admin() {
 
 
 
-            
+
+
 
             <RightSideBar>
             {
@@ -188,19 +184,7 @@ function Admin() {
                                 <UserButton>
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('user', JSON.stringify(user))
-                                        console.log("delete button selected for " + user.displayName + " with ID of " + user.uid)
-                                        const data = {
-                                            isDisabled: "true"
-                                        }
-                                        database.ref('/users').child(user.uid).update(data)
-                                            .then(() =>{
-                                                console.log("Uploaded blog to firebase successfully")
-                                                alert("Article Posted Successfully")
-                                                // history.push('/myBlogs')
-                                            }).catch((e)=>{
-                                                console.log(e)
-                                            })
-                                        console.log(user)
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
                                         // dialogFunction()
                                     }}>Disable</p>
                                 </UserButton>

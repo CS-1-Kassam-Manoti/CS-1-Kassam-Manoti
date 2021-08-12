@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory, Link, useLocation } from 'react-router-dom'
+// import { storage } from '../firebase'
+// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+// import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
+
 import { useAuth } from '../contexts/AuthContext'
 import { database } from '../firebase'
 
