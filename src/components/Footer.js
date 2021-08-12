@@ -11,8 +11,6 @@ import MailIcon from '@material-ui/icons/Mail';
 function Footer() {
     return (
         <Container>
-
-
             <Contact>
                 <Phone>
                     <PhoneIcon className="social-media-icon"/>
@@ -35,13 +33,6 @@ function Footer() {
                 <CopyrightIcon/>
                 Copyright
             </CopyRight>
-        
-
-        
-            
-
-
-
         </Container>
     )
 }

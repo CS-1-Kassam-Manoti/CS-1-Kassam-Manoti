@@ -60,7 +60,7 @@ export default function EditBlog() {
     const time = today.getTime()
 
     let data = {
-        blogId: time,
+        blogId: blogToEdit.blogId,
         postedByUid: currentUser.uid,
         postedByName: username,
         postedByProfilePic: currentUser.photoURL,

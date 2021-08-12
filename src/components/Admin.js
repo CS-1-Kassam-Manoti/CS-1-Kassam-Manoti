@@ -14,9 +14,6 @@ function Admin() {
 
     const history = useHistory()
 
-    
-    
-
     useEffect(() => {
         const blogsRetrieved = database.ref(`/blogs`)
         // const key = blogsRetrieved.key
@@ -161,7 +158,8 @@ function Admin() {
 
 
 
-            
+
+
 
             <RightSideBar>
             {

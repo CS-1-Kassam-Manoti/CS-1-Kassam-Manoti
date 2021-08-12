@@ -6,7 +6,6 @@ import { useHistory, Link, useLocation } from 'react-router-dom'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
-
 import { useAuth } from '../contexts/AuthContext'
 
 import { database } from '../firebase';
@@ -19,8 +18,6 @@ function Header(props) {
     const history = useHistory()
     const location = useLocation()
 
-    
-    
     const { pathname } = location
 
     const splitLocation = pathname.split("/")
