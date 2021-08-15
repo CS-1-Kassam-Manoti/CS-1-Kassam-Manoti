@@ -27,15 +27,7 @@ function Header(props) {
     // currentUser.providerData[0].disabled = "true"
     console.log(JSON.stringify(currentUser))
     
-    
-    if(currentUser.email == "ishaq.kassam@gmail.com"){
-        currentUser.providerData[0].isAdmin = "true"
-        currentUser.providerData[0].isDisabled = "false"
-    }
-    else{
-        currentUser.providerData[0].isAdmin = "false"
-        currentUser.providerData[0].isDisabled = "false"
-    }
+    const user = database.ref('/users/' + currentUser.uid)
 
     // currentUser.isDisabled = "false"
     useEffect(() =>{
@@ -48,11 +40,10 @@ function Header(props) {
             phoneNumber: currentUser.phoneNumber,
             isAnonymous: currentUser.isAnonymous,
             tenantId: currentUser.tenantId,
-            isAdmin: currentUser.providerData[0].isAdmin,
-            isDisabled: currentUser.providerData[0].isDisabled,
-
+            isAdmin: user.isAdmin ? user.isAdmin : "false",
+            isDisabled: user.isDisabled ? user.isDisabled : "false"
         }
-        database.ref('/users/' + data.uid).set(data)
+        user.set(data)
         console.log("Uploaded a user to database successfully")
         console.log(data)
     }, [])
