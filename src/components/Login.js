@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
@@ -17,6 +17,11 @@ export default function Login() {
     const history = useHistory()
     const { currentUser, logout } = useAuth()
 
+    
+    const [userObject, setUserObject] = useState("")
+    
+    const user = database.ref('/users/' + currentUser.uid)
+
 
     async function handleSubmit (e){
         e.preventDefault()
@@ -31,22 +36,9 @@ export default function Login() {
 
             const time = new Date().getTime().toString()
 
-        // .then(() => {
-        //     const data = {
-        //     uid: currentUser.uid,
-        //     displayName: currentUser.displayName,
-        //     photoUrl: currentUser.photoUrl,
-        //     email: currentUser.email,
-        //     emailVerified: currentUser.emailVerified,
-        //     phoneNumber: currentUser.phoneNumber,
-        //     isAnonymous: currentUser.isAnonymous,
-        //     tenantId: currentUser.tenantId,
-        //     tenantId: currentUser.displayName,
-        // }
-        // database.ref('/users/' + data.uid).set(data)
-        // console.log("Uploaded a user to database successfully")
-        // console.log(data)
-        // })
+        
+            
+        
 
         
         console.log(currentUser)
@@ -71,7 +63,39 @@ export default function Login() {
 
     // currentUser.isDisabled = "false"
     
+    useEffect(() =>{
+        const data = {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            email: currentUser.email,
+            emailVerified: currentUser.emailVerified,
+            phoneNumber: currentUser.phoneNumber,
+            isAnonymous: currentUser.isAnonymous,
+            tenantId: currentUser.tenantId,
+            isAdmin: userObject.isAdmin ? userObject.isAdmin : false,
+            isDisabled: userObject.isDisabled ? userObject.isDisabled : false
+        }
+        user.set(data)
+        console.log("Uploaded a user to database successfully")
+        // console.log(user)
+    }, [])
 
+    useEffect(() => {
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            // console.log(userObject)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
     return (        
             <Container>
                 <RegisterContainer>

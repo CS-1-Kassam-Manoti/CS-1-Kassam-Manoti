@@ -14,6 +14,7 @@ import { database } from '../firebase';
 function Header(props) {
 
     const [error, setError] = useState("")
+    // const [userDb, setUserDb] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
@@ -22,34 +23,29 @@ function Header(props) {
 
     const splitLocation = pathname.split("/")
 
-    // currentUser.providerData[0].isAdmin = "false"
-    // currentUser.isAdmin = "false"
-    // currentUser.providerData[0].disabled = "true"
-    console.log(JSON.stringify(currentUser))
+    const [userObject, setUserObject] = useState("")
     
     const user = database.ref('/users/' + currentUser.uid)
 
-    // currentUser.isDisabled = "false"
-    useEffect(() =>{
-        const data = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            email: currentUser.email,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            isAnonymous: currentUser.isAnonymous,
-            tenantId: currentUser.tenantId,
-            isAdmin: user.isAdmin ? user.isAdmin : "false",
-            isDisabled: user.isDisabled ? user.isDisabled : "false"
-        }
-        user.set(data)
-        console.log("Uploaded a user to database successfully")
-        console.log(data)
-    }, [])
+    // useEffect(() =>{
+    //     const data = {
+    //         uid: currentUser.uid,
+    //         displayName: currentUser.displayName,
+    //         photoURL: currentUser.photoURL,
+    //         email: currentUser.email,
+    //         emailVerified: currentUser.emailVerified,
+    //         phoneNumber: currentUser.phoneNumber,
+    //         isAnonymous: currentUser.isAnonymous,
+    //         tenantId: currentUser.tenantId,
+    //         isAdmin: userObject.isAdmin ? userObject.isAdmin : false,
+    //         isDisabled: userObject.isDisabled ? userObject.isDisabled : false
+    //     }
+    //     user.set(data)
+    //     console.log("Uploaded a user to database successfully")
+    // }, [])
     
     
-
+    
     const handleLogout = async () => {
         setError('')
 
@@ -62,10 +58,26 @@ function Header(props) {
         }
     }
 
-    console.log(JSON.stringify(currentUser))
     
-    // const email = currentUser.email
-    // const name = email.substring(0, email.indexOf("." || '@'))
+    useEffect(() => {
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
+       console.log("the current user from the realtime database is as below")
+       console.log(userObject)
+        
     
 
     return (
@@ -90,14 +102,15 @@ function Header(props) {
                         </UserName> */}
                         <UserIcon >
                             {
-                                    currentUser.photoURL ? 
-                                    <img src={currentUser.photoURL}></img> :
+                                    userObject.photoURL ? 
+                                    <img src={userObject.photoURL}></img> :
                                     <AccountCircleIcon className="icon"/>
                                     // <img src={props.urlvar}></img> 
                             }
                             <Hover>
                                 <UserName>
-                                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                                    <h5>{userObject.displayName}</h5>
+                                    {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>
@@ -106,7 +119,7 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    currentUser.providerData[0].isAdmin == "true" && 
+                                    userObject.isAdmin === true && 
                                     <Admin>
                                         <a> <Link to='/admin'>Admin</Link></a>
                                     </Admin>
