@@ -18,18 +18,17 @@ export default function Login() {
     const { currentUser, logout } = useAuth()
 
     
-    const [userObject, setUserObject] = useState("")
+    // const [userObject, setUserObject] = useState("")
     
-    const user = database.ref('/users/' + currentUser.uid)
+    // const user = database.ref('/users/' + currentUser.uid)
 
-
-    async function handleSubmit (e){
+     async function handleSubmit (e){
         e.preventDefault()
         
         try{
             setError('')
             setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
+             await login(emailRef.current.value, passwordRef.current.value)
             
 
 
@@ -42,7 +41,9 @@ export default function Login() {
 
         
         console.log(currentUser)
-        history.push('/')
+        
+        history.push('/wait')
+        
 
         }
         catch{
@@ -50,7 +51,7 @@ export default function Login() {
         }
         
         setLoading(false)
-
+        
     }
 
     
@@ -63,39 +64,6 @@ export default function Login() {
 
     // currentUser.isDisabled = "false"
     
-    useEffect(() =>{
-        const data = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            email: currentUser.email,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            isAnonymous: currentUser.isAnonymous,
-            tenantId: currentUser.tenantId,
-            isAdmin: userObject.isAdmin ? userObject.isAdmin : false,
-            isDisabled: userObject.isDisabled ? userObject.isDisabled : false
-        }
-        user.set(data)
-        console.log("Uploaded a user to database successfully")
-        // console.log(user)
-    }, [])
-
-    useEffect(() => {
-        database.ref("users")
-        .child(currentUser.uid)
-        .once("value")
-        .then((snapshot) => {
-            const value = snapshot.val()
-            setUserObject(value)
-            // console.log(userObject)
-         })
-        .catch(error => ({
-           errorCode: error.code,
-           errorMessage: error.message
-         }));
-
-    }, [])
     return (        
             <Container>
                 <RegisterContainer>

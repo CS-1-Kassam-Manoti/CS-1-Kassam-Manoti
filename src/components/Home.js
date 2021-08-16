@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
@@ -9,7 +9,10 @@ import { Link } from 'react-router-dom'
 function Home() {
     
     const { currentUser } = useAuth()
-
+    useEffect(() => {
+        // window.location.reload()
+    }, [])
+    
     return (
         <Container>
             {/* {

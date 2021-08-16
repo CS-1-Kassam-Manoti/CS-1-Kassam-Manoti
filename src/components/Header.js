@@ -24,9 +24,11 @@ function Header(props) {
     const splitLocation = pathname.split("/")
 
     const [userObject, setUserObject] = useState("")
+
+    console.log(JSON.stringify(currentUser))
     
     const user = database.ref('/users/' + currentUser.uid)
-
+    
     // useEffect(() =>{
     //     const data = {
     //         uid: currentUser.uid,
@@ -60,6 +62,7 @@ function Header(props) {
 
     
     useEffect(() => {
+        
         database.ref("users")
         .child(currentUser.uid)
         .once("value")
@@ -119,9 +122,9 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    userObject.isAdmin === true && 
+                                    userObject.isAdmin === "true" && 
                                     <Admin>
-                                        <a> <Link to='/admin'>Admin</Link></a>
+                                        <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
                                 }
                                 <SignOut onClick={handleLogout}>
