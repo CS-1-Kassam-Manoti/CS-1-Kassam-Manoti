@@ -105,8 +105,8 @@ function Header(props) {
                         </UserName> */}
                         <UserIcon >
                             {
-                                    userObject.photoURL ? 
-                                    <img src={userObject.photoURL}></img> :
+                                    currentUser.photoURL ? 
+                                    <img src={currentUser.photoURL}></img> :
                                     <AccountCircleIcon className="icon"/>
                                     // <img src={props.urlvar}></img> 
                             }

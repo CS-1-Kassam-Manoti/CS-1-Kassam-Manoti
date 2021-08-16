@@ -53,13 +53,6 @@ useEffect(() => {
      }));
 
 }, [])
-
-history.push('/')
-    useEffect(() =>{
-        
-        // console.log(user)
-    }, [])
-
     
 
     history.push('/')
