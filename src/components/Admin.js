@@ -179,8 +179,6 @@ function Admin() {
 
 
 
-
-
             <RightSideBar>
             {
                 users.slice(0).reverse().map((user, key) => (

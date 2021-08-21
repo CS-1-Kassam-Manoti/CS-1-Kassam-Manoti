@@ -24,11 +24,16 @@ function Header(props) {
     const splitLocation = pathname.split("/")
 
     const [userObject, setUserObject] = useState("")
+    const [userAdmin, setUserAdmin] = useState("")
 
     console.log(JSON.stringify(currentUser))
     
     const user = database.ref('/users/' + currentUser.uid)
+
+    const isAdminUser = database.ref("admin")
+        .child(currentUser.uid)
     
+        console.log(isAdminUser)
     // useEffect(() =>{
     //     const data = {
     //         uid: currentUser.uid,
@@ -78,8 +83,25 @@ function Header(props) {
     }, [])
 
 
+    useEffect(() => {
+        
+        isAdminUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserAdmin(value)
+            console.log(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
        console.log("the current user from the realtime database is as below")
-       console.log(userObject)
+       console.log(JSON.stringify(userObject))
+       console.log(JSON.stringify(userAdmin))
         
     
 
@@ -122,10 +144,12 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    userObject.isAdmin === "true" && 
+                                    // userAdmin.isAdmin ? userAdmin.isAdmin === "true" && 
+                                    userAdmin && 
                                     <Admin>
                                         <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
+                                    
                                 }
                                 <SignOut onClick={handleLogout}>
                                     <a>Sign out</a>

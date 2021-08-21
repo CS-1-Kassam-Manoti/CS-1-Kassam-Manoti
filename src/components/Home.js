@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
@@ -6,44 +6,60 @@ import Article from './Article'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
+import { database } from '../firebase';
+
+
 function Home() {
     
     const { currentUser } = useAuth()
+    const [userDisabled, setUserDisabled] = useState("")
+
+
+    const isDisabledUser = database.ref("admin")
+        .child(currentUser.uid)
+
     useEffect(() => {
-        // window.location.reload()
+        
+        isDisabledUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserDisabled(value)
+            console.log(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
     }, [])
     
     return (
         <Container>
-            {/* {
-                currentUser.providerData[0].isDisabled !== "false" ? 
+            {
+                userDisabled ? 
+                    
+                    <Error>
+                    <Card>
+                        <ErrorHeading>
+                            <p>Error !</p>
+                        </ErrorHeading>
+                        <ErrorContent>
+                            Your Account is disabled, Contact Admin @info@admin.com
+                        </ErrorContent>
+                        <SignIn>
+                            <p> <Link to="/login">Sign In with another account</Link></p>
+                        </SignIn>
+                    </Card>
+                </Error>
+                :
                 
-                    <Content>
-                        <Header/>
-        
-                        <Article/>
-                    </Content>
-                : */}
                 <Content>
                 <Header/>
 
                 <Article/>
             </Content>
-            <Error>
-                <Card>
-                    <ErrorHeading>
-                        <p>Error !</p>
-                    </ErrorHeading>
-                    <ErrorContent>
-                        Your Account is disabled, Contact Admin @info@admin.com
-                    </ErrorContent>
-                    <SignIn>
-                        <p> <Link to="/login">Sign In with another account</Link></p>
-                    </SignIn>
-                </Card>
-            </Error>
 
-            {/* } */}
+             }
             
         </Container>
     )
