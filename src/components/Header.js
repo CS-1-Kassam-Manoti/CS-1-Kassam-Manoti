@@ -98,10 +98,9 @@ function Header(props) {
 
     }, [])
 
-
-       console.log("the current user from the realtime database is as below")
-       console.log(JSON.stringify(userObject))
-       console.log(JSON.stringify(userAdmin))
+        console.log("the current user from the realtime database is as below")
+        console.log(JSON.stringify(userObject))
+        console.log(JSON.stringify(userAdmin))
         
     
     useEffect(() => {
