@@ -136,9 +136,15 @@ function Header(props) {
 
                     <NavigationLinks>
                         <p className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></p>
-                        <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p>
+                        {/* <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p> */}
                         <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p>
                         <p className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </p>
+                        <p className={splitLocation[1] === "myblogs" ? "active" : ""}> <Link to="/myblogs">My Blogs</Link> </p>
+                        {
+                            userAdmin && 
+                            <p className={splitLocation[1] === "admin" ? "active" : ""}> <Link to="/admin">Admin</Link> </p>
+                        }
+                        
                     </NavigationLinks>
 
                     <Profile>
@@ -160,17 +166,17 @@ function Header(props) {
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>
                                 </UpdateProfileButton>
-                                <MyBlogs >
+                                {/* <MyBlogs >
                                     <Link to='/myblogs'>My Blogs</Link>
-                                </MyBlogs>
-                                {
-                                    // userAdmin.isAdmin ? userAdmin.isAdmin === "true" && 
+                                </MyBlogs> */}
+                                {/* {
+                                 
                                     userAdmin && 
                                     <Admin>
                                         <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
                                     
-                                }
+                                } */}
                                 <SignOut onClick={handleLogout}>
                                     <a>Sign out</a>
                                 </SignOut>
