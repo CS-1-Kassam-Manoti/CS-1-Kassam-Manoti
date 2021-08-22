@@ -14,6 +14,8 @@ function Admin() {
 
     const [blogs, setBlogs] = useState([])
     const [users, setUsers] = useState([])
+    const [isAdmin, setIsAdmin] = useState([])
+    const [isDisabled, setDisabled] = useState([])
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
@@ -40,14 +42,31 @@ function Admin() {
             setUsers(allUsers)
             
         })
-        
+        const usersIsAdminRetrieved = database.ref(`/admin`)
+        // const key = usersRetrieved.key
+        usersIsAdminRetrieved.on('value', snapshot => {
+            let allUsers = [];
+            snapshot.forEach(snap => { 
+                allUsers.push(snap.val())
+            })
+            setIsAdmin(allUsers)
+        })
+
+        const usersIsDisabledRetrieved = database.ref(`/disabled`)
+        // const key = usersRetrieved.key
+        usersIsDisabledRetrieved.on('value', snapshot => {
+            let allUsers = [];
+            snapshot.forEach(snap => { 
+                allUsers.push(snap.val())
+            })
+            setDisabled(allUsers)
+        })
+
+
+
     }, [])
 
     const rootRef = database.ref(`blogs`)
-
-    const dialogFunction = () => {
-        
-        }
 
     return (
         <ParentContainer>
@@ -163,8 +182,6 @@ function Admin() {
 
 
 
-
-
             <RightSideBar>
             {
                 users.slice(0).reverse().map((user, key) => (
@@ -187,17 +204,61 @@ function Admin() {
                                     </UserName>
                                 </AuthorProfileAndName>
                                 <UserButton>
-                                    <p className="delete" onClick={() => {
+                                    <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
-                                        // dialogFunction()
+                                            e.preventDefault()
+                                            const dialog = window.confirm("Are you sure you want to disable the user?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to disable the user")
+
+                                                const data = {
+                                                    isDisabled: "true",
+                                                    uid: user.uid,
+                                                }
+                                                database.ref('/disabled/' + user.uid).set(data)
+                                                    .then(() =>{
+                                                        console.log("disabled user")
+                                                        alert("disabled user")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                }
                                     }}>Disable</p>
+
+                                    <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
+                                            e.preventDefault()
+                                            const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to make them Admin")
+
+                                                const data = {
+                                                    isAdmin: "true",
+                                                    uid: user.uid,
+                                                }
+                                                database.ref('/admin/' + user.uid).set(data)
+                                                    .then(() =>{
+                                                        console.log("Make Admin")
+                                                        alert("Make Admin")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                }
+                                    }}>Make Admin</p>
                                 </UserButton>
                             </Author>
 
-                            <UserDisplayName>
+                            {/* <UserDisplayName>
                                 {user.displayName}
-                            </UserDisplayName>
+                            </UserDisplayName> */}
                                         
                             <UserEmail>
                                 {user.email}
@@ -218,7 +279,7 @@ function Admin() {
                             
                         </UserDetails>                   
                     </ArticleCard>
-            
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
         }
@@ -392,7 +453,7 @@ const UserName = styled.div`
 const UserButton = styled.div`
     display: flex;
     /* border: 1px solid grey; */
-    width: 17%;
+    width: 47%;
     justify-content: space-between;
 
     .delete{

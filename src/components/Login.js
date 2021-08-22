@@ -18,41 +18,32 @@ export default function Login() {
     const { currentUser, logout } = useAuth()
 
     
-    const [userDb, setUserDb] = useState("")
+    // const [userObject, setUserObject] = useState("")
+    
+    // const user = database.ref('/users/' + currentUser.uid)
 
-    async function handleSubmit (e){
+     async function handleSubmit (e){
         e.preventDefault()
         
         try{
             setError('')
             setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
+             await login(emailRef.current.value, passwordRef.current.value)
             
 
 
 
             const time = new Date().getTime().toString()
 
-        // .then(() => {
-        //     const data = {
-        //     uid: currentUser.uid,
-        //     displayName: currentUser.displayName,
-        //     photoUrl: currentUser.photoUrl,
-        //     email: currentUser.email,
-        //     emailVerified: currentUser.emailVerified,
-        //     phoneNumber: currentUser.phoneNumber,
-        //     isAnonymous: currentUser.isAnonymous,
-        //     tenantId: currentUser.tenantId,
-        //     tenantId: currentUser.displayName,
-        // }
-        // database.ref('/users/' + data.uid).set(data)
-        // console.log("Uploaded a user to database successfully")
-        // console.log(data)
-        // })
+        
+            
+        
 
         
         console.log(currentUser)
-        history.push('/')
+        
+        history.push('/wait')
+        
 
         }
         catch{
@@ -60,7 +51,7 @@ export default function Login() {
         }
         
         setLoading(false)
-
+        
     }
     useEffect(() =>{
         if(currentUser){
@@ -106,7 +97,6 @@ export default function Login() {
 
     // currentUser.isDisabled = "false"
     
-
     return (        
             <Container>
                 <RegisterContainer>

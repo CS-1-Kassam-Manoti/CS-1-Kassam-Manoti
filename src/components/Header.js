@@ -24,31 +24,32 @@ function Header(props) {
     const splitLocation = pathname.split("/")
 
     const [userObject, setUserObject] = useState("")
-    // currentUser.providerData[0].isAdmin = "false"
-    // currentUser.isAdmin = "false"
-    // currentUser.providerData[0].disabled = "true"
-    // console.log(JSON.stringify(currentUser))
+    const [userAdmin, setUserAdmin] = useState("")
+
+    console.log(JSON.stringify(currentUser))
     
     const user = database.ref('/users/' + currentUser.uid)
 
-    // currentUser.isDisabled = "false"
-    useEffect(() =>{
-        const data = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            email: currentUser.email,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            isAnonymous: currentUser.isAnonymous,
-            tenantId: currentUser.tenantId,
-            isAdmin: user.isAdmin ? user.isAdmin : "false",
-            isDisabled: user.isDisabled ? user.isDisabled : "false"
-        }
-        user.set(data)
-        console.log("Uploaded a user to database successfully")
-        console.log(data)
-    }, [])
+    const isAdminUser = database.ref("admin")
+        .child(currentUser.uid)
+    
+        console.log(isAdminUser)
+    // useEffect(() =>{
+    //     const data = {
+    //         uid: currentUser.uid,
+    //         displayName: currentUser.displayName,
+    //         photoURL: currentUser.photoURL,
+    //         email: currentUser.email,
+    //         emailVerified: currentUser.emailVerified,
+    //         phoneNumber: currentUser.phoneNumber,
+    //         isAnonymous: currentUser.isAnonymous,
+    //         tenantId: currentUser.tenantId,
+    //         isAdmin: userObject.isAdmin ? userObject.isAdmin : false,
+    //         isDisabled: userObject.isDisabled ? userObject.isDisabled : false
+    //     }
+    //     user.set(data)
+    //     console.log("Uploaded a user to database successfully")
+    // }, [])
     
     
     
@@ -64,10 +65,44 @@ function Header(props) {
         }
     }
 
-    // console.log(JSON.stringify(currentUser))
     
-    // const email = currentUser.email
-    // const name = email.substring(0, email.indexOf("." || '@'))
+    useEffect(() => {
+        
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
+    useEffect(() => {
+        
+        isAdminUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserAdmin(value)
+            console.log(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
+       console.log("the current user from the realtime database is as below")
+       console.log(JSON.stringify(userObject))
+       console.log(JSON.stringify(userAdmin))
+        
     
     useEffect(() => {
         database.ref("users")
@@ -129,10 +164,12 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    userObject.isAdmin === "true" && 
+                                    // userAdmin.isAdmin ? userAdmin.isAdmin === "true" && 
+                                    userAdmin && 
                                     <Admin>
-                                        <a> <Link to='/admin'>Admin</Link></a>
+                                        <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
+                                    
                                 }
                                 <SignOut onClick={handleLogout}>
                                     <a>Sign out</a>

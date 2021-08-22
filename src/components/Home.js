@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import Article from './Article'
@@ -6,65 +6,60 @@ import Article from './Article'
 import { useAuth } from '../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
-
 import { database } from '../firebase';
+
 
 function Home() {
     
     const { currentUser } = useAuth()
+    const [userDisabled, setUserDisabled] = useState("")
 
-    const [userObject, setUserObject] = useState("")
+
+    const isDisabledUser = database.ref("disabled")
+        .child(currentUser.uid)
 
     useEffect(() => {
-        database.ref("users")
-        .child(currentUser.uid)
-        .once("value")
+        
+        isDisabledUser.once("value")
         .then((snapshot) => {
             const value = snapshot.val()
-            setUserObject(value)
-            // console.log(userObject)
+            setUserDisabled(value)
+            console.log(JSON.stringify(value))
          })
         .catch(error => ({
            errorCode: error.code,
            errorMessage: error.message
          }));
 
-    }, [])                                           
-                                        // console.log(user)
-
+    }, [])
+    
     return (
         <Container>
-            
-                {
-                userObject.isDisabled === "false" ?
+            {
+                userDisabled ? 
+                    
+                    <Error>
+                    <Card>
+                        <ErrorHeading>
+                            <p>Error !</p>
+                        </ErrorHeading>
+                        <ErrorContent>
+                            Your Account is disabled, Contact Admin @info@admin.com
+                        </ErrorContent>
+                        <SignIn>
+                            <p> <Link to="/login">Sign In with another account</Link></p>
+                        </SignIn>
+                    </Card>
+                </Error>
+                :
                 
                 <Content>
-                        <Header/>
-        
-                        <Article/>
-                    </Content>
-                :
+                <Header/>
 
-                
-                
-                    
-                
-                
-            <Error>
-                <Card>
-                    <ErrorHeading>
-                        <p>Error !</p>
-                    </ErrorHeading>
-                    <ErrorContent>
-                        Your Account is disabled, Contact Admin @info@admin.com
-                    </ErrorContent>
-                    <SignIn>
-                        <p> <Link to="/login">Sign In with another account</Link></p>
-                    </SignIn>
-                </Card>
-            </Error>
+                <Article/>
+            </Content>
 
-                }
+             }
             
         </Container>
     )

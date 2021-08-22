@@ -10,6 +10,7 @@ import ForgotPassword from './components/ForgotPassword';
 import CreatePost from './components/CreatePost';
 import ViewBlog from './components/ViewBlog';
 import Profile from './components/Profile';
+import Wait from './components/Wait';
 import EditBlog from './components/EditBlog';
 import EditUser from './components/EditUser';
 import Admin from './components/Admin';
@@ -28,6 +29,7 @@ function App() {
                 {/* <Route exact path="/" component={Home}/> */}
                 <Route path="/signup" component={Signup}/>
                 <Route path="/login" component={Login}/>
+                <Route path="/wait" component={Wait}/>
                 <PrivateRoute path="/update-profile" component={UpdateProfile}/>
                 <PrivateRoute path="/myBlogs" component={Profile}/>
                 <PrivateRoute path="/edit-blog:blogId" component={EditBlog}/>
