@@ -253,9 +253,9 @@ function Admin() {
                                 </UserButton>
                             </Author>
 
-                            <UserDisplayName>
+                            {/* <UserDisplayName>
                                 {user.displayName}
-                            </UserDisplayName>
+                            </UserDisplayName> */}
                                         
                             <UserEmail>
                                 {user.email}

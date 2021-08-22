@@ -134,7 +134,7 @@ function Header(props) {
                             }
                             <Hover>
                                 <UserName>
-                                    <h5>{userObject.displayName}</h5>
+                                    <h5>{currentUser.displayName}</h5>
                                     {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >

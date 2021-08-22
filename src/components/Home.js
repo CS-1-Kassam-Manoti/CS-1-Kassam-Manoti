@@ -15,7 +15,7 @@ function Home() {
     const [userDisabled, setUserDisabled] = useState("")
 
 
-    const isDisabledUser = database.ref("admin")
+    const isDisabledUser = database.ref("disabled")
         .child(currentUser.uid)
 
     useEffect(() => {
@@ -24,7 +24,7 @@ function Home() {
         .then((snapshot) => {
             const value = snapshot.val()
             setUserDisabled(value)
-            console.log(value)
+            console.log(JSON.stringify(value))
          })
         .catch(error => ({
            errorCode: error.code,
