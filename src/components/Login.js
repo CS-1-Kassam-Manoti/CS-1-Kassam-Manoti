@@ -53,39 +53,6 @@ export default function Login() {
         setLoading(false)
         
     }
-    useEffect(() =>{
-        if(currentUser){
-            const data = {
-                uid: currentUser.uid,
-                displayName: currentUser.displayName,
-                photoURL: currentUser.photoURL,
-                email: currentUser.email,
-                emailVerified: currentUser.emailVerified,
-                phoneNumber: currentUser.phoneNumber,
-                isAnonymous: currentUser.isAnonymous,
-                tenantId: currentUser.tenantId,
-                isAdmin: currentUser.providerData[0].isAdmin,
-                isDisabled: currentUser.providerData[0].isDisabled,
-    
-            }
-            database.ref('/users/' + data.uid).set(data)
-            console.log("Uploaded a user to database successfully")
-    
-            const dbRef = database.ref();
-            dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
-              if (snapshot.exists()) {
-                console.log(snapshot.val());
-                setUserDb(snapshot.val())
-              } else {
-                console.log("No data available");
-              }
-            }).catch((error) => {
-              console.error(error);
-            });
-    
-        }
-                // console.log(data)
-    }, [])
 
     
     // if(currentUser.email == "ishaq.kassam@gmail.com"){
