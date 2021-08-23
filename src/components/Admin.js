@@ -10,10 +10,6 @@ import { database } from '../firebase';
 import { useAuth } from '../contexts/AuthContext'
 
 function Admin() {
-
-    // const blogRetrieved = localStorage.getItem('blogToDelete')
-    // const blogToDelete = JSON.parse(blogRetrieved)
-
     const [blogs, setBlogs] = useState([])
     const [users, setUsers] = useState([])
     const [isAdmin, setIsAdmin] = useState([])
@@ -97,18 +93,10 @@ function Admin() {
                 isUserAdmin ? 
             
         <Container>
-            
-            
-            
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} 
-                    // onClick={() => {
-                    //     localStorage.setItem('blog', JSON.stringify(blog))
-                    //         history.push(`/blog:${blog.blogId}`)                        
-                    // }
-                    // }
                     >
                         <ArticleTextDetails>                        
                             <Author>
@@ -123,17 +111,9 @@ function Admin() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName}
-                                        {/* {blog.postedByName} */}
-                                        {/* {blog.dateCreated} */}
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
                                 <Buttons>
-                                    {/* <p onClick={() => {
-                                        localStorage.setItem('blog', JSON.stringify(blog))
-                                        history.push(`/edit-blog:${blog.blogId}`)
-                                        console.log("edit button selected for" + blog.heading)
-                                    }} 
-                                    >Edit</p> */}
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
@@ -207,17 +187,6 @@ function Admin() {
 
 
             <RightSideBar>
-                {/* <Choices>
-                    <button class="admins" onClick={admins}>
-                        Admins
-                    </button>
-                    <button class="all-users" onClick={allUsers}>
-                        All Users
-                    </button>
-                    <button class="disabled-users" onClick={disabledUsers}>
-                        Disabled Users
-                    </button>
-                </Choices> */}
             
             <div>
                 <div>
@@ -226,54 +195,13 @@ function Admin() {
             {
                 isAdmin.slice(0).reverse().map((admin, key) => (
                     <AdminSectionCard key={key}>
-                        <UserDetails>                        
-                            <Author>
-                                <div>
-                                    <div>
-                                        {/* {admin.isAdmin } */}
-                                        
-                                        {/* {blog.dateCreated} */}
-                                    </div>
-                                    {/* <br></br> */}
-                                    {/* <br />  */}
-                                    <div>
-                                        {/* {admin.uid} */}
-                                        {/* {blog.dateCreated} */}
-                                    </div>
-                                </div>
-                            </Author>
+                        <UserDetails>  
 
                             <UserEmail>
                                 {admin.email}
                             </UserEmail>
                             
                             <UserButton>
-                                    {/* <p className="delete" onClick={(e) => {
-                                        localStorage.setItem('user', JSON.stringify(admin))
-                                        console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
-                                            e.preventDefault()
-                                            const dialog = window.confirm("Are you sure you want to disable the user?")
-                                            if(dialog === true){ 
-                                                console.log("yes, i want to disable the user")
-
-                                                const data = {
-                                                    isDisabled: "true",
-                                                    uid: admin.uid,
-                                                    // displayName: user.displayName,
-                                                    email: admin.email,
-                                                }
-                                                database.ref('/disabled/' + admin.uid).set(data)
-                                                    .then(() =>{
-                                                        console.log("disabled user")
-                                                        alert("disabled user")
-                                                    }).catch((e)=>{
-                                                        console.log(e)
-                                                    })
-                                            }
-                                            else{
-                                                console.log("No, it was by mistake")
-                                                }
-                                    }}>Disable</p> */}
 
                                     <p className="delete" onClick={(e) => {
                                         // TODO: #18 Check whether the user is an admin
@@ -297,9 +225,6 @@ function Admin() {
                                                         window.reload()
                                                     }
                                                 }
-                                                
-                                                
-                                            
                                     }>Remove Admin
                                     </p>
                                 </UserButton>
@@ -317,54 +242,13 @@ function Admin() {
             {
                 isDisabled.slice(0).reverse().map((disable, key) => (
                     <AdminSectionCard key={key}>
-                        <UserDetails>                        
-                            <Author>
-                                <div>
-                                    <div>
-                                        {/* {admin.isAdmin } */}
-                                        
-                                        {/* {blog.dateCreated} */}
-                                    </div>
-                                    {/* <br></br> */}
-                                    {/* <br />  */}
-                                    <div>
-                                        {/* {admin.uid} */}
-                                        {/* {blog.dateCreated} */}
-                                    </div>
-                                </div>
-                            </Author>
+                        <UserDetails>
 
                             <UserEmail>
                                 {disable.email}
                             </UserEmail>
                             
                             <UserButton>
-                                    {/* <p className="delete" onClick={(e) => {
-                                        localStorage.setItem('user', JSON.stringify(disable))
-                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
-                                            e.preventDefault()
-                                            const dialog = window.confirm("Are you sure you want to disable the user?")
-                                            if(dialog === true){ 
-                                                console.log("yes, i want to disable the user")
-
-                                                const data = {
-                                                    isDisabled: "true",
-                                                    uid: disable.uid,
-                                                    // displayName: user.displayName,
-                                                    email: disable.email,
-                                                }
-                                                database.ref('/disabled/' + disable.uid).set(data)
-                                                    .then(() =>{
-                                                        console.log("disabled user")
-                                                        alert("disabled user")
-                                                    }).catch((e)=>{
-                                                        console.log(e)
-                                                    })
-                                            }
-                                            else{
-                                                console.log("No, it was by mistake")
-                                                }
-                                    }}>Enable</p> */}
 
                                     <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(disable))
@@ -418,7 +302,6 @@ function Admin() {
                                                 const data = {
                                                     isDisabled: "true",
                                                     uid: user.uid,
-                                                    // displayName: user.displayName,
                                                     email: user.email,
                                                 }
                                                 database.ref('/disabled/' + user.uid).set(data)
@@ -449,7 +332,6 @@ function Admin() {
                                                     const data = {
                                                         isAdmin: "true",
                                                         uid: user.uid,
-                                                        // displayName: user.displayName,
                                                         email: user.email,
                                                     }
                                                     admin.set(data)
@@ -471,9 +353,6 @@ function Admin() {
                                 </UserButton>
                             </Author>
 
-                            {/* <UserDisplayName>
-                                {user.displayName}
-                            </UserDisplayName> */}
                                         
                             <UserEmail>
                                 {user.email}
