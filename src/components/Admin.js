@@ -16,6 +16,7 @@ function Admin() {
     const [users, setUsers] = useState([])
     const [isAdmin, setIsAdmin] = useState([])
     const [isDisabled, setDisabled] = useState([])
+    const [adminButtonText, setAdminButtonText] = useState("Make Admin")
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
@@ -63,10 +64,22 @@ function Admin() {
         })
 
 
-
     }, [])
 
     const rootRef = database.ref(`blogs`)
+
+
+
+    const allUsers = () => {
+        
+    } 
+    const disabledUsers = () => {
+
+    } 
+    const admins = () => {
+
+    } 
+    
 
     return (
         <ParentContainer>
@@ -183,26 +196,198 @@ function Admin() {
 
 
             <RightSideBar>
+                {/* <Choices>
+                    <button class="admins" onClick={admins}>
+                        Admins
+                    </button>
+                    <button class="all-users" onClick={allUsers}>
+                        All Users
+                    </button>
+                    <button class="disabled-users" onClick={disabledUsers}>
+                        Disabled Users
+                    </button>
+                </Choices> */}
+            
+            <div>
+                <div>
+                    Admins
+                </div>
             {
-                users.slice(0).reverse().map((user, key) => (
-                    <ArticleCard key={key}>
+                isAdmin.slice(0).reverse().map((admin, key) => (
+                    <AdminSectionCard key={key}>
                         <UserDetails>                        
                             <Author>
-                                <AuthorProfileAndName>
-                                    <AuthorProfilePicture>
-                                    {
-                                        user.photoURL ? 
-                                        <img src={user.photoURL} alt="" /> :
-                                        <AccountCircleIcon className="icon"/>
-                                    }
+                                <div>
+                                    <div>
+                                        {/* {admin.isAdmin } */}
                                         
-                                    </AuthorProfilePicture>
-
-                                    <UserName>
-                                        {user.displayName}
                                         {/* {blog.dateCreated} */}
-                                    </UserName>
-                                </AuthorProfileAndName>
+                                    </div>
+                                    {/* <br></br> */}
+                                    {/* <br />  */}
+                                    <div>
+                                        {/* {admin.uid} */}
+                                        {/* {blog.dateCreated} */}
+                                    </div>
+                                </div>
+                            </Author>
+
+                            <UserEmail>
+                                {admin.email}
+                            </UserEmail>
+                            
+                            <UserButton>
+                                    {/* <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(admin))
+                                        console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
+                                            e.preventDefault()
+                                            const dialog = window.confirm("Are you sure you want to disable the user?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to disable the user")
+
+                                                const data = {
+                                                    isDisabled: "true",
+                                                    uid: admin.uid,
+                                                    // displayName: user.displayName,
+                                                    email: admin.email,
+                                                }
+                                                database.ref('/disabled/' + admin.uid).set(data)
+                                                    .then(() =>{
+                                                        console.log("disabled user")
+                                                        alert("disabled user")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                }
+                                    }}>Disable</p> */}
+
+                                    <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(admin))
+                                        console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
+                                            e.preventDefault()
+                                            const admindb = database.ref('/admin/' + admin.uid)
+
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    admindb.remove()
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                                }
+                                            
+                                    }>Remove Admin
+                                    </p>
+                                </UserButton>
+                        </UserDetails>                   
+                    </AdminSectionCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            )
+        }
+            </div>
+            <div>
+                <div>
+                    Disabled Users
+                </div>
+            {
+                isDisabled.slice(0).reverse().map((disable, key) => (
+                    <AdminSectionCard key={key}>
+                        <UserDetails>                        
+                            <Author>
+                                <div>
+                                    <div>
+                                        {/* {admin.isAdmin } */}
+                                        
+                                        {/* {blog.dateCreated} */}
+                                    </div>
+                                    {/* <br></br> */}
+                                    {/* <br />  */}
+                                    <div>
+                                        {/* {admin.uid} */}
+                                        {/* {blog.dateCreated} */}
+                                    </div>
+                                </div>
+                            </Author>
+
+                            <UserEmail>
+                                {disable.email}
+                            </UserEmail>
+                            
+                            <UserButton>
+                                    {/* <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(disable))
+                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
+                                            e.preventDefault()
+                                            const dialog = window.confirm("Are you sure you want to disable the user?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to disable the user")
+
+                                                const data = {
+                                                    isDisabled: "true",
+                                                    uid: disable.uid,
+                                                    // displayName: user.displayName,
+                                                    email: disable.email,
+                                                }
+                                                database.ref('/disabled/' + disable.uid).set(data)
+                                                    .then(() =>{
+                                                        console.log("disabled user")
+                                                        alert("disabled user")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                }
+                                    }}>Enable</p> */}
+
+                                    <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(disable))
+                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
+                                            e.preventDefault()
+                                            const disabledb = database.ref('/disabled/' + disable.uid)
+
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    disabledb.remove()
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                                }
+                                            
+                                    }>Enable
+                                    </p>
+                                </UserButton>
+                        </UserDetails>                   
+                    </AdminSectionCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            )
+        }
+            </div>
+
+                <div>
+                    All Users
+                </div>
+
+            {
+                users.slice(0).reverse().map((user, key) => (
+                    
+                    <UserCard key={key}>
+                        <UserDetails>                        
+                            <Author>
+                                
                                 <UserButton>
                                     <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(user))
@@ -215,6 +400,8 @@ function Admin() {
                                                 const data = {
                                                     isDisabled: "true",
                                                     uid: user.uid,
+                                                    // displayName: user.displayName,
+                                                    email: user.email,
                                                 }
                                                 database.ref('/disabled/' + user.uid).set(data)
                                                     .then(() =>{
@@ -233,26 +420,36 @@ function Admin() {
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
                                             e.preventDefault()
-                                            const dialog = window.confirm("Are you sure you want to make them an admin?")
-                                            if(dialog === true){ 
-                                                console.log("yes, i want to make them Admin")
+                                            const admin = database.ref('/admin/' + user.uid)
 
-                                                const data = {
-                                                    isAdmin: "true",
-                                                    uid: user.uid,
+                                            
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    const data = {
+                                                        isAdmin: "true",
+                                                        uid: user.uid,
+                                                        // displayName: user.displayName,
+                                                        email: user.email,
+                                                    }
+                                                    admin.set(data)
+                                                        .then(() =>{
+                                                            console.log("Make Admin")
+                                                            alert("Specified user is now Admin")
+                                                            setAdminButtonText("Remove Admin")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
                                                 }
-                                                database.ref('/admin/' + user.uid).set(data)
-                                                    .then(() =>{
-                                                        console.log("Make Admin")
-                                                        alert("Make Admin")
-                                                    }).catch((e)=>{
-                                                        console.log(e)
-                                                    })
-                                            }
-                                            else{
-                                                console.log("No, it was by mistake")
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
                                                 }
-                                    }}>Make Admin</p>
+                                            
+                                    }>Make Admin
+                                    </p>
                                 </UserButton>
                             </Author>
 
@@ -263,22 +460,9 @@ function Admin() {
                             <UserEmail>
                                 {user.email}
                             </UserEmail>
-
-                            <ArticleFooter>
-                                <ArticleDatePosted>
-                                    <p>{user.isAdmin}</p>
-                                </ArticleDatePosted>
-                                <ArticleClassTag>
-                                    <p>{user.isDisabled}</p>
-                                </ArticleClassTag>
-                                <ArticleSubjectTag>
-                                    <p>{user.uid}</p>
-                                </ArticleSubjectTag>
-                                
-                            </ArticleFooter>
                             
                         </UserDetails>                   
-                    </ArticleCard>
+                    </UserCard>
             // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
@@ -301,6 +485,9 @@ const Container = styled.div`
     padding: 10px 100px;
     display: flex;
     justify-content: space-between;
+`
+const AdminSectionCard = styled.div`
+    border: 1px solid black;
 `
 const Articles = styled.div`
     width: 50%;
@@ -436,19 +623,18 @@ const RightSideBar = styled.div`
         display: none;
     }
 `
+const UserCard = styled.div`
+    border: 1px solid black;
+    display: flex;
+`
 
 const UserDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
-`
-const UserDisplayName = styled.div`
-
+    /* display: flex; */
 `
 const UserEmail = styled.div`
 
-`
-const UserName = styled.div`
-    font-size: 13px;
 `
 const UserButton = styled.div`
     display: flex;
