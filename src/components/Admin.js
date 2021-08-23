@@ -63,6 +63,18 @@ function Admin() {
 
     
     const rootRef = database.ref(`blogs`)
+
+
+
+    const allUsers = () => {
+        
+    } 
+    const disabledUsers = () => {
+
+    } 
+    const admins = () => {
+
+    } 
     
 
     return (
@@ -181,7 +193,22 @@ function Admin() {
 
 
             <RightSideBar>
+                {/* <Choices>
+                    <button class="admins" onClick={admins}>
+                        Admins
+                    </button>
+                    <button class="all-users" onClick={allUsers}>
+                        All Users
+                    </button>
+                    <button class="disabled-users" onClick={disabledUsers}>
+                        Disabled Users
+                    </button>
+                </Choices> */}
+            
             <div>
+                <div>
+                    Admins
+                </div>
             {
                 isAdmin.slice(0).reverse().map((admin, key) => (
                     <AdminSectionCard key={key}>
@@ -189,14 +216,14 @@ function Admin() {
                             <Author>
                                 <div>
                                     <div>
-                                        {admin.isAdmin }
+                                        {/* {admin.isAdmin } */}
                                         
                                         {/* {blog.dateCreated} */}
                                     </div>
                                     {/* <br></br> */}
                                     {/* <br />  */}
                                     <div>
-                                        {admin.uid}
+                                        {/* {admin.uid} */}
                                         {/* {blog.dateCreated} */}
                                     </div>
                                 </div>
@@ -263,28 +290,17 @@ function Admin() {
         }
             </div>
 
-
+                <div>
+                    All Users
+                </div>
 
             {
                 users.slice(0).reverse().map((user, key) => (
+                    
                     <ArticleCard key={key}>
                         <UserDetails>                        
                             <Author>
-                                <AuthorProfileAndName>
-                                    <AuthorProfilePicture>
-                                    {
-                                        user.photoURL ? 
-                                        <img src={user.photoURL} alt="" /> :
-                                        <AccountCircleIcon className="icon"/>
-                                    }
-                                        
-                                    </AuthorProfilePicture>
-
-                                    <UserName>
-                                        {user.displayName}
-                                        {/* {blog.dateCreated} */}
-                                    </UserName>
-                                </AuthorProfileAndName>
+                                
                                 <UserButton>
                                     <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(user))
@@ -357,19 +373,6 @@ function Admin() {
                             <UserEmail>
                                 {user.email}
                             </UserEmail>
-
-                            <ArticleFooter>
-                                <ArticleDatePosted>
-                                    <p>{user.isAdmin}</p>
-                                </ArticleDatePosted>
-                                <ArticleClassTag>
-                                    <p>{user.isDisabled}</p>
-                                </ArticleClassTag>
-                                <ArticleSubjectTag>
-                                    <p>{user.uid}</p>
-                                </ArticleSubjectTag>
-                                
-                            </ArticleFooter>
                             
                         </UserDetails>                   
                     </ArticleCard>
@@ -570,3 +573,7 @@ const UserButton = styled.div`
 
     }
 `
+
+const Choices = styled.div`
+
+` 
