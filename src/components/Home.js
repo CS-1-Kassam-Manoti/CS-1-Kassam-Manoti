@@ -44,7 +44,7 @@ function Home() {
                             <p>Error !</p>
                         </ErrorHeading>
                         <ErrorContent>
-                            Your Account is disabled, Contact Admin @info@admin.com
+                            Your Account <b>{currentUser.email}</b> is disabled, Contact Admin <i>info@admin.com</i>
                         </ErrorContent>
                         <SignIn>
                             <p> <Link to="/login">Sign In with another account</Link></p>
@@ -91,6 +91,14 @@ const ErrorHeading = styled.div`
 `
 const ErrorContent = styled.div`
     padding: 20px;
+
+    b{
+        color: grey;
+    }
+
+    i{
+        color: blue;
+    }
 `
 const SignIn = styled.div`
     text-align: center;

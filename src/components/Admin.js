@@ -9,12 +9,16 @@ import { database } from '../firebase';
 
 function Admin() {
 
+    // const blogRetrieved = localStorage.getItem('blogToDelete')
+    // const blogToDelete = JSON.parse(blogRetrieved)
+
     const [blogs, setBlogs] = useState([])
     const [users, setUsers] = useState([])
     const [isAdmin, setIsAdmin] = useState([])
     const [isDisabled, setDisabled] = useState([])
     const [adminButtonText, setAdminButtonText] = useState("Make Admin")
 
+    const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
 
     useEffect(() => {
@@ -28,6 +32,7 @@ function Admin() {
             setBlogs(allBlogs)
             
         })
+
         const usersRetrieved = database.ref(`/users`)
         // const key = usersRetrieved.key
         usersRetrieved.on('value', snapshot => {
@@ -61,7 +66,6 @@ function Admin() {
 
     }, [])
 
-    
     const rootRef = database.ref(`blogs`)
 
 
@@ -108,6 +112,7 @@ function Admin() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName}
+                                        {/* {blog.postedByName} */}
                                         {/* {blog.dateCreated} */}
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
@@ -118,8 +123,6 @@ function Admin() {
                                         console.log("edit button selected for" + blog.heading)
                                     }} 
                                     >Edit</p> */}
-
-
                                     <p className="delete" onClick={() => {
                                         localStorage.setItem('blog', JSON.stringify(blog))
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
