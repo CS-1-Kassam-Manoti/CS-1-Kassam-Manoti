@@ -36,7 +36,6 @@ function Admin() {
                 allBlogs.push(snap.val())
             })
             setBlogs(allBlogs)
-            
         })
 
         const usersRetrieved = database.ref(`/users`)
@@ -115,9 +114,12 @@ function Admin() {
                                 </AuthorProfileAndName>
                                 <Buttons>
                                     <p className="delete" onClick={() => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('blog', JSON.stringify(blog))
+
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
-                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                        
+                                            const dialog = window.confirm("Are you sure you want to delete?")
                                             if(dialog === true){ 
                                                 const blogRetrieved = localStorage.getItem('blog')
                                                 const blogToDelete = JSON.parse(blogRetrieved)
@@ -137,6 +139,13 @@ function Admin() {
                                                 console.log("No, it was by mistake")
                                                 // history.push(`/Profile`)
                                                 }
+                                        }
+                                        else{
+                                            history.push('/')
+                                        }
+                                        
+                                                
+                                                
                                     }}>Delete</p>
                                 </Buttons>
                             </Author>
@@ -205,25 +214,31 @@ function Admin() {
 
                                     <p className="delete" onClick={(e) => {
                                         // TODO: #18 Check whether the user is an admin
+                                        if(isUserAdmin){
                                         localStorage.setItem('user', JSON.stringify(admin))
                                         console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
                                             e.preventDefault()
                                             const admindb = database.ref('/admin/' + admin.uid)
-
-                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
-                                                if(admindb){
-                                                    if(dialog === true){ 
-                                                        console.log("yes, i want to make them Admin")
-    
-                                                        admindb.remove()
-                                                    }
-                                                    else{
-                                                        console.log("No, it was by mistake")
+                                                
+                                                    const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                    if(admindb){
+                                                        if(dialog === true){ 
+                                                            console.log("yes, i want to make them Admin")
+        
+                                                            admindb.remove()
                                                         }
-                                                    }
-                                                    else{
-                                                        window.reload()
-                                                    }
+                                                        else{
+                                                            console.log("No, it was by mistake")
+                                                            }
+                                                        }
+                                                        else{
+                                                            window.reload()
+                                                        }
+                                                }
+                                                else{
+                                                    history.push('/')
+                                                }
+                                               
                                                 }
                                     }>Remove Admin
                                     </p>
@@ -251,21 +266,27 @@ function Admin() {
                             <UserButton>
 
                                     <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('user', JSON.stringify(disable))
                                         console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
                                             e.preventDefault()
                                             const disabledb = database.ref('/disabled/' + disable.uid)
-
-                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
                                                 
-                                                if(dialog === true){ 
-                                                    console.log("yes, i want to make them Admin")
-
-                                                    disabledb.remove()
+                                                    const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                    if(dialog === true){ 
+                                                        console.log("yes, i want to make them Admin")
+    
+                                                        disabledb.remove()
+                                                    }
+                                                    else{
+                                                        console.log("No, it was by mistake")
+                                                        }
                                                 }
                                                 else{
-                                                    console.log("No, it was by mistake")
-                                                    }
+                                                    history.push('/')
+                                                }
+                                                
                                                 }
                                             
                                     }>Enable
@@ -292,32 +313,39 @@ function Admin() {
                                 
                                 <UserButton>
                                     <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
                                             e.preventDefault()
-                                            const dialog = window.confirm("Are you sure you want to disable the user?")
-                                            if(dialog === true){ 
-                                                console.log("yes, i want to disable the user")
-
-                                                const data = {
-                                                    isDisabled: "true",
-                                                    uid: user.uid,
-                                                    email: user.email,
+                                                const dialog = window.confirm("Are you sure you want to disable the user?")
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to disable the user")
+    
+                                                    const data = {
+                                                        isDisabled: "true",
+                                                        uid: user.uid,
+                                                        email: user.email,
+                                                    }
+                                                    database.ref('/disabled/' + user.uid).set(data)
+                                                        .then(() =>{
+                                                            console.log("disabled user")
+                                                            alert("disabled user")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
                                                 }
-                                                database.ref('/disabled/' + user.uid).set(data)
-                                                    .then(() =>{
-                                                        console.log("disabled user")
-                                                        alert("disabled user")
-                                                    }).catch((e)=>{
-                                                        console.log(e)
-                                                    })
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
                                             }
                                             else{
-                                                console.log("No, it was by mistake")
-                                                }
+                                                history.push('/')
+                                            }
+                                            
                                     }}>Disable</p>
 
                                     <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
                                             e.preventDefault()
@@ -346,6 +374,12 @@ function Admin() {
                                                 else{
                                                     console.log("No, it was by mistake")
                                                     }
+                                            }
+                                            else{
+                                                window.reload()
+                                                history.push('/')
+                                            }
+                                                
                                                 }
                                             
                                     }>Make Admin
