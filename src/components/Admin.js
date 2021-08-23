@@ -300,7 +300,7 @@ function Admin() {
             {
                 users.slice(0).reverse().map((user, key) => (
                     
-                    <ArticleCard key={key}>
+                    <UserCard key={key}>
                         <UserDetails>                        
                             <Author>
                                 
@@ -378,7 +378,7 @@ function Admin() {
                             </UserEmail>
                             
                         </UserDetails>                   
-                    </ArticleCard>
+                    </UserCard>
             // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
@@ -539,19 +539,18 @@ const RightSideBar = styled.div`
         display: none;
     }
 `
+const UserCard = styled.div`
+    border: 1px solid black;
+    display: flex;
+`
 
 const UserDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
-`
-const UserDisplayName = styled.div`
-
+    /* display: flex; */
 `
 const UserEmail = styled.div`
 
-`
-const UserName = styled.div`
-    font-size: 13px;
 `
 const UserButton = styled.div`
     display: flex;
@@ -576,7 +575,3 @@ const UserButton = styled.div`
 
     }
 `
-
-const Choices = styled.div`
-
-` 
