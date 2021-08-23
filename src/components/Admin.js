@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 
-import {useHistory} from 'react-router-dom'
+import {useHistory, Link} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import { database } from '../firebase';
@@ -19,13 +19,17 @@ function Admin() {
     const [isAdmin, setIsAdmin] = useState([])
     const [isDisabled, setDisabled] = useState([])
     const [adminButtonText, setAdminButtonText] = useState("Make Admin")
+    const [isUserAdmin, setIsUserAdmin] = useState("")
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
     
     const { currentUser } = useAuth()
 
-    const isUserAdmin = database.ref('/admin/' + currentUser.uid)
+    // const isUserAdmin = database.ref('/admin/' + currentUser.uid)
+
+    const isAdminUser = database.ref("admin")
+        .child(currentUser.uid)
 
     useEffect(() => {
         const blogsRetrieved = database.ref(`/blogs`)
@@ -70,22 +74,20 @@ function Admin() {
         })
 
 
+        isAdminUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setIsUserAdmin(value)
+            console.log(JSON.stringify(value))
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
     }, [])
 
     const rootRef = database.ref(`blogs`)
-
-
-
-    const allUsers = () => {
-        
-    } 
-    const disabledUsers = () => {
-
-    } 
-    const admins = () => {
-
-    } 
-    
 
     return (
         
@@ -486,9 +488,19 @@ function Admin() {
             </RightSideBar>
         </Container>
         :
-        <div>
-            Error
-        </div>
+        <Error>
+                    <Card>
+                        <ErrorHeading>
+                            <p>Error !</p>
+                        </ErrorHeading>
+                        <ErrorContent>
+                            You dont have Admin rights
+                        </ErrorContent>
+                        <SignIn>
+                            <p> <Link to="/">Redirect to Home</Link></p>
+                        </SignIn>
+                    </Card>
+                </Error>
         
         }
         </ParentContainer>
@@ -680,4 +692,37 @@ const UserButton = styled.div`
         }
 
     }
+`
+const Error = styled.div`
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+`
+const Card = styled.div`
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
+`
+const ErrorHeading = styled.div`
+    text-align: center;
+    font-size: 37px;
+    color: red;
+    font-style: bold;
+    margin: 40px;
+`
+const ErrorContent = styled.div`
+    padding: 20px;
+
+    b{
+        color: grey;
+    }
+
+    i{
+        color: blue;
+    }
+`
+const SignIn = styled.div`
+    text-align: center;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-bottom: 10px;
 `
