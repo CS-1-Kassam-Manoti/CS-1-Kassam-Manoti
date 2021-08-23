@@ -237,7 +237,7 @@ function Admin() {
                             </UserEmail>
                             
                             <UserButton>
-                                    <p className="delete" onClick={(e) => {
+                                    {/* <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(admin))
                                         console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
                                             e.preventDefault()
@@ -262,7 +262,7 @@ function Admin() {
                                             else{
                                                 console.log("No, it was by mistake")
                                                 }
-                                    }}>Disable</p>
+                                    }}>Disable</p> */}
 
                                     <p className="delete" onClick={(e) => {
                                         localStorage.setItem('user', JSON.stringify(admin))
@@ -283,6 +283,90 @@ function Admin() {
                                                 }
                                             
                                     }>Remove Admin
+                                    </p>
+                                </UserButton>
+                        </UserDetails>                   
+                    </AdminSectionCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            )
+        }
+            </div>
+            <div>
+                <div>
+                    Disabled Users
+                </div>
+            {
+                isDisabled.slice(0).reverse().map((disable, key) => (
+                    <AdminSectionCard key={key}>
+                        <UserDetails>                        
+                            <Author>
+                                <div>
+                                    <div>
+                                        {/* {admin.isAdmin } */}
+                                        
+                                        {/* {blog.dateCreated} */}
+                                    </div>
+                                    {/* <br></br> */}
+                                    {/* <br />  */}
+                                    <div>
+                                        {/* {admin.uid} */}
+                                        {/* {blog.dateCreated} */}
+                                    </div>
+                                </div>
+                            </Author>
+
+                            <UserEmail>
+                                {disable.email}
+                            </UserEmail>
+                            
+                            <UserButton>
+                                    {/* <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(disable))
+                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
+                                            e.preventDefault()
+                                            const dialog = window.confirm("Are you sure you want to disable the user?")
+                                            if(dialog === true){ 
+                                                console.log("yes, i want to disable the user")
+
+                                                const data = {
+                                                    isDisabled: "true",
+                                                    uid: disable.uid,
+                                                    // displayName: user.displayName,
+                                                    email: disable.email,
+                                                }
+                                                database.ref('/disabled/' + disable.uid).set(data)
+                                                    .then(() =>{
+                                                        console.log("disabled user")
+                                                        alert("disabled user")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                }
+                                    }}>Enable</p> */}
+
+                                    <p className="delete" onClick={(e) => {
+                                        localStorage.setItem('user', JSON.stringify(disable))
+                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
+                                            e.preventDefault()
+                                            const disabledb = database.ref('/disabled/' + disable.uid)
+
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    disabledb.remove()
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                                }
+                                            
+                                    }>Enable
                                     </p>
                                 </UserButton>
                         </UserDetails>                   
