@@ -7,6 +7,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import { database } from '../firebase';
 
+import { useAuth } from '../contexts/AuthContext'
+
 function Admin() {
 
     // const blogRetrieved = localStorage.getItem('blogToDelete')
@@ -20,6 +22,10 @@ function Admin() {
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
+    
+    const { currentUser } = useAuth()
+
+    const isUserAdmin = database.ref('/admin/' + currentUser.uid)
 
     useEffect(() => {
         const blogsRetrieved = database.ref(`/blogs`)
@@ -82,8 +88,11 @@ function Admin() {
     
 
     return (
+        
         <ParentContainer>
             <Header/>
+            {
+                isUserAdmin ? 
             
         <Container>
             
@@ -265,22 +274,29 @@ function Admin() {
                                     }}>Disable</p> */}
 
                                     <p className="delete" onClick={(e) => {
+                                        // TODO: #18 Check whether the user is an admin
                                         localStorage.setItem('user', JSON.stringify(admin))
                                         console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
                                             e.preventDefault()
                                             const admindb = database.ref('/admin/' + admin.uid)
 
                                                 const dialog = window.confirm("Are you sure you want to make them an admin?")
-                                                
-                                                if(dialog === true){ 
-                                                    console.log("yes, i want to make them Admin")
-
-                                                    admindb.remove()
-                                                }
-                                                else{
-                                                    console.log("No, it was by mistake")
+                                                if(admindb){
+                                                    if(dialog === true){ 
+                                                        console.log("yes, i want to make them Admin")
+    
+                                                        admindb.remove()
+                                                    }
+                                                    else{
+                                                        console.log("No, it was by mistake")
+                                                        }
+                                                    }
+                                                    else{
+                                                        window.reload()
                                                     }
                                                 }
+                                                
+                                                
                                             
                                     }>Remove Admin
                                     </p>
@@ -469,6 +485,12 @@ function Admin() {
         }
             </RightSideBar>
         </Container>
+        :
+        <div>
+            Error
+        </div>
+        
+        }
         </ParentContainer>
     )
 }
