@@ -534,7 +534,7 @@ const ArticleFooter = styled.div`
     display: flex;
     font-size: 11px;
     margin-top: 30px;
-    width: 70%;
+    width: 100%;
     justify-content: space-around;
     color: grey;
 
@@ -554,7 +554,10 @@ const ArticleSubjectTag = styled.div`
 
 `
 const ArticleTopicTag = styled.div`
-    
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`
