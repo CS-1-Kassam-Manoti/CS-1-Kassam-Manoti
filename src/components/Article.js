@@ -81,7 +81,7 @@ function Article() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName ? blog.postedByName : blog.postedByEmail}
-                                        {/* {blog.dateCreated} */}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
                                     </AuthorUserName>
                                 </Author>
 
@@ -174,7 +174,7 @@ const SearchTitle = styled.div`
     align-items: center;
    
 `
-const Bar=styled.div`
+const Bar = styled.div`
     display: flex;
     /* justify-content: space-between; */
     align-items: center;
@@ -241,18 +241,23 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    width: 100%;
+    overflow: hidden;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
+    overflow: hidden;
 
 ` 
 const ArticleFooter = styled.div`
     display: flex;
     font-size: 11px;
     margin-top: 30px;
-    width: 70%;
+    width: 100%;
     justify-content: space-around;
     color: grey;
+    
+    overflow: hidden;
 
     p{
         padding: 4px;
@@ -260,17 +265,26 @@ const ArticleFooter = styled.div`
 `
 const ArticleDatePosted = styled.div`
     font-size: 11px;
-    
+    /* border: 1px solid grey; */
+    overflow: hidden;
     
 `
 const ArticleClassTag = styled.div`
 
+/* border: 1px solid grey; */
+overflow: hidden;
 `
 const ArticleSubjectTag = styled.div`
 
+/* border: 1px solid grey; */
+overflow: hidden;
 `
 const ArticleTopicTag = styled.div`
-    
+    width: 40%;
+    /* border: 1px solid grey; */
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`

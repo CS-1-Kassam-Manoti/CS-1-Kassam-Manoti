@@ -11,6 +11,8 @@ import { database } from '../firebase';
 import { useAuth } from '../contexts/AuthContext'
 // import RichTextEditor from 'react-rte'
 
+import { useHistory } from 'react-router-dom'
+
 export default function CreatePost() {
 
     const [heading, setHeading] = useState("")
@@ -29,6 +31,7 @@ export default function CreatePost() {
     const blogRef = useRef()
 
 
+    const history = useHistory()
     
     const { currentUser, logout } = useAuth()
 
@@ -91,6 +94,7 @@ export default function CreatePost() {
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
+            history.push('/')
         }).catch((e)=>{
             console.log(e)
         })

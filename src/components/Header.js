@@ -237,7 +237,7 @@ const NavigationLinks = styled.div`
     }
 
     .active a{
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid #0582c3;
     }
 `
 
@@ -245,7 +245,7 @@ const Profile = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
+    
 `
 const Hover = styled.div`
     position: absolute;
@@ -344,11 +344,12 @@ const UserIcon = styled.div`
         width: 35px;
         height: 35px;
         border-radius: 50%;
+        color: #0582c3;
     }
 
     img{
         width: 35px;
-        border: 1px solid grey;
+        border: 1px solid #0582c3;
         height: 35px;
         border-radius: 50%;
         
