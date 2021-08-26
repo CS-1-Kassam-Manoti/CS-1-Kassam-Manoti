@@ -41,6 +41,8 @@ export default function Profile() {
         
         }
         
+        console.log(blogs.length)
+        console.log(blogs.datePosted)
 
     return (
         <ParentContainer>
@@ -145,6 +147,9 @@ export default function Profile() {
 
             <RightSideBar>
                 {/* <UpdateProfile className="update-profile"/> */}
+                <BlogsCount>
+                    <p>Total Blogs Written: {blogs.length}</p>
+                </BlogsCount>
             </RightSideBar>
         </Container>
         </ParentContainer>
@@ -294,6 +299,10 @@ const RightSideBar = styled.div`
     width: 30%;
     /* height: 700px; */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    padding: 10px;
 
     
+`
+const BlogsCount = styled.div`
+
 `

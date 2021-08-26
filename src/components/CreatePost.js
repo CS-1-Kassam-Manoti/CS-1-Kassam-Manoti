@@ -95,8 +95,6 @@ export default function CreatePost() {
             console.log(e)
         })
 
-
-
         console.log(data)
 
     }    
@@ -108,8 +106,6 @@ export default function CreatePost() {
             <WritePostContainer>
                 <form onSubmit={handleSubmit}>
 
-                
-                
                     <TitleInput>
                         <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
@@ -192,8 +188,7 @@ export default function CreatePost() {
                     
 
                     <BlogContent>
-                        {/* <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea> */}
-                    {/* <Editor editorState={ editorState } onChange={setEditorState}></Editor> */}
+                        
                     <JoditEditor
                         ref={blogRef}
                         // value={blog}
@@ -201,7 +196,6 @@ export default function CreatePost() {
                         config={config}
                         onBlur={handleBlogContentChange}
             />
-                    {/* <div dangerouslySetInnerHTML={{__html: content}}></div> */}
                     </BlogContent>
 
                     <PostButton>
@@ -222,10 +216,6 @@ const WritePostContainer = styled.div`
     padding: 30px;
 `
 const TitleInput = styled.div`
-    /* width: 100%; */
-    /* border: 1px solid grey; */
-    /* display: flex;
-    justify-content: center; */
     margin-bottom: 10px;
 
     input{
@@ -257,11 +247,9 @@ const Horizontal = styled.div`
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    /* border: 1px solid grey; */
 `
 const DropDown = styled.div`
     display: flex;
-    /* border: 1px solid grey; */
     justify-content: space-between;
     width: 50%;
     flex-wrap: wrap;

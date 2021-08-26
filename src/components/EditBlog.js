@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import { useHistory } from 'react-router-dom'
+
+import JoditEditor from 'jodit-react'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
 // import BlogDataService from "../firebaseDatabase";
@@ -29,6 +31,10 @@ export default function EditBlog() {
     const blogRef = useRef()
 
     const history = useHistory()
+
+    const config = {
+        readonly: false
+    }
     
     const { currentUser, logout } = useAuth()
 
@@ -51,7 +57,7 @@ export default function EditBlog() {
         setTopic(e.target.value)
     }
     const handleBlogContentChange = (e) =>{
-        setBlog(e.target.value)
+        setBlog(blogRef.current.value)
     }
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
@@ -84,7 +90,7 @@ export default function EditBlog() {
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
-            // history.push('/myBlogs')
+            history.push('/myBlogs')
         }).catch((e)=>{
             console.log(e)
         })
@@ -182,10 +188,19 @@ export default function EditBlog() {
                     </Horizontal>
 
                     
-
                     <BlogContent>
+                        
+                        <JoditEditor
+                            ref={blogRef}
+                            value={blogToEdit.blog}
+                            placeholder={blogToEdit.blog}
+                            config={config}
+                            onBlur={handleBlogContentChange}
+                />
+                        </BlogContent>
+                    {/* <BlogContent>
                         <textarea rows="20" columns="80" defaultValue={blogToEdit.blog} placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
-                    </BlogContent>
+                    </BlogContent> */}
 
                     <PostButton>
                         <input className="submit" type="submit" value="submit"></input>

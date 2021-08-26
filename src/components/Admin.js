@@ -262,6 +262,9 @@ function Admin() {
                             <UserEmail>
                                 {disable.email}
                             </UserEmail>
+                            {/* <UserEmail>
+                                {disable.displayName}
+                            </UserEmail> */}
                             
                             <UserButton>
 
@@ -391,6 +394,9 @@ function Admin() {
                             <UserEmail>
                                 {user.email}
                             </UserEmail>
+                            {/* <UserEmail>
+                                {user.displayName}
+                            </UserEmail> */}
                             
                         </UserDetails>                   
                     </UserCard>

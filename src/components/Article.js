@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Footer from './Footer'
+import SearchIcon from '@material-ui/icons/Search';
 
 import { database } from '../firebase';
 
@@ -11,8 +12,6 @@ import BlogDataService from "../firebaseDatabase";
 import { useAuth } from '../contexts/AuthContext'
 
 function Article() {
-
-    // console.log(JSON.stringify(BlogDataService.getAll()))
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
@@ -24,8 +23,6 @@ function Article() {
 
     
         const blog = BlogDataService.getAll()
-        
-            // const storing = database.ref(`/blogs`).orderByChild('postedByUid').equalTo(currentUser.uid)
         useState(() => {
 
             const storing = database.ref(`/blogs`)
@@ -49,119 +46,90 @@ function Article() {
             })
         })
         })
-            
-                
-            
-        
 
-        // componentDidMount() {
-        //     database.ref('/blogs').on('value', snapshot => {
-        //         let allBlogs = [];
-        //         snapshot.forEach(snap => {
-        //             allBlogs.push(snap.val())
-        //         })
-        //         setBlogs(allBlogs)
-        //     })
-        // }
-        
-    
-    // const blog = BlogDataService.getAll()
-    // console.log(BlogDataService.getAll())
 
-    
     return (
-        
-        <ParentContainer>
-            <ArticleSearchbar>  
-                        {/* <ArticleTextDetails>              */}
+            <Container>
+                <Articles>
+                    <ArticleSearchbar>  
                         <SearchTitle>
-                            Search Here                          
+                            {/* Search Here                           */}
                         </SearchTitle> 
                         <Bar>
-                        <div className="search">   
-                        <input type="text" placeholder="Search Article..."/>                        
-                        </div> 
+                            <SearchIcon/>
+                            <input type="text" placeholder="Search Article..."/>                        
                         </Bar> 
-                        {/* </ArticleTextDetails>                     */}
-             
-             </ArticleSearchbar>
-        <Container>
-            
-            
-            
-            <Articles>
-            {
-                blogs.slice(0).reverse().map((blog, key) => (
-                    <ArticleCard key={key} onClick={() => {
-                        localStorage.setItem('blog', JSON.stringify(blog))
-                            history.push(`/blog:${blog.blogId}`)
-                        
-
-                        
-                    }
-                    }>
-                        
-                        <ArticleTextDetails>                        
-                            <Author>
-                                <AuthorProfilePicture>
-                                {
-                                    blog.postedByProfilePic ? 
-                                    <img src={blog.postedByProfilePic} alt="" /> :
-                                    <AccountCircleIcon className="icon"/>
-                                }
-                                    
-                                </AuthorProfilePicture>
-                                <AuthorUserName>
-                                    {blog.postedByName ? blog.postedByName : blog.postedByEmail}
-                                    {/* {blog.dateCreated} */}
-                                </AuthorUserName>
-                            </Author>
-
-                            <ArticleTitle>
-                                {blog.heading}
-                            </ArticleTitle>
-                                        
-                            <ArticleSubTitle>
-                                {blog.subHeading}
-                            </ArticleSubTitle>
-
-                            <ArticleFooter>
-                                <ArticleDatePosted>
-                                    <p>{blog.datePosted}</p>
-                                </ArticleDatePosted>
-                                <ArticleClassTag>
-                                    <p>{blog.Bclass}</p>
-                                </ArticleClassTag>
-                                <ArticleSubjectTag>
-                                    <p>{blog.subject}</p>
-                                </ArticleSubjectTag>
-                                <ArticleTopicTag>
-                                    <p>{blog.topic}</p>
-                                </ArticleTopicTag>
-                                
-                            </ArticleFooter>
+                    </ArticleSearchbar>
+                {
+                    blogs.slice(0).reverse().map((blog, key) => (
+                        <ArticleCard key={key} onClick={() => {
+                            localStorage.setItem('blog', JSON.stringify(blog))
+                                history.push(`/blog:${blog.blogId}`)
                             
-                        </ArticleTextDetails>
+                        }
+                        }>
+                            
+                            <ArticleTextDetails>                        
+                                <Author>
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        {/* {blog.dateCreated} */}
+                                    </AuthorUserName>
+                                </Author>
 
-                        <ArticlePicture>
-                            <img src="images/logo.png" alt="" />
-                        </ArticlePicture>
-                    
-                    </ArticleCard>
-            
-            )
-            )
-        }
-            </Articles>
+                                <ArticleTitle>
+                                    {blog.heading}
+                                </ArticleTitle>
+                                            
+                                <ArticleSubTitle>
+                                    {blog.subHeading}
+                                </ArticleSubTitle>
 
-            <RightSideBar>
-                <Advert>
-                    <img src="images/logo.png" alt="" />
-                </Advert>
-                <Footer/>
-            </RightSideBar>
-        </Container>
-        </ParentContainer>
+                                <ArticleFooter>
+                                    <ArticleDatePosted>
+                                        <p>{blog.datePosted}</p>
+                                    </ArticleDatePosted>
+                                    <ArticleClassTag>
+                                        <p>{blog.Bclass}</p>
+                                    </ArticleClassTag>
+                                    <ArticleSubjectTag>
+                                        <p>{blog.subject}</p>
+                                    </ArticleSubjectTag>
+                                    <ArticleTopicTag>
+                                        <p>{blog.topic}</p>
+                                    </ArticleTopicTag>
+                                    
+                                </ArticleFooter>
+                                
+                            </ArticleTextDetails>
+
+                            <ArticlePicture>
+                                <img src="images/logo.png" alt="" />
+                            </ArticlePicture>
+                        
+                        </ArticleCard>
+                
+                )
+                )
+            }
+                </Articles>
+
+                <RightSideBar>
+                    <Advert>
+                        <img src="images/logo.png" alt="" />
+                    </Advert>
+                    <Footer/>
+                </RightSideBar>
+            </Container>
+        
     );
 
 }
@@ -188,14 +156,12 @@ const Articles = styled.div`
     }
 `
 const ArticleSearchbar=styled.div`
-/* margin-top: 60px; */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
     text-align: center;
     border-radius: 15px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
 `
 const SearchTitle = styled.div`
@@ -203,10 +169,31 @@ const SearchTitle = styled.div`
     font-size: 24px;
     margin-right: 20px;
     text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
    
 `
 const Bar=styled.div`
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    border: 1px solid #0582c3;
+    width: 70%;
+    padding: 5px;
+    border-radius: 15px;
+    color: #0582c3;
 
+    input{
+        border: none;
+        margin-left: 10px;
+        outline: none;
+
+        :hover{
+            outline: none;
+            cursor: text;
+        }
+    }
 `
 
 const ArticleCard = styled.div`
