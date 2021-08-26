@@ -120,7 +120,7 @@ function Header(props) {
     }, [])
 
 
-       console.log(userObject)
+       console.log(JSON.stringify(userObject))
         
     
 
