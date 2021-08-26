@@ -50,7 +50,7 @@ function Article() {
 
     return (
             <Container>
-                <Articles>
+                <LeftSide>
                     <ArticleSearchbar>  
                         <SearchTitle>
                             {/* Search Here                           */}
@@ -60,6 +60,9 @@ function Article() {
                             <input type="text" placeholder="Search Article..."/>                        
                         </Bar> 
                     </ArticleSearchbar>
+                
+                <Articles>
+                    
                 {
                     blogs.slice(0).reverse().map((blog, key) => (
                         <ArticleCard key={key} onClick={() => {
@@ -121,6 +124,7 @@ function Article() {
                 )
             }
                 </Articles>
+        </LeftSide>
 
                 <RightSideBar>
                     <Advert>
@@ -146,8 +150,13 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
 `
-const Articles = styled.div`
+const LeftSide = styled.div`
     width: 60%;
+    /* border: 1px solid grey; */
+`
+const Articles = styled.div`
+    height: 90%;
+    width: 100%;
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
@@ -188,6 +197,7 @@ const Bar = styled.div`
         border: none;
         margin-left: 10px;
         outline: none;
+        width: 100%;
 
         :hover{
             outline: none;
