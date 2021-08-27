@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -16,7 +16,7 @@ function Article() {
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
-
+    const searchRef = useRef()
 
     
     const { currentUser, logout } = useAuth()
@@ -47,17 +47,17 @@ function Article() {
         })
         })
 
+        const handleSearch = () => {
+            console.log(searchRef.current.value)
+        }
 
     return (
             <Container>
                 <LeftSide>
                     <ArticleSearchbar>  
-                        <SearchTitle>
-                            {/* Search Here                           */}
-                        </SearchTitle> 
-                        <Bar>
-                            <SearchIcon/>
-                            <input type="text" placeholder="Search Article..."/>                        
+                        <Bar >
+                            <SearchIcon onClick={handleSearch}/>
+                            <input type="text" ref={searchRef}  placeholder="Search Article..."/>  
                         </Bar> 
                     </ArticleSearchbar>
                 
@@ -117,11 +117,8 @@ function Article() {
                             <ArticlePicture>
                                 <img src="images/logo.png" alt="" />
                             </ArticlePicture>
-                        
                         </ArticleCard>
-                
-                )
-                )
+                ))
             }
                 </Articles>
         </LeftSide>
@@ -139,10 +136,6 @@ function Article() {
 }
 
 export default Article
-
-const ParentContainer = styled.div`
-    
-`
 
 const Container = styled.div`
     height: 85vh;
@@ -165,12 +158,12 @@ const Articles = styled.div`
     }
 `
 const ArticleSearchbar=styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    text-align: center;
-    border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+    
+    
 
 `
 const SearchTitle = styled.div`
@@ -193,7 +186,14 @@ const Bar = styled.div`
     border-radius: 15px;
     color: #0582c3;
 
-    input{
+    /* form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%; */
+
+        input{
         border: none;
         margin-left: 10px;
         outline: none;
@@ -204,6 +204,7 @@ const Bar = styled.div`
             cursor: text;
         }
     }
+/* } */
 `
 
 const ArticleCard = styled.div`
