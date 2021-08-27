@@ -13,7 +13,7 @@ export default function CreatePost() {
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
-    const [topic, setTopic] = useState("")
+    // const [topic, setTopic] = useState("")
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
@@ -22,7 +22,7 @@ export default function CreatePost() {
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
-    const topicRef = useRef()
+    // const topicRef = useRef()
     const blogRef = useRef()
 
 
@@ -45,9 +45,9 @@ export default function CreatePost() {
     const handleSubjectChange = (e) =>{
         setSubject(e.target.value)
     }
-    const handleTopicChange = (e) =>{
-        setTopic(e.target.value)
-    }
+    // const handleTopicChange = (e) =>{
+    //     setTopic(e.target.value)
+    // }
     const handleBlogContentChange = (e) =>{
         // setBlog(e.target.innerHTML)
         setBlog(blogRef.current.value)
@@ -75,7 +75,7 @@ export default function CreatePost() {
         level: level,
         Bclass: Bclass,
         subject: subject,
-        topic: topic,
+        // topic: topic,
         blog: blog,
         datePosted: date
     }
@@ -110,7 +110,7 @@ export default function CreatePost() {
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="Blog SubTitle / Description" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
@@ -177,10 +177,10 @@ export default function CreatePost() {
                         </BlogSubject>
                         </DropDown>
 
-                        <BlogSubjectTopic>
+                        {/* <BlogSubjectTopic>
                             <p>Topic</p>
                             <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} required></input>
-                        </BlogSubjectTopic>
+                        </BlogSubjectTopic> */}
                     
                     </Horizontal>
 
