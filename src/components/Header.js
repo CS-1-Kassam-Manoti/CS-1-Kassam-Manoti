@@ -238,6 +238,7 @@ const NavigationLinks = styled.div`
 
     .active a{
         border-bottom: 1px solid #0582c3;
+        color: #0582c3;
     }
 `
 
@@ -272,49 +273,17 @@ const UpdateProfileButton = styled.div`
     width: 100%;
     margin-top: 5px;
     text-align: center;
-    border-bottom: 1px solid grey;
+    border-bottom: 3px solid #0582c3;
 
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
 
     a{
         :hover{
             cursor: pointer;
-        }
-    }
-`
-
-const MyBlogs = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
-        }
-    }
-`
-
-const Admin = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
+            color: #0582c3;
         }
     }
 `
@@ -328,10 +297,12 @@ const SignOut = styled.div`
     a{
         :hover{
             cursor: pointer;
+            color: #0582c3;
         }
     }
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
     
 `

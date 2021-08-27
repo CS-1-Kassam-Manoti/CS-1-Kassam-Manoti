@@ -145,8 +145,8 @@ const ParentContainer = styled.div`
 `
 
 const Container = styled.div`
-    height: 80vh;
-    padding: 10px 100px;
+    height: 85vh;
+    padding: 10px 100px; 
     display: flex;
     justify-content: space-between;
 `
