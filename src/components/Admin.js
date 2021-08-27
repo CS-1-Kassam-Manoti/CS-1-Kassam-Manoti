@@ -174,7 +174,7 @@ function Admin() {
                                     <p>{blog.subject}</p>
                                 </ArticleSubjectTag>
                                 <ArticleTopicTag>
-                                    <p>{blog.topic}</p>
+                                    <p>{blog.level}</p>
                                 </ArticleTopicTag>
                                 
                             </ArticleFooter>

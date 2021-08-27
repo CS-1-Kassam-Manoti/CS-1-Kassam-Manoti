@@ -2,10 +2,6 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import JoditEditor from 'jodit-react'
-// npm install draft-js
-// import { Editor , EditorState } from 'draft-js'
-// import BlogDataService from "../firebaseDatabase";
-
 import { database } from '../firebase';
 
 import { useAuth } from '../contexts/AuthContext'
@@ -23,7 +19,6 @@ export default function CreatePost() {
     const [Bclass, setClass] = useState("class 1")
     const [blog, setBlog] = useState("Start Writing...")
 
-    // const[editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
@@ -295,8 +290,9 @@ const BlogSubjectTopic = styled.div`
 const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
-    
-    border: 1px solid grey;
+    /* width: 100%; */
+    /* height: 50vh; */
+    /* border: 1px solid grey; */
         padding: 30px;
 
 

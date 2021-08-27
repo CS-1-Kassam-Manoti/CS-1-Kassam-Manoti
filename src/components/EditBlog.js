@@ -303,7 +303,7 @@ const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
     
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
         padding: 30px;
 
 

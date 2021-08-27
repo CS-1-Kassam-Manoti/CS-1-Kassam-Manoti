@@ -15,6 +15,7 @@ function Article() {
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
+    const [filter, setFilter] = useState("")
     const history = useHistory()
     const searchRef = useRef()
 
@@ -46,9 +47,13 @@ function Article() {
             })
         })
         })
+        
+
+        // const datafilter = blogs.includes(searchInput)
 
         const handleSearch = () => {
             console.log(searchRef.current.value)
+            setFilter(searchRef.current.value)
         }
 
     return (
@@ -63,7 +68,62 @@ function Article() {
                 
                 <Articles>
                     
-                {
+                {filter ? 
+                    blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
+                        <ArticleCard key={key} onClick={() => {
+                            localStorage.setItem('blog', JSON.stringify(blog))
+                                history.push(`/blog:${blog.blogId}`)
+                            
+                        }
+                        }>
+                            
+                            <ArticleTextDetails>                        
+                                <Author>
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
+                                    </AuthorUserName>
+                                </Author>
+
+                                <ArticleTitle>
+                                    {blog.heading}
+                                </ArticleTitle>
+                                            
+                                <ArticleSubTitle>
+                                    {blog.subHeading}
+                                </ArticleSubTitle>
+
+                                <ArticleFooter>
+                                    <ArticleDatePosted>
+                                        <p>{blog.datePosted}</p>
+                                    </ArticleDatePosted>
+                                    <ArticleClassTag>
+                                        <p>{blog.Bclass}</p>
+                                    </ArticleClassTag>
+                                    <ArticleSubjectTag>
+                                        <p>{blog.subject}</p>
+                                    </ArticleSubjectTag>
+                                    <ArticleTopicTag>
+                                        <p>{blog.level}</p>
+                                    </ArticleTopicTag>
+                                    
+                                </ArticleFooter>
+                                
+                            </ArticleTextDetails>
+
+                            <ArticlePicture>
+                                <img src="images/logo.png" alt="" />
+                            </ArticlePicture>
+                        </ArticleCard>
+                )) :
                     blogs.slice(0).reverse().map((blog, key) => (
                         <ArticleCard key={key} onClick={() => {
                             localStorage.setItem('blog', JSON.stringify(blog))
@@ -107,7 +167,7 @@ function Article() {
                                         <p>{blog.subject}</p>
                                     </ArticleSubjectTag>
                                     <ArticleTopicTag>
-                                        <p>{blog.topic}</p>
+                                        <p>{blog.level}</p>
                                     </ArticleTopicTag>
                                     
                                 </ArticleFooter>
@@ -218,7 +278,7 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid grey;
+    border: 1px solid #0582c3;
     width: 30px;
     height: 30px;
     margin-right: 8px;
