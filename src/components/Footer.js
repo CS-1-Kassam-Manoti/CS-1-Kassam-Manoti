@@ -44,6 +44,7 @@ const Container = styled.section`
     position: relative;
     bottom: 0;
     padding: 5px;
+    color: #0582c3;
 `
 const Contact = styled.div`
     display: flex;

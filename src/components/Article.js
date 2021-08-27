@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -15,8 +15,9 @@ function Article() {
 
     const [blogs, setBlogs] = useState([])
     const [currentBlog, setCurrentBlog] = useState({})
+    const [filter, setFilter] = useState("")
     const history = useHistory()
-
+    const searchRef = useRef()
 
     
     const { currentUser, logout } = useAuth()
@@ -46,22 +47,29 @@ function Article() {
             })
         })
         })
+        
 
+        // const datafilter = blogs.includes(searchInput)
+
+        const handleSearch = () => {
+            console.log(searchRef.current.value)
+            setFilter(searchRef.current.value)
+        }
 
     return (
             <Container>
-                <Articles>
+                <LeftSide>
                     <ArticleSearchbar>  
-                        <SearchTitle>
-                            {/* Search Here                           */}
-                        </SearchTitle> 
-                        <Bar>
-                            <SearchIcon/>
-                            <input type="text" placeholder="Search Article..."/>                        
+                        <Bar >
+                            <SearchIcon onClick={handleSearch}/>
+                            <input type="text" ref={searchRef}  placeholder="Search Article..."/>  
                         </Bar> 
                     </ArticleSearchbar>
-                {
-                    blogs.slice(0).reverse().map((blog, key) => (
+                
+                <Articles>
+                    
+                {filter ? 
+                    blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
                         <ArticleCard key={key} onClick={() => {
                             localStorage.setItem('blog', JSON.stringify(blog))
                                 history.push(`/blog:${blog.blogId}`)
@@ -81,7 +89,7 @@ function Article() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName ? blog.postedByName : blog.postedByEmail}
-                                        {/* {blog.dateCreated} */}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
                                     </AuthorUserName>
                                 </Author>
 
@@ -104,7 +112,7 @@ function Article() {
                                         <p>{blog.subject}</p>
                                     </ArticleSubjectTag>
                                     <ArticleTopicTag>
-                                        <p>{blog.topic}</p>
+                                        <p>{blog.level}</p>
                                     </ArticleTopicTag>
                                     
                                 </ArticleFooter>
@@ -114,13 +122,66 @@ function Article() {
                             <ArticlePicture>
                                 <img src="images/logo.png" alt="" />
                             </ArticlePicture>
-                        
                         </ArticleCard>
-                
-                )
-                )
+                )) :
+                    blogs.slice(0).reverse().map((blog, key) => (
+                        <ArticleCard key={key} onClick={() => {
+                            localStorage.setItem('blog', JSON.stringify(blog))
+                                history.push(`/blog:${blog.blogId}`)
+                            
+                        }
+                        }>
+                            
+                            <ArticleTextDetails>                        
+                                <Author>
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
+                                    </AuthorUserName>
+                                </Author>
+
+                                <ArticleTitle>
+                                    {blog.heading}
+                                </ArticleTitle>
+                                            
+                                <ArticleSubTitle>
+                                    {blog.subHeading}
+                                </ArticleSubTitle>
+
+                                <ArticleFooter>
+                                    <ArticleDatePosted>
+                                        <p>{blog.datePosted}</p>
+                                    </ArticleDatePosted>
+                                    <ArticleClassTag>
+                                        <p>{blog.Bclass}</p>
+                                    </ArticleClassTag>
+                                    <ArticleSubjectTag>
+                                        <p>{blog.subject}</p>
+                                    </ArticleSubjectTag>
+                                    <ArticleTopicTag>
+                                        <p>{blog.level}</p>
+                                    </ArticleTopicTag>
+                                    
+                                </ArticleFooter>
+                                
+                            </ArticleTextDetails>
+
+                            <ArticlePicture>
+                                <img src="images/logo.png" alt="" />
+                            </ArticlePicture>
+                        </ArticleCard>
+                ))
             }
                 </Articles>
+        </LeftSide>
 
                 <RightSideBar>
                     <Advert>
@@ -136,18 +197,19 @@ function Article() {
 
 export default Article
 
-const ParentContainer = styled.div`
-    
-`
-
 const Container = styled.div`
-    height: 80vh;
-    padding: 10px 100px;
+    height: 85vh;
+    padding: 10px 100px; 
     display: flex;
     justify-content: space-between;
 `
-const Articles = styled.div`
+const LeftSide = styled.div`
     width: 60%;
+    /* border: 1px solid grey; */
+`
+const Articles = styled.div`
+    height: 90%;
+    width: 100%;
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 
@@ -156,25 +218,15 @@ const Articles = styled.div`
     }
 `
 const ArticleSearchbar=styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    text-align: center;
-    border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+    
+    
 
 `
-const SearchTitle = styled.div`
-    font-weight: bold;
-    font-size: 24px;
-    margin-right: 20px;
-    text-align:center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   
-`
-const Bar=styled.div`
+const Bar = styled.div`
     display: flex;
     /* justify-content: space-between; */
     align-items: center;
@@ -184,16 +236,25 @@ const Bar=styled.div`
     border-radius: 15px;
     color: #0582c3;
 
-    input{
+    /* form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%; */
+
+        input{
         border: none;
         margin-left: 10px;
         outline: none;
+        width: 100%;
 
         :hover{
             outline: none;
             cursor: text;
         }
     }
+/* } */
 `
 
 const ArticleCard = styled.div`
@@ -217,7 +278,7 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid grey;
+    border: 1px solid #0582c3;
     width: 30px;
     height: 30px;
     margin-right: 8px;
@@ -241,18 +302,23 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    width: 100%;
+    overflow: hidden;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
+    overflow: hidden;
 
 ` 
 const ArticleFooter = styled.div`
     display: flex;
     font-size: 11px;
     margin-top: 30px;
-    width: 70%;
+    width: 100%;
     justify-content: space-around;
     color: grey;
+    
+    overflow: hidden;
 
     p{
         padding: 4px;
@@ -260,17 +326,26 @@ const ArticleFooter = styled.div`
 `
 const ArticleDatePosted = styled.div`
     font-size: 11px;
-    
+    /* border: 1px solid grey; */
+    overflow: hidden;
     
 `
 const ArticleClassTag = styled.div`
 
+/* border: 1px solid grey; */
+overflow: hidden;
 `
 const ArticleSubjectTag = styled.div`
 
+/* border: 1px solid grey; */
+overflow: hidden;
 `
 const ArticleTopicTag = styled.div`
-    
+    width: 40%;
+    /* border: 1px solid grey; */
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`
@@ -287,7 +362,7 @@ const RightSideBar = styled.div`
     display: relative;
 `
 const Advert = styled.div`
-    height: 75%;
+    height: 70%;
     display: flex;
     align-items: center;
     justify-content: center;

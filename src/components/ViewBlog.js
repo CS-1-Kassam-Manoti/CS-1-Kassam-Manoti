@@ -71,10 +71,10 @@ export default function ViewBlog() {
             </BlogSubject>
             </DropDown>
 
-            <BlogSubjectTopic>
+            {/* <BlogSubjectTopic>
                 <p>Topic:</p>
                 <p>{currentBlog.topic}</p>
-            </BlogSubjectTopic>
+            </BlogSubjectTopic> */}
         
         </Horizontal>
 

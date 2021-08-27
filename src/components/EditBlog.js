@@ -19,7 +19,7 @@ export default function EditBlog() {
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
-    const [topic, setTopic] = useState("")
+    // const [topic, setTopic] = useState("")
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
@@ -27,7 +27,7 @@ export default function EditBlog() {
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
-    const topicRef = useRef()
+    // const topicRef = useRef()
     const blogRef = useRef()
 
     const history = useHistory()
@@ -53,9 +53,9 @@ export default function EditBlog() {
     const handleSubjectChange = (e) =>{
         setSubject(e.target.value)
     }
-    const handleTopicChange = (e) =>{
-        setTopic(e.target.value)
-    }
+    // const handleTopicChange = (e) =>{
+    //     setTopic(e.target.value)
+    // }
     const handleBlogContentChange = (e) =>{
         setBlog(blogRef.current.value)
     }
@@ -75,7 +75,7 @@ export default function EditBlog() {
         level: level ? level : blogToEdit.level,
         Bclass: Bclass ? Bclass : blogToEdit.Bclass,
         subject: subject ? subject : blogToEdit.subject,
-        topic: topic ? topic : blogToEdit.topic,
+        // topic: topic ? topic : blogToEdit.topic,
         blog: blog ? blog : blogToEdit.blog,
         datePosted: date
     }
@@ -113,7 +113,7 @@ export default function EditBlog() {
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" defaultValue={blogToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="Blog SubTitle/Description" defaultValue={blogToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
@@ -180,10 +180,10 @@ export default function EditBlog() {
                         </BlogSubject>
                         </DropDown>
 
-                        <BlogSubjectTopic>
+                        {/* <BlogSubjectTopic>
                             <p>Topic</p>
                             <input type="text" defaultValue={blogToEdit.topic} ref={topicRef} onChange={handleTopicChange} required></input>
-                        </BlogSubjectTopic>
+                        </BlogSubjectTopic> */}
                     
                     </Horizontal>
 
@@ -198,9 +198,6 @@ export default function EditBlog() {
                             onBlur={handleBlogContentChange}
                 />
                         </BlogContent>
-                    {/* <BlogContent>
-                        <textarea rows="20" columns="80" defaultValue={blogToEdit.blog} placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
-                    </BlogContent> */}
 
                     <PostButton>
                         <input className="submit" type="submit" value="submit"></input>
@@ -303,7 +300,7 @@ const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
     
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
         padding: 30px;
 
 

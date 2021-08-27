@@ -136,7 +136,7 @@ function Header(props) {
                     <NavigationLinks>
                         <p className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></p>
                         {/* <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p> */}
-                        <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p>
+                        {/* <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p> */}
                         <p className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </p>
                         <p className={splitLocation[1] === "myblogs" ? "active" : ""}> <Link to="/myblogs">My Blogs</Link> </p>
                         {
@@ -237,7 +237,8 @@ const NavigationLinks = styled.div`
     }
 
     .active a{
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid #0582c3;
+        color: #0582c3;
     }
 `
 
@@ -245,7 +246,7 @@ const Profile = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
+    
 `
 const Hover = styled.div`
     position: absolute;
@@ -272,49 +273,17 @@ const UpdateProfileButton = styled.div`
     width: 100%;
     margin-top: 5px;
     text-align: center;
-    border-bottom: 1px solid grey;
+    border-bottom: 3px solid #0582c3;
 
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
 
     a{
         :hover{
             cursor: pointer;
-        }
-    }
-`
-
-const MyBlogs = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
-        }
-    }
-`
-
-const Admin = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
+            color: #0582c3;
         }
     }
 `
@@ -328,10 +297,12 @@ const SignOut = styled.div`
     a{
         :hover{
             cursor: pointer;
+            color: #0582c3;
         }
     }
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
     
 `
@@ -344,11 +315,12 @@ const UserIcon = styled.div`
         width: 35px;
         height: 35px;
         border-radius: 50%;
+        color: #0582c3;
     }
 
     img{
         width: 35px;
-        border: 1px solid grey;
+        border: 1px solid #0582c3;
         height: 35px;
         border-radius: 50%;
         

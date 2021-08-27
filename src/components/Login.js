@@ -17,10 +17,6 @@ export default function Login() {
     const history = useHistory()
     const { currentUser, logout } = useAuth()
 
-    
-    // const [userObject, setUserObject] = useState("")
-    
-    // const user = database.ref('/users/' + currentUser.uid)
 
      async function handleSubmit (e){
         e.preventDefault()
@@ -30,15 +26,7 @@ export default function Login() {
             setLoading(true)
              await login(emailRef.current.value, passwordRef.current.value)
             
-
-
-
             const time = new Date().getTime().toString()
-
-        
-            
-        
-
         
         console.log(currentUser)
         
@@ -53,16 +41,6 @@ export default function Login() {
         setLoading(false)
         
     }
-
-    
-    // if(currentUser.email == "ishaq.kassam@gmail.com"){
-    //     currentUser.providerData[0].isAdmin = "true"
-    // }
-    // else{
-    //     currentUser.providerDataisAdmin = "false"
-    // }
-
-    // currentUser.isDisabled = "false"
     
     return (        
             <Container>
