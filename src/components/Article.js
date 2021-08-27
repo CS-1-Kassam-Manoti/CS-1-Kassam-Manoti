@@ -166,16 +166,6 @@ const ArticleSearchbar=styled.div`
     
 
 `
-const SearchTitle = styled.div`
-    font-weight: bold;
-    font-size: 24px;
-    margin-right: 20px;
-    text-align:center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   
-`
 const Bar = styled.div`
     display: flex;
     /* justify-content: space-between; */
@@ -312,7 +302,7 @@ const RightSideBar = styled.div`
     display: relative;
 `
 const Advert = styled.div`
-    height: 75%;
+    height: 70%;
     display: flex;
     align-items: center;
     justify-content: center;
