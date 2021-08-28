@@ -304,6 +304,9 @@ const ArticleTitle = styled.div`
     font-size: 24px;
     width: 100%;
     overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;

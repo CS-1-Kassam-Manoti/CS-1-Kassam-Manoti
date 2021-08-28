@@ -305,6 +305,9 @@ const ArticleTitle = styled.div`
     font-weight: bold;
     font-size: 24px;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     :hover{
         text-decoration: underline;
