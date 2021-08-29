@@ -51,20 +51,26 @@ function Article() {
 
         // const datafilter = blogs.includes(searchInput)
 
+
+        const handleChange = () => {
+            setFilter(searchRef.current.value)
+            handleSearch()
+        }
+
         const handleSearch = () => {
             console.log(searchRef.current.value)
             setFilter(searchRef.current.value)
         }
-
-
 
     return (
             <Container>
                 <LeftSide>
                     <ArticleSearchbar>  
                         <Bar >
-                            <SearchIcon onClick={handleSearch}/>
-                            <input type="text" ref={searchRef}  placeholder="Search Article..."/>  
+                            <form onSubmit={handleSearch}>
+                                <SearchIcon type="submit"/>
+                                <input type="text" ref={searchRef} onChange={handleChange} placeholder="Search Article..."/> 
+                            </form>
                         </Bar> 
                     </ArticleSearchbar>
                 
@@ -225,9 +231,6 @@ const ArticleSearchbar=styled.div`
         justify-content: center;
         align-items: center;
     
-    
-    
-
 `
 const Bar = styled.div`
     display: flex;
@@ -239,12 +242,12 @@ const Bar = styled.div`
     border-radius: 15px;
     color: #0582c3;
 
-    /* form{
+    form{
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-        width: 100%; */
+        width: 100%;
 
         input{
         border: none;
@@ -257,7 +260,7 @@ const Bar = styled.div`
             cursor: text;
         }
     }
-/* } */
+}
 `
 
 const ArticleCard = styled.div`
