@@ -462,7 +462,7 @@ const ArticleCard = styled.div`
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
-    width: 80%;
+    width: 60%;
     /* border: 1px solid grey; */
 `
 const Author = styled.div`
@@ -525,6 +525,11 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
