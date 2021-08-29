@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
-
 import {useHistory, Link} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-
 import { database } from '../firebase';
-
 import { useAuth } from '../contexts/AuthContext'
+import SearchIcon from '@material-ui/icons/Search';
 
 function Admin() {
     const [blogs, setBlogs] = useState([])
@@ -16,7 +14,12 @@ function Admin() {
     const [isDisabled, setDisabled] = useState([])
     const [adminButtonText, setAdminButtonText] = useState("Make Admin")
     const [isUserAdmin, setIsUserAdmin] = useState("")
+    
+    const [filter, setFilter] = useState("")
+    const [filteruser, setUserFilter] = useState("")
 
+    const searchRef = useRef()
+    const searchUserRef = useRef()
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
     
@@ -84,6 +87,25 @@ function Admin() {
 
     const rootRef = database.ref(`blogs`)
 
+    const handleChange = () => {
+        setFilter(searchRef.current.value.toLowerCase())
+        handleSearch()
+    }
+
+    const handleSearch = () => {
+        console.log(searchRef.current.value)
+        setFilter(searchRef.current.value.toLowerCase())
+    }
+    const handleUserChange = () => {
+        setUserFilter(searchUserRef.current.value.toLowerCase())
+        handleUserSearch()
+    }
+
+    const handleUserSearch = () => {
+        console.log(searchUserRef.current.value)
+        setUserFilter(searchUserRef.current.value.toLowerCase())
+    }
+
     return (
         
         <ParentContainer>
@@ -93,7 +115,112 @@ function Admin() {
             
         <Container>
             <Articles>
-            {
+            <ArticleSearchbar>  
+                        <Bar >
+                            <form onSubmit={handleSearch}>
+                                <SearchIcon type="submit"/>
+                                <input type="text" ref={searchRef} onChange={handleChange} placeholder="Search Article by Title..."/> 
+                            </form>
+                        </Bar> 
+                    </ArticleSearchbar>
+                
+            {filter ? 
+                blogs.filter(filteredblog => filteredblog.heading.toLowerCase().includes(filter)).slice(0).reverse().map((blog, key) => (
+                    <ArticleCard key={key} 
+                    >
+                        <ArticleTextDetails>                        
+                            <Author>
+                                <AuthorProfileAndName>
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName}
+                                    </AuthorUserName>
+                                </AuthorProfileAndName>
+                                <Buttons>
+                                    <p className="delete" onClick={() => {
+                                        if(isUserAdmin){
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+
+                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
+                                        
+                                            const dialog = window.confirm("Are you sure you want to delete?")
+                                            if(dialog === true){ 
+                                                const blogRetrieved = localStorage.getItem('blog')
+                                                const blogToDelete = JSON.parse(blogRetrieved)
+                                                console.log("yes, i want to delete")
+                                                // const databaseRef = database.ref(`/blogs`)
+                                                rootRef.child(blogToDelete.blogId).remove()
+                                                    .then(() =>{
+                                                        console.log("Deleted successfully")
+                                                        // console.log(theData)
+                                                        alert("Blog Deleted")
+                                                    }).catch((e)=>{
+                                                        console.log(e)
+                                                    })
+                                                    // console.log(theData)
+                                            }
+                                            else{
+                                                console.log("No, it was by mistake")
+                                                // history.push(`/Profile`)
+                                                }
+                                        }
+                                        else{
+                                            history.push('/')
+                                        }
+                                        
+                                                
+                                                
+                                    }}>Delete</p>
+                                </Buttons>
+                            </Author>
+
+                            <ArticleTitle 
+                            onClick={() => {
+                                    localStorage.setItem('blog', JSON.stringify(blog))
+                                        history.push(`/blog:${blog.blogId}`)
+                                }}
+                            >
+                                {blog.heading}
+                            </ArticleTitle>
+                                        
+                            <ArticleSubTitle>
+                                {blog.subHeading}
+                            </ArticleSubTitle>
+
+                            <ArticleFooter>
+                                <ArticleDatePosted>
+                                    <p>{blog.datePosted}</p>
+                                </ArticleDatePosted>
+                                <ArticleClassTag>
+                                    <p>{blog.Bclass}</p>
+                                </ArticleClassTag>
+                                <ArticleSubjectTag>
+                                    <p>{blog.subject}</p>
+                                </ArticleSubjectTag>
+                                <ArticleTopicTag>
+                                    <p>{blog.level}</p>
+                                </ArticleTopicTag>
+                                
+                            </ArticleFooter>
+                            
+                        </ArticleTextDetails>
+
+                        <ArticlePicture>
+                            <img src="images/logo.png" alt="" />
+                        </ArticlePicture>
+                    
+                    </ArticleCard>
+            
+            )
+            ) : 
+            
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} 
                     >
@@ -306,9 +433,111 @@ function Admin() {
                 <div>
                     All Users
                 </div>
+                <ArticleSearchbar>  
+                        <Bar >
+                            <form onSubmit={handleUserSearch}>
+                                <SearchIcon type="submit"/>
+                                <input type="text" ref={searchUserRef} onChange={handleUserChange} placeholder="Search User by Email..."/> 
+                            </form>
+                        </Bar> 
+                </ArticleSearchbar>
+            {filteruser ? 
+                users.filter(filteredblog => filteredblog.email.toLowerCase().includes(filteruser)).slice(0).reverse().map((user, key) => (
+                    
+                    <UserCard key={key}>
+                        <UserDetails>                        
+                            <Author>
+                                
+                                <UserButton>
+                                    <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
+                                            e.preventDefault()
+                                                const dialog = window.confirm("Are you sure you want to disable the user?")
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to disable the user")
+    
+                                                    const data = {
+                                                        isDisabled: "true",
+                                                        uid: user.uid,
+                                                        email: user.email,
+                                                    }
+                                                    database.ref('/disabled/' + user.uid).set(data)
+                                                        .then(() =>{
+                                                            console.log("disabled user")
+                                                            alert("disabled user")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                            }
+                                            else{
+                                                history.push('/')
+                                            }
+                                            
+                                    }}>Disable</p>
 
-            {
-                users.slice(0).reverse().map((user, key) => (
+                                    <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
+                                            e.preventDefault()
+                                            const admin = database.ref('/admin/' + user.uid)
+
+                                            
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    const data = {
+                                                        isAdmin: "true",
+                                                        uid: user.uid,
+                                                        email: user.email,
+                                                    }
+                                                    admin.set(data)
+                                                        .then(() =>{
+                                                            console.log("Make Admin")
+                                                            alert("Specified user is now Admin")
+                                                            setAdminButtonText("Remove Admin")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                            }
+                                            else{
+                                                window.reload()
+                                                history.push('/')
+                                            }
+                                                
+                                                }
+                                            
+                                    }>Make Admin
+                                    </p>
+                                </UserButton>
+                            </Author>
+
+                                        
+                            <UserEmail>
+                                {user.email}
+                            </UserEmail>
+                            {/* <UserEmail>
+                                {user.displayName}
+                            </UserEmail> */}
+                            
+                        </UserDetails>                   
+                    </UserCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            ) : 
+                users.filter(filteredblog => filteredblog.email.toLowerCase().includes(filteruser)).slice(0).reverse().map((user, key) => (
                     
                     <UserCard key={key}>
                         <UserDetails>                        
@@ -451,6 +680,41 @@ const Articles = styled.div`
         display: none;
     }
 `
+const ArticleSearchbar=styled.div`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+`
+const Bar = styled.div`
+    display: flex;
+    align-items: center;
+    border: 1px solid #0582c3;
+    width: 70%;
+    padding: 5px;
+    border-radius: 15px;
+    color: #0582c3;
+
+    form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+
+        input{
+        border: none;
+        margin-left: 10px;
+        outline: none;
+        width: 100%;
+
+        :hover{
+            outline: none;
+            cursor: text;
+        }
+    }
+}
+`
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -462,7 +726,7 @@ const ArticleCard = styled.div`
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
-    width: 80%;
+    width: 60%;
     /* border: 1px solid grey; */
 `
 const Author = styled.div`
@@ -525,6 +789,11 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
@@ -567,7 +836,8 @@ const ArticlePicture = styled.div`
 `
 
 const RightSideBar = styled.div`
-    width: 45%;
+    width: 40%;
+    padding: 15px;
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     /* border: 1px solid grey; */

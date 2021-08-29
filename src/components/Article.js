@@ -4,11 +4,8 @@ import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Footer from './Footer'
 import SearchIcon from '@material-ui/icons/Search';
-
 import { database } from '../firebase';
-
 import BlogDataService from "../firebaseDatabase";
-
 import { useAuth } from '../contexts/AuthContext'
 
 function Article() {
@@ -18,10 +15,7 @@ function Article() {
     const [filter, setFilter] = useState("")
     const history = useHistory()
     const searchRef = useRef()
-
-    
     const { currentUser, logout } = useAuth()
-
     
         const blog = BlogDataService.getAll()
         useState(() => {
@@ -47,13 +41,15 @@ function Article() {
             })
         })
         })
-        
 
-        // const datafilter = blogs.includes(searchInput)
+        const handleChange = () => {
+            setFilter(searchRef.current.value.toLowerCase())
+            handleSearch()
+        }
 
         const handleSearch = () => {
             console.log(searchRef.current.value)
-            setFilter(searchRef.current.value)
+            setFilter(searchRef.current.value.toLowerCase())
         }
 
     return (
@@ -61,15 +57,18 @@ function Article() {
                 <LeftSide>
                     <ArticleSearchbar>  
                         <Bar >
-                            <SearchIcon onClick={handleSearch}/>
-                            <input type="text" ref={searchRef}  placeholder="Search Article..."/>  
+                            <form onSubmit={handleSearch}>
+                                <SearchIcon type="submit"/>
+                                <input type="text" ref={searchRef} onChange={handleChange} placeholder="Search Article by Title..."/> 
+                            </form>
                         </Bar> 
                     </ArticleSearchbar>
                 
                 <Articles>
                     
                 {filter ? 
-                    blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
+                    // blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
+                    blogs.filter(filteredblog => filteredblog.heading.toLowerCase().includes(filter)).slice(0).reverse().map((blog, key) => (
                         <ArticleCard key={key} onClick={() => {
                             localStorage.setItem('blog', JSON.stringify(blog))
                                 history.push(`/blog:${blog.blogId}`)
@@ -190,9 +189,7 @@ function Article() {
                     <Footer/>
                 </RightSideBar>
             </Container>
-        
     );
-
 }
 
 export default Article
@@ -222,13 +219,9 @@ const ArticleSearchbar=styled.div`
         justify-content: center;
         align-items: center;
     
-    
-    
-
 `
 const Bar = styled.div`
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
     border: 1px solid #0582c3;
     width: 70%;
@@ -236,12 +229,12 @@ const Bar = styled.div`
     border-radius: 15px;
     color: #0582c3;
 
-    /* form{
+    form{
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-        width: 100%; */
+        width: 100%;
 
         input{
         border: none;
@@ -254,7 +247,7 @@ const Bar = styled.div`
             cursor: text;
         }
     }
-/* } */
+}
 `
 
 const ArticleCard = styled.div`
@@ -269,7 +262,6 @@ const ArticleCard = styled.div`
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
-    /* border: 1px solid grey; */
 `
 const Author = styled.div`
     display: flex;
@@ -304,6 +296,9 @@ const ArticleTitle = styled.div`
     font-size: 24px;
     width: 100%;
     overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 const ArticleSubTitle = styled.div`
     font-size: 14px;
@@ -326,26 +321,20 @@ const ArticleFooter = styled.div`
 `
 const ArticleDatePosted = styled.div`
     font-size: 11px;
-    /* border: 1px solid grey; */
     overflow: hidden;
     
 `
 const ArticleClassTag = styled.div`
-
-/* border: 1px solid grey; */
 overflow: hidden;
 `
 const ArticleSubjectTag = styled.div`
-
-/* border: 1px solid grey; */
 overflow: hidden;
 `
 const ArticleTopicTag = styled.div`
     width: 40%;
-    /* border: 1px solid grey; */
     white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`
@@ -356,9 +345,7 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
-    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
-    /* border: 1px solid grey; */
     display: relative;
 `
 const Advert = styled.div`
@@ -368,6 +355,5 @@ const Advert = styled.div`
     justify-content: center;
 
     img{
-        /* padding: 30px; */
     }
 `
