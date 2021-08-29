@@ -56,6 +56,8 @@ function Article() {
             setFilter(searchRef.current.value)
         }
 
+
+
     return (
             <Container>
                 <LeftSide>
@@ -69,7 +71,8 @@ function Article() {
                 <Articles>
                     
                 {filter ? 
-                    blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
+                    // blogs.filter(filteredblog => filteredblog.heading == filter).slice(0).reverse().map((blog, key) => (
+                    blogs.filter(filteredblog => filteredblog.heading.includes(filter)).slice(0).reverse().map((blog, key) => (
                         <ArticleCard key={key} onClick={() => {
                             localStorage.setItem('blog', JSON.stringify(blog))
                                 history.push(`/blog:${blog.blogId}`)
