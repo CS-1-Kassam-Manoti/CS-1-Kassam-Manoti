@@ -16,6 +16,7 @@ import EditUser from './components/EditUser';
 import Admin from './components/Admin';
 import AdminLogin from './components/AdminLogin';
 import { AuthProvider } from './contexts/AuthContext'
+import Search from './components/Search'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/signup" component={Signup}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/wait" component={Wait}/>
+                <Route path="/search" component={Search}/>
                 <PrivateRoute path="/update-profile" component={UpdateProfile}/>
                 <PrivateRoute path="/myBlogs" component={Profile}/>
                 <PrivateRoute path="/edit-blog:blogId" component={EditBlog}/>
