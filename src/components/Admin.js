@@ -572,7 +572,8 @@ const ArticlePicture = styled.div`
 `
 
 const RightSideBar = styled.div`
-    width: 45%;
+    width: 40%;
+    padding: 15px;
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px; */
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     /* border: 1px solid grey; */

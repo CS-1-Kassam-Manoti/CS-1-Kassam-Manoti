@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import Header from './Header'
 import styled from 'styled-components'
-
 import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 // import UpdateProfile from './UpdateProfile'
 import { database } from '../firebase';
 // import BlogDataService from "../firebaseDatabase";
 import { useAuth } from '../contexts/AuthContext'
+import {Pie, Doughnut, Bar} from 'react-chartjs-2'
 
 export default function Profile() {
 
@@ -56,6 +56,32 @@ export default function Profile() {
         const distinctLevels = [...new Set(blogs.map(x => x.level))]
         // const distinctClasses = blogs.filter(distinct)
         console.log(distinctClasses)
+
+
+        const classesPie = {
+            labels: ['class 1', 'class 2', 'class 3',
+                     'class 4', 'class 5'],
+            datasets: [
+              {
+                label: 'Classes',
+                backgroundColor: [
+                  '#B21F00',
+                  '#C9DE00',
+                  '#2FDE00',
+                  '#00A6B4',
+                  '#6800B4'
+                ],
+                hoverBackgroundColor: [
+                '#501800',
+                '#4B5000',
+                '#175000',
+                '#003350',
+                '#35014F'
+                ],
+                data: distinctClasses
+              }
+            ]
+          }
     return (
         <ParentContainer>
             <Header/>
@@ -172,6 +198,20 @@ export default function Profile() {
                         }
                     
                     </Classes>      
+                    {/* <Doughnut
+                     data={classesPie}
+                     options={{
+                        title:{
+                          display:true,
+                          text:'Average Rainfall per month',
+                          fontSize:20
+                        },
+                        legend:{
+                          display:true,
+                          position:'right'
+                        }
+                      }}
+                    /> */}
                     
                     <DatesWritten>
                         <p>dates written</p>
