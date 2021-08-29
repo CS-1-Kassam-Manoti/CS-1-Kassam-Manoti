@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import { useHistory } from 'react-router-dom'
+
+import JoditEditor from 'jodit-react'
 // npm install draft-js
 // import { Editor , EditorState } from 'draft-js'
 // import BlogDataService from "../firebaseDatabase";
@@ -17,7 +19,7 @@ export default function EditBlog() {
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
-    const [topic, setTopic] = useState("")
+    // const [topic, setTopic] = useState("")
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
@@ -25,10 +27,14 @@ export default function EditBlog() {
 
     const headingRef = useRef()
     const subHeadingRef = useRef()
-    const topicRef = useRef()
+    // const topicRef = useRef()
     const blogRef = useRef()
 
     const history = useHistory()
+
+    const config = {
+        readonly: false
+    }
     
     const { currentUser, logout } = useAuth()
 
@@ -47,11 +53,11 @@ export default function EditBlog() {
     const handleSubjectChange = (e) =>{
         setSubject(e.target.value)
     }
-    const handleTopicChange = (e) =>{
-        setTopic(e.target.value)
-    }
+    // const handleTopicChange = (e) =>{
+    //     setTopic(e.target.value)
+    // }
     const handleBlogContentChange = (e) =>{
-        setBlog(e.target.value)
+        setBlog(blogRef.current.value)
     }
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
@@ -69,7 +75,7 @@ export default function EditBlog() {
         level: level ? level : blogToEdit.level,
         Bclass: Bclass ? Bclass : blogToEdit.Bclass,
         subject: subject ? subject : blogToEdit.subject,
-        topic: topic ? topic : blogToEdit.topic,
+        // topic: topic ? topic : blogToEdit.topic,
         blog: blog ? blog : blogToEdit.blog,
         datePosted: date
     }
@@ -84,7 +90,7 @@ export default function EditBlog() {
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
-            // history.push('/myBlogs')
+            history.push('/myBlogs')
         }).catch((e)=>{
             console.log(e)
         })
@@ -107,7 +113,7 @@ export default function EditBlog() {
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" defaultValue={blogToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="Blog SubTitle/Description" defaultValue={blogToEdit.subHeading} ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
@@ -174,18 +180,24 @@ export default function EditBlog() {
                         </BlogSubject>
                         </DropDown>
 
-                        <BlogSubjectTopic>
+                        {/* <BlogSubjectTopic>
                             <p>Topic</p>
                             <input type="text" defaultValue={blogToEdit.topic} ref={topicRef} onChange={handleTopicChange} required></input>
-                        </BlogSubjectTopic>
+                        </BlogSubjectTopic> */}
                     
                     </Horizontal>
 
                     
-
                     <BlogContent>
-                        <textarea rows="20" columns="80" defaultValue={blogToEdit.blog} placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea>
-                    </BlogContent>
+                        
+                        <JoditEditor
+                            ref={blogRef}
+                            value={blogToEdit.blog}
+                            placeholder={blogToEdit.blog}
+                            config={config}
+                            onBlur={handleBlogContentChange}
+                />
+                        </BlogContent>
 
                     <PostButton>
                         <input className="submit" type="submit" value="submit"></input>
@@ -288,7 +300,7 @@ const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
     
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
         padding: 30px;
 
 

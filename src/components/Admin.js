@@ -2,21 +2,30 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 
-import {useHistory} from 'react-router-dom'
+import {useHistory, Link} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import { database } from '../firebase';
 
+import { useAuth } from '../contexts/AuthContext'
+
 function Admin() {
-
-    // const blogRetrieved = localStorage.getItem('blogToDelete')
-    // const blogToDelete = JSON.parse(blogRetrieved)
-
     const [blogs, setBlogs] = useState([])
     const [users, setUsers] = useState([])
+    const [isAdmin, setIsAdmin] = useState([])
+    const [isDisabled, setDisabled] = useState([])
+    const [adminButtonText, setAdminButtonText] = useState("Make Admin")
+    const [isUserAdmin, setIsUserAdmin] = useState("")
 
     const [blogToDeleted, setBlogToDeleted] = useState("")
     const history = useHistory()
+    
+    const { currentUser } = useAuth()
+
+    // const isUserAdmin = database.ref('/admin/' + currentUser.uid)
+
+    const isAdminUser = database.ref("admin")
+        .child(currentUser.uid)
 
     useEffect(() => {
         const blogsRetrieved = database.ref(`/blogs`)
@@ -27,7 +36,6 @@ function Admin() {
                 allBlogs.push(snap.val())
             })
             setBlogs(allBlogs)
-            
         })
 
         const usersRetrieved = database.ref(`/users`)
@@ -38,29 +46,56 @@ function Admin() {
                 allUsers.push(snap.val())
             })
             setUsers(allUsers)
+            
         })
+        const usersIsAdminRetrieved = database.ref(`/admin`)
+        // const key = usersRetrieved.key
+        usersIsAdminRetrieved.on('value', snapshot => {
+            let allUsers = [];
+            snapshot.forEach(snap => { 
+                allUsers.push(snap.val())
+            })
+            setIsAdmin(allUsers)
+        })
+
+        const usersIsDisabledRetrieved = database.ref(`/disabled`)
+        // const key = usersRetrieved.key
+        usersIsDisabledRetrieved.on('value', snapshot => {
+            let allUsers = [];
+            snapshot.forEach(snap => { 
+                allUsers.push(snap.val())
+            })
+            setDisabled(allUsers)
+        })
+
+
+        isAdminUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setIsUserAdmin(value)
+            console.log(JSON.stringify(value))
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
     }, [])
 
     const rootRef = database.ref(`blogs`)
 
-    const dialogFunction = () => {
-        
-        }
-
     return (
+        
         <ParentContainer>
             <Header/>
+            {
+                isUserAdmin ? 
             
         <Container>
             <Articles>
             {
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} 
-                    // onClick={() => {
-                    //     localStorage.setItem('blog', JSON.stringify(blog))
-                    //         history.push(`/blog:${blog.blogId}`)                        
-                    // }
-                    // }
                     >
                         <ArticleTextDetails>                        
                             <Author>
@@ -75,21 +110,16 @@ function Admin() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName}
-                                        {/* {blog.postedByName} */}
-                                        {/* {blog.dateCreated} */}
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
                                 <Buttons>
-                                    {/* <p onClick={() => {
-                                        localStorage.setItem('blog', JSON.stringify(blog))
-                                        history.push(`/edit-blog:${blog.blogId}`)
-                                        console.log("edit button selected for" + blog.heading)
-                                    }} 
-                                    >Edit</p> */}
                                     <p className="delete" onClick={() => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('blog', JSON.stringify(blog))
+
                                         console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
-                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                        
+                                            const dialog = window.confirm("Are you sure you want to delete?")
                                             if(dialog === true){ 
                                                 const blogRetrieved = localStorage.getItem('blog')
                                                 const blogToDelete = JSON.parse(blogRetrieved)
@@ -109,6 +139,13 @@ function Admin() {
                                                 console.log("No, it was by mistake")
                                                 // history.push(`/Profile`)
                                                 }
+                                        }
+                                        else{
+                                            history.push('/')
+                                        }
+                                        
+                                                
+                                                
                                     }}>Delete</p>
                                 </Buttons>
                             </Author>
@@ -137,7 +174,7 @@ function Admin() {
                                     <p>{blog.subject}</p>
                                 </ArticleSubjectTag>
                                 <ArticleTopicTag>
-                                    <p>{blog.topic}</p>
+                                    <p>{blog.level}</p>
                                 </ArticleTopicTag>
                                 
                             </ArticleFooter>
@@ -158,67 +195,233 @@ function Admin() {
 
 
 
-
-
             <RightSideBar>
+            
+            <div>
+                <div>
+                    Admins
+                </div>
+            {
+                isAdmin.slice(0).reverse().map((admin, key) => (
+                    <AdminSectionCard key={key}>
+                        <UserDetails>  
+
+                            <UserEmail>
+                                {admin.email}
+                            </UserEmail>
+                            
+                            <UserButton>
+
+                                    <p className="delete" onClick={(e) => {
+                                        // TODO: #18 Check whether the user is an admin
+                                        if(isUserAdmin){
+                                        localStorage.setItem('user', JSON.stringify(admin))
+                                        console.log("disable button selected for" + admin.displayName + "with ID of" + admin.uid)
+                                            e.preventDefault()
+                                            const admindb = database.ref('/admin/' + admin.uid)
+                                                
+                                                    const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                    if(admindb){
+                                                        if(dialog === true){ 
+                                                            console.log("yes, i want to make them Admin")
+        
+                                                            admindb.remove()
+                                                        }
+                                                        else{
+                                                            console.log("No, it was by mistake")
+                                                            }
+                                                        }
+                                                        else{
+                                                            window.reload()
+                                                        }
+                                                }
+                                                else{
+                                                    history.push('/')
+                                                }
+                                               
+                                                }
+                                    }>Remove Admin
+                                    </p>
+                                </UserButton>
+                        </UserDetails>                   
+                    </AdminSectionCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            )
+        }
+            </div>
+            <div>
+                <div>
+                    Disabled Users
+                </div>
+            {
+                isDisabled.slice(0).reverse().map((disable, key) => (
+                    <AdminSectionCard key={key}>
+                        <UserDetails>
+
+                            <UserEmail>
+                                {disable.email}
+                            </UserEmail>
+                            {/* <UserEmail>
+                                {disable.displayName}
+                            </UserEmail> */}
+                            
+                            <UserButton>
+
+                                    <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
+                                        localStorage.setItem('user', JSON.stringify(disable))
+                                        console.log("disable button selected for" + disable.displayName + "with ID of" + disable.uid)
+                                            e.preventDefault()
+                                            const disabledb = database.ref('/disabled/' + disable.uid)
+                                                
+                                                    const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                    if(dialog === true){ 
+                                                        console.log("yes, i want to make them Admin")
+    
+                                                        disabledb.remove()
+                                                    }
+                                                    else{
+                                                        console.log("No, it was by mistake")
+                                                        }
+                                                }
+                                                else{
+                                                    history.push('/')
+                                                }
+                                                
+                                                }
+                                            
+                                    }>Enable
+                                    </p>
+                                </UserButton>
+                        </UserDetails>                   
+                    </AdminSectionCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            )
+            )
+        }
+            </div>
+
+                <div>
+                    All Users
+                </div>
+
             {
                 users.slice(0).reverse().map((user, key) => (
-                    <ArticleCard key={key}>
+                    
+                    <UserCard key={key}>
                         <UserDetails>                        
                             <Author>
-                                <AuthorProfileAndName>
-                                    <AuthorProfilePicture>
-                                    {
-                                        user.photoURL ? 
-                                        <img src={user.photoURL} alt="" /> :
-                                        <AccountCircleIcon className="icon"/>
-                                    }
-                                        
-                                    </AuthorProfilePicture>
-
-                                    <UserName>
-                                        {user.displayName}
-                                        {/* {blog.dateCreated} */}
-                                    </UserName>
-                                </AuthorProfileAndName>
+                                
                                 <UserButton>
-                                    <p className="delete" onClick={() => {
+                                    <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
                                         localStorage.setItem('user', JSON.stringify(user))
                                         console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
-                                        // dialogFunction()
+                                            e.preventDefault()
+                                                const dialog = window.confirm("Are you sure you want to disable the user?")
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to disable the user")
+    
+                                                    const data = {
+                                                        isDisabled: "true",
+                                                        uid: user.uid,
+                                                        email: user.email,
+                                                    }
+                                                    database.ref('/disabled/' + user.uid).set(data)
+                                                        .then(() =>{
+                                                            console.log("disabled user")
+                                                            alert("disabled user")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                            }
+                                            else{
+                                                history.push('/')
+                                            }
+                                            
                                     }}>Disable</p>
+
+                                    <p className="delete" onClick={(e) => {
+                                        if(isUserAdmin){
+                                        localStorage.setItem('user', JSON.stringify(user))
+                                        console.log("disable button selected for" + user.displayName + "with ID of" + user.uid)
+                                            e.preventDefault()
+                                            const admin = database.ref('/admin/' + user.uid)
+
+                                            
+                                                const dialog = window.confirm("Are you sure you want to make them an admin?")
+                                                
+                                                if(dialog === true){ 
+                                                    console.log("yes, i want to make them Admin")
+
+                                                    const data = {
+                                                        isAdmin: "true",
+                                                        uid: user.uid,
+                                                        email: user.email,
+                                                    }
+                                                    admin.set(data)
+                                                        .then(() =>{
+                                                            console.log("Make Admin")
+                                                            alert("Specified user is now Admin")
+                                                            setAdminButtonText("Remove Admin")
+                                                        }).catch((e)=>{
+                                                            console.log(e)
+                                                        })
+                                                }
+                                                else{
+                                                    console.log("No, it was by mistake")
+                                                    }
+                                            }
+                                            else{
+                                                window.reload()
+                                                history.push('/')
+                                            }
+                                                
+                                                }
+                                            
+                                    }>Make Admin
+                                    </p>
                                 </UserButton>
                             </Author>
 
-                            <UserDisplayName>
-                                {user.displayName}
-                            </UserDisplayName>
                                         
                             <UserEmail>
                                 {user.email}
                             </UserEmail>
-
-                            <ArticleFooter>
-                                <ArticleDatePosted>
-                                    <p>{user.isAdmin}</p>
-                                </ArticleDatePosted>
-                                <ArticleClassTag>
-                                    <p>{user.isDisabled}</p>
-                                </ArticleClassTag>
-                                <ArticleSubjectTag>
-                                    <p>{user.uid}</p>
-                                </ArticleSubjectTag>
-                                
-                            </ArticleFooter>
+                            {/* <UserEmail>
+                                {user.displayName}
+                            </UserEmail> */}
                             
                         </UserDetails>                   
-                    </ArticleCard>
-            
+                    </UserCard>
+            // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
         }
             </RightSideBar>
         </Container>
+        :
+        <Error>
+                    <Card>
+                        <ErrorHeading>
+                            <p>Error !</p>
+                        </ErrorHeading>
+                        <ErrorContent>
+                            You dont have Admin rights
+                        </ErrorContent>
+                        <SignIn>
+                            <p> <Link to="/">Redirect to Home</Link></p>
+                        </SignIn>
+                    </Card>
+                </Error>
+        
+        }
         </ParentContainer>
     )
 }
@@ -235,6 +438,9 @@ const Container = styled.div`
     padding: 10px 100px;
     display: flex;
     justify-content: space-between;
+`
+const AdminSectionCard = styled.div`
+    border: 1px solid black;
 `
 const Articles = styled.div`
     width: 50%;
@@ -328,7 +534,7 @@ const ArticleFooter = styled.div`
     display: flex;
     font-size: 11px;
     margin-top: 30px;
-    width: 70%;
+    width: 100%;
     justify-content: space-around;
     color: grey;
 
@@ -348,7 +554,10 @@ const ArticleSubjectTag = styled.div`
 
 `
 const ArticleTopicTag = styled.div`
-    
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`
@@ -370,24 +579,23 @@ const RightSideBar = styled.div`
         display: none;
     }
 `
+const UserCard = styled.div`
+    border: 1px solid black;
+    display: flex;
+`
 
 const UserDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
-`
-const UserDisplayName = styled.div`
-
+    /* display: flex; */
 `
 const UserEmail = styled.div`
 
 `
-const UserName = styled.div`
-    font-size: 13px;
-`
 const UserButton = styled.div`
     display: flex;
     /* border: 1px solid grey; */
-    width: 17%;
+    width: 47%;
     justify-content: space-between;
 
     .delete{
@@ -406,4 +614,37 @@ const UserButton = styled.div`
         }
 
     }
+`
+const Error = styled.div`
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+`
+const Card = styled.div`
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;    
+`
+const ErrorHeading = styled.div`
+    text-align: center;
+    font-size: 37px;
+    color: red;
+    font-style: bold;
+    margin: 40px;
+`
+const ErrorContent = styled.div`
+    padding: 20px;
+
+    b{
+        color: grey;
+    }
+
+    i{
+        color: blue;
+    }
+`
+const SignIn = styled.div`
+    text-align: center;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-bottom: 10px;
 `

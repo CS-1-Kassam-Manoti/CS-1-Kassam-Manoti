@@ -2,30 +2,32 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Header from './Header'
 import JoditEditor from 'jodit-react'
-// npm install draft-js
-// import { Editor , EditorState } from 'draft-js'
-// import BlogDataService from "../firebaseDatabase";
-
 import { database } from '../firebase';
 
 import { useAuth } from '../contexts/AuthContext'
 // import RichTextEditor from 'react-rte'
 
+import { useHistory } from 'react-router-dom'
+
 export default function CreatePost() {
 
     const [heading, setHeading] = useState("")
     const [subHeading, setSubHeading] = useState("")
-    const [topic, setTopic] = useState("")
+    // const [topic, setTopic] = useState("")
     const [level, setLevel] = useState("primary")
     const [subject, setSubject] = useState("maths")
     const [Bclass, setClass] = useState("class 1")
     const [blog, setBlog] = useState("Start Writing...")
-    // const[editorState, setEditorState] = useState(() => EditorState.createEmpty())
+
+
     const headingRef = useRef()
     const subHeadingRef = useRef()
-    const topicRef = useRef()
+    // const topicRef = useRef()
     const blogRef = useRef()
 
+
+    const history = useHistory()
+    
     const { currentUser, logout } = useAuth()
 
     const handleHeadingChange = (e) => {
@@ -43,9 +45,9 @@ export default function CreatePost() {
     const handleSubjectChange = (e) =>{
         setSubject(e.target.value)
     }
-    const handleTopicChange = (e) =>{
-        setTopic(e.target.value)
-    }
+    // const handleTopicChange = (e) =>{
+    //     setTopic(e.target.value)
+    // }
     const handleBlogContentChange = (e) =>{
         // setBlog(e.target.innerHTML)
         setBlog(blogRef.current.value)
@@ -54,6 +56,7 @@ export default function CreatePost() {
     const config = {
         readonly: false
     }
+
 
     var today = new Date()
     // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + (today.getDate())
@@ -72,7 +75,7 @@ export default function CreatePost() {
         level: level,
         Bclass: Bclass,
         subject: subject,
-        topic: topic,
+        // topic: topic,
         blog: blog,
         datePosted: date
     }
@@ -86,11 +89,13 @@ export default function CreatePost() {
         .then(() =>{
             console.log("Uploaded blog to firebase successfully")
             alert("Article Posted Successfully")
+            history.push('/')
         }).catch((e)=>{
             console.log(e)
         })
 
         console.log(data)
+
     }    
 
     return (
@@ -99,12 +104,13 @@ export default function CreatePost() {
 
             <WritePostContainer>
                 <form onSubmit={handleSubmit}>
+
                     <TitleInput>
                         <input type="text" placeholder="Blog Title" ref={headingRef} onChange={handleHeadingChange} required ></input>
                     </TitleInput>
 
                     <SubTitleInput>
-                        <input type="text" placeholder="Blog SubTitle" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
+                        <input type="text" placeholder="Blog SubTitle / Description" ref={subHeadingRef} onChange={handleSubHeadingChange} required></input>
                     </SubTitleInput>
 
                     <Horizontal>
@@ -171,16 +177,17 @@ export default function CreatePost() {
                         </BlogSubject>
                         </DropDown>
 
-                        <BlogSubjectTopic>
+                        {/* <BlogSubjectTopic>
                             <p>Topic</p>
                             <input type="text" placeholder="Topic" ref={topicRef} onChange={handleTopicChange} required></input>
-                        </BlogSubjectTopic>
+                        </BlogSubjectTopic> */}
                     
                     </Horizontal>
 
+                    
+
                     <BlogContent>
-                        {/* <textarea rows="20" columns="80" placeholder="Write your Blog here ..." required ref={blogRef} onChange={handleBlogContentChange} ></textarea> */}
-                    {/* <Editor editorState={ editorState } onChange={setEditorState}></Editor> */}
+                        
                     <JoditEditor
                         ref={blogRef}
                         // value={blog}
@@ -188,7 +195,6 @@ export default function CreatePost() {
                         config={config}
                         onBlur={handleBlogContentChange}
             />
-                    {/* <div dangerouslySetInnerHTML={{__html: content}}></div> */}
                     </BlogContent>
 
                     <PostButton>
@@ -209,10 +215,6 @@ const WritePostContainer = styled.div`
     padding: 30px;
 `
 const TitleInput = styled.div`
-    /* width: 100%; */
-    /* border: 1px solid grey; */
-    /* display: flex;
-    justify-content: center; */
     margin-bottom: 10px;
 
     input{
@@ -244,11 +246,9 @@ const Horizontal = styled.div`
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    /* border: 1px solid grey; */
 `
 const DropDown = styled.div`
     display: flex;
-    /* border: 1px solid grey; */
     justify-content: space-between;
     width: 50%;
     flex-wrap: wrap;
@@ -290,9 +290,11 @@ const BlogSubjectTopic = styled.div`
 const BlogContent = styled.div`
     overflow-y: scroll;
     display: flex;
-    
-    border: 1px solid grey;
+    /* width: 100%; */
+    /* height: 50vh; */
+    /* border: 1px solid grey; */
         padding: 30px;
+
 
     ::-webkit-scrollbar{
         display: none;

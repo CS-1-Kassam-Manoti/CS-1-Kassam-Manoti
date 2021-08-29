@@ -41,11 +41,23 @@ export default function Profile() {
         
         }
         
+        console.log(blogs.length)
+        console.log(blogs.datePosted)
 
+
+
+        const distinct = (value, index, self) => {
+            return self.indexOf(value) === index
+        }
+
+        const distinctClasses = [...new Set(blogs.map(x => x.Bclass))]
+        const distinctDates = [...new Set(blogs.map(x => x.datePosted))]
+        const distinctSubjects = [...new Set(blogs.map(x => x.subject))]
+        const distinctLevels = [...new Set(blogs.map(x => x.level))]
+        // const distinctClasses = blogs.filter(distinct)
+        console.log(distinctClasses)
     return (
         <ParentContainer>
-
-        
             <Header/>
             <Container>
             <Articles>
@@ -125,7 +137,7 @@ export default function Profile() {
                                     <p>{blog.subject}</p>
                                 </ArticleSubjectTag>
                                 <ArticleTopicTag>
-                                    <p>{blog.topic}</p>
+                                    <p>{blog.level}</p>
                                 </ArticleTopicTag>
                                 
                             </ArticleFooter>
@@ -145,6 +157,51 @@ export default function Profile() {
 
             <RightSideBar>
                 {/* <UpdateProfile className="update-profile"/> */}
+                <BlogsStats>
+                    <BlogsCount>
+                        <p>Total Blogs Written: {blogs.length}</p>
+                    </BlogsCount>
+                    
+                    <Classes>
+                        <p>Classes</p> 
+                        {
+                        distinctClasses.map((classdi, key) => (
+                                <p>{classdi}</p>
+                        )
+                        )
+                        }
+                    
+                    </Classes>      
+                    
+                    <DatesWritten>
+                        <p>dates written</p>
+                        {
+                        distinctDates.map((classdi, key) => (
+                                <p>{classdi}</p>
+                        )
+                        )
+                        }
+                    </DatesWritten>
+                    
+                    <Subjects>
+                        <p>Subjects</p>
+                        {
+                        distinctSubjects.map((classdi, key) => (
+                                <p>{classdi}</p>
+                        )
+                        )
+                        }
+                    </Subjects>
+                    <Levels>
+                        <p>Levels</p>
+                        {
+                        distinctLevels.map((classdi, key) => (
+                                <p>{classdi}</p>
+                        )
+                        )
+                        }
+                    </Levels>
+                </BlogsStats>
             </RightSideBar>
         </Container>
         </ParentContainer>
@@ -165,7 +222,7 @@ const Articles = styled.div`
     overflow-y: scroll;
     /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }
@@ -197,7 +254,7 @@ const Author = styled.div`
 const AuthorProfilePicture = styled.div`
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid grey;
+    border: 1px solid #0582c3;
     width: 30px;
     height: 30px;
     margin-right: 8px;
@@ -279,9 +336,11 @@ const ArticleClassTag = styled.div`
 `
 const ArticleSubjectTag = styled.div`
 
-`
+`                       
 const ArticleTopicTag = styled.div`
-    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 //END OF ARTICLE TEXT DESCRIPTIONS STYLING
 const ArticlePicture = styled.div`
@@ -294,6 +353,40 @@ const RightSideBar = styled.div`
     width: 30%;
     /* height: 700px; */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    padding: 10px;
 
     
+`
+const BlogsStats = styled.div`
+
+`
+const BlogsCount = styled.div`
+    margin: 10px; 
+    p:first-of-type{
+        font-weight: bold;
+    }
+`
+const Classes = styled.div`
+    margin: 10px;
+    p:first-of-type{
+        font-weight: bold;
+    }
+`
+const DatesWritten = styled.div`
+    margin: 10px;
+    p:first-of-type{
+        font-weight: bold;
+    }
+`
+const Subjects = styled.div`
+    p:first-of-type{
+        font-weight: bold;
+    }
+    margin: 10px;
+`
+const Levels = styled.div`
+    p:first-of-type{
+        font-weight: bold;
+    }
+    margin: 10px;
 `

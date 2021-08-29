@@ -21,13 +21,16 @@ export default function UpdateProfile() {
     const history = useHistory()
 
     const [file, setFile] = useState("")
-    const [photoURL, setURL] = useState("")
+    const [url, setURL] = useState("")
+
+
+
 
     function handleSubmit (e){
         e.preventDefault()
-        if(passwordRef.current.value !== confirmPasswordRef.current.value){
-            return  setError('The Passswords Do Not Match')
-        }
+        // if(passwordRef.current.value !== confirmPasswordRef.current.value){
+        //     return  setError('The Passswords Do Not Match')
+        // }
 
         const promises = []
         setLoading(false)
@@ -35,12 +38,12 @@ export default function UpdateProfile() {
         if ((nameRef.current.value)){
             promises.push(updateName(nameRef.current.value))
         }
-        if (emailRef.current.value !== currentUser.email){
-            promises.push(updateEmail(emailRef.current.value))
-        }
-        if (passwordRef.current.value){
-            promises.push(updatePassword(passwordRef.current.value))
-        }
+        // if (emailRef.current.value !== currentUser.email){
+        //     promises.push(updateEmail(emailRef.current.value))
+        // }
+        // if (passwordRef.current.value){
+        //     promises.push(updatePassword(passwordRef.current.value))
+        // }
         if (pictureRef.current.value){
             
         storage.ref(`/images/${file.name}`).put(file)
@@ -51,6 +54,7 @@ export default function UpdateProfile() {
               setURL(url);
               console.log('url is ' + url)
               promises.push(updateProfilePicture(url))
+
             }).then(() => {
                 
                 history.push('/')
@@ -68,17 +72,14 @@ export default function UpdateProfile() {
                         })
                     })
                 })
-
-        const usersDb = database.ref(`/users`).orderByChild('uid').equalTo(currentUser.uid)
-                usersDb.once("value", function(snapshot){
+        const storingu = database.ref(`/users`).orderByChild('uid').equalTo(currentUser.uid)
+                storingu.once("value", function(snapshot){
                     snapshot.forEach(function(child){
                         child.ref.update({
-                            photoURL: photoURL,
+                            photoURL: currentUser.photoURL
                         })
                     })
                 })
-
-        
             
         // promises.push(updateProfilePicture(url))
         }
@@ -109,7 +110,7 @@ export default function UpdateProfile() {
         })
         // setLoading(false)
         
-                console.log('url first is ' + photoURL)
+                console.log('url first is ' + url)
                 // history.push('/')
                 // window.location.reload()
                 // console.log(JSON.stringify(currentUser))
@@ -139,17 +140,17 @@ export default function UpdateProfile() {
                         </Name>
                         <Email>
                             <label htmlFor="email">Email Address</label>
-                            {/* <p>{currentUser.email}</p> */}
-                            <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} />
+                            <p>{currentUser.email}</p>
+                            {/* <input id="email" type="email" ref={emailRef} defaultValue={currentUser.email} /> */}
                         </Email>
-                        <Password>
+                        {/* <Password>
                             <label htmlFor="password">Password</label>
                             <input id="password" type="password" ref={passwordRef} placeholder="Leave blank to keep the same" />
                         </Password>
                         <ConfirmPassword>
                             <label htmlFor="confirm_password">Confirm Password</label>
                             <input id="confirm_password" type="password" ref={confirmPasswordRef} placeholder="Leave blank to keep the same" />
-                        </ConfirmPassword>
+                        </ConfirmPassword> */}
                         <UploadImage>
                         <label>Profile Picture</label>
                         <input type="file" className="upload-image" onChange={(e) => { setFile(e.target.files[0]) }} ref={pictureRef}/>

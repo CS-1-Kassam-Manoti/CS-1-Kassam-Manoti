@@ -7,11 +7,14 @@ import { useHistory, Link, useLocation } from 'react-router-dom'
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
 import { useAuth } from '../contexts/AuthContext'
-import { database } from '../firebase'
 
-function Header() {
+import { database } from '../firebase';
+// import Admin from './Admin'
+
+function Header(props) {
 
     const [error, setError] = useState("")
+    // const [userDb, setUserDb] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
@@ -20,8 +23,36 @@ function Header() {
 
     const splitLocation = pathname.split("/")
 
-    const [userObject, setUserObject] = useState("")  
+    const [userObject, setUserObject] = useState("")
+    const [userAdmin, setUserAdmin] = useState("")
 
+    console.log(JSON.stringify(currentUser))
+    
+    const user = database.ref('/users/' + currentUser.uid)
+
+    const isAdminUser = database.ref("admin")
+        .child(currentUser.uid)
+    
+        console.log(isAdminUser)
+    // useEffect(() =>{
+    //     const data = {
+    //         uid: currentUser.uid,
+    //         displayName: currentUser.displayName,
+    //         photoURL: currentUser.photoURL,
+    //         email: currentUser.email,
+    //         emailVerified: currentUser.emailVerified,
+    //         phoneNumber: currentUser.phoneNumber,
+    //         isAnonymous: currentUser.isAnonymous,
+    //         tenantId: currentUser.tenantId,
+    //         isAdmin: userObject.isAdmin ? userObject.isAdmin : false,
+    //         isDisabled: userObject.isDisabled ? userObject.isDisabled : false
+    //     }
+    //     user.set(data)
+    //     console.log("Uploaded a user to database successfully")
+    // }, [])
+    
+    
+    
     const handleLogout = async () => {
         setError('')
 
@@ -36,13 +67,13 @@ function Header() {
 
     
     useEffect(() => {
-        database.ref("/users")
+        
+        database.ref("users")
         .child(currentUser.uid)
         .once("value")
         .then((snapshot) => {
             const value = snapshot.val()
             setUserObject(value)
-            console.log(value)
          })
         .catch(error => ({
            errorCode: error.code,
@@ -52,7 +83,44 @@ function Header() {
     }, [])
 
 
-       console.log(userObject)
+    useEffect(() => {
+        
+        isAdminUser.once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserAdmin(value)
+            console.log(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+        console.log("the current user from the realtime database is as below")
+        console.log(JSON.stringify(userObject))
+        console.log(JSON.stringify(userAdmin))
+        
+    
+    useEffect(() => {
+        database.ref("users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            // console.log(userObject)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
+       console.log(JSON.stringify(userObject))
         
     
 
@@ -67,34 +135,47 @@ function Header() {
 
                     <NavigationLinks>
                         <p className={splitLocation[1] === "" ? "active" : ""}><Link to="/">Home</Link></p>
-                        <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p>
-                        <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p>
+                        {/* <p className={splitLocation[1] === "about" ? "active" : ""}><Link to="/about">About</Link> </p> */}
+                        {/* <p className={splitLocation[1] === "subjects" ? "active" : ""}><Link to="subjects">Levels</Link> </p> */}
                         <p className={splitLocation[1] === "create-post" ? "active" : ""}> <Link to="/create-post">Write</Link> </p>
+                        <p className={splitLocation[1] === "myblogs" ? "active" : ""}> <Link to="/myblogs">My Blogs</Link> </p>
+                        {
+                            userAdmin && 
+                            <p className={splitLocation[1] === "admin" ? "active" : ""}> <Link to="/admin">Admin</Link> </p>
+                        }
+                        
                     </NavigationLinks>
 
                     <Profile>
+                        {/* <UserName>
+                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                        </UserName> */}
                         <UserIcon >
                             {
                                     currentUser.photoURL ? 
                                     <img src={currentUser.photoURL}></img> :
                                     <AccountCircleIcon className="icon"/>
+                                    // <img src={props.urlvar}></img> 
                             }
                             <Hover>
                                 <UserName>
                                     <h5>{currentUser.displayName}</h5>
+                                    {/* <h5>Somthing</h5> */}
                                 </UserName>
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>
                                 </UpdateProfileButton>
-                                <MyBlogs >
+                                {/* <MyBlogs >
                                     <Link to='/myblogs'>My Blogs</Link>
-                                </MyBlogs>
-                                {
-                                    userObject.isAdmin === "true" && 
+                                </MyBlogs> */}
+                                {/* {
+                                 
+                                    userAdmin && 
                                     <Admin>
                                         <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
-                                }
+                                    
+                                } */}
                                 <SignOut onClick={handleLogout}>
                                     <a>Sign out</a>
                                 </SignOut>
@@ -156,7 +237,8 @@ const NavigationLinks = styled.div`
     }
 
     .active a{
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid #0582c3;
+        color: #0582c3;
     }
 `
 
@@ -164,7 +246,7 @@ const Profile = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
+    
 `
 const Hover = styled.div`
     position: absolute;
@@ -191,49 +273,17 @@ const UpdateProfileButton = styled.div`
     width: 100%;
     margin-top: 5px;
     text-align: center;
-    border-bottom: 1px solid grey;
+    border-bottom: 3px solid #0582c3;
 
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
 
     a{
         :hover{
             cursor: pointer;
-        }
-    }
-`
-
-const MyBlogs = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
-        }
-    }
-`
-
-const Admin = styled.div`
-    width: 100%;
-    margin-top: 5px;
-    text-align: center;
-    border-bottom: 1px solid grey;
-
-    :hover{
-        background-color: lightgrey;
-    }
-
-    a{
-        :hover{
-            cursor: pointer;
+            color: #0582c3;
         }
     }
 `
@@ -247,10 +297,12 @@ const SignOut = styled.div`
     a{
         :hover{
             cursor: pointer;
+            color: #0582c3;
         }
     }
     :hover{
-        background-color: lightgrey;
+        /* background-color: lightgrey; */
+        color: #0582c3;
     }
     
 `
@@ -263,11 +315,12 @@ const UserIcon = styled.div`
         width: 35px;
         height: 35px;
         border-radius: 50%;
+        color: #0582c3;
     }
 
     img{
         width: 35px;
-        border: 1px solid grey;
+        border: 1px solid #0582c3;
         height: 35px;
         border-radius: 50%;
         
