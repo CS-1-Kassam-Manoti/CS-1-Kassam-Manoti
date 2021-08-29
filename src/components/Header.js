@@ -6,61 +6,21 @@ import { useHistory, Link, useLocation } from 'react-router-dom'
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import useDropdownMenu from 'react-accessible-dropdown-menu-hook'; //installed via 'npm install react-accessible-dropdown-menu-hook'
 
-
 import { useAuth } from '../contexts/AuthContext'
+import { database } from '../firebase'
 
-import { database } from '../firebase';
-// import Admin from './Admin'
-
-function Header(props) {
+function Header() {
 
     const [error, setError] = useState("")
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const location = useLocation()
 
-    
-    
     const { pathname } = location
 
     const splitLocation = pathname.split("/")
 
-    // currentUser.providerData[0].isAdmin = "false"
-    // currentUser.isAdmin = "false"
-    // currentUser.providerData[0].disabled = "true"
-    console.log(JSON.stringify(currentUser))
-    
-    
-    if(currentUser.email == "ishaq.kassam@gmail.com"){
-        currentUser.providerData[0].isAdmin = "true"
-        currentUser.providerData[0].isDisabled = "false"
-    }
-    else{
-        currentUser.providerData[0].isAdmin = "false"
-        currentUser.providerData[0].isDisabled = "false"
-    }
-
-    // currentUser.isDisabled = "false"
-    useEffect(() =>{
-        const data = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            email: currentUser.email,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            isAnonymous: currentUser.isAnonymous,
-            tenantId: currentUser.tenantId,
-            isAdmin: currentUser.providerData[0].isAdmin,
-            isDisabled: currentUser.providerData[0].isDisabled,
-
-        }
-        database.ref('/users/' + data.uid).set(data)
-        console.log("Uploaded a user to database successfully")
-        console.log(data)
-    }, [])
-    
-    
+    const [userObject, setUserObject] = useState("")  
 
     const handleLogout = async () => {
         setError('')
@@ -74,10 +34,26 @@ function Header(props) {
         }
     }
 
-    console.log(JSON.stringify(currentUser))
     
-    // const email = currentUser.email
-    // const name = email.substring(0, email.indexOf("." || '@'))
+    useEffect(() => {
+        database.ref("/users")
+        .child(currentUser.uid)
+        .once("value")
+        .then((snapshot) => {
+            const value = snapshot.val()
+            setUserObject(value)
+            console.log(value)
+         })
+        .catch(error => ({
+           errorCode: error.code,
+           errorMessage: error.message
+         }));
+
+    }, [])
+
+
+       console.log(userObject)
+        
     
 
     return (
@@ -97,19 +73,15 @@ function Header(props) {
                     </NavigationLinks>
 
                     <Profile>
-                        {/* <UserName>
-                            <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
-                        </UserName> */}
                         <UserIcon >
                             {
                                     currentUser.photoURL ? 
                                     <img src={currentUser.photoURL}></img> :
                                     <AccountCircleIcon className="icon"/>
-                                    // <img src={props.urlvar}></img> 
                             }
                             <Hover>
                                 <UserName>
-                                    <h5>{currentUser.displayName ? currentUser.displayName : currentUser.email}</h5>
+                                    <h5>{currentUser.displayName}</h5>
                                 </UserName>
                                 <UpdateProfileButton >
                                     <Link to="/update-profile">Update Profile</Link>
@@ -118,9 +90,9 @@ function Header(props) {
                                     <Link to='/myblogs'>My Blogs</Link>
                                 </MyBlogs>
                                 {
-                                    currentUser.providerData[0].isAdmin == "true" && 
+                                    userObject.isAdmin === "true" && 
                                     <Admin>
-                                        <a> <Link to='/admin'>Admin</Link></a>
+                                        <p> <Link to='/admin'>Admin</Link></p>
                                     </Admin>
                                 }
                                 <SignOut onClick={handleLogout}>

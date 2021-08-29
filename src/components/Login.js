@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components' //installed via "npm install styled-components"
 import { Link, useHistory } from 'react-router-dom' //installed via "npm install react-router-dom"
 import { useAuth } from '../contexts/AuthContext'
@@ -17,6 +17,43 @@ export default function Login() {
     const history = useHistory()
     const { currentUser, logout } = useAuth()
 
+    
+    const [userDb, setUserDb] = useState("")
+
+    
+    useEffect(() =>{
+        if(currentUser){
+            const data = {
+                uid: currentUser.uid,
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL,
+                email: currentUser.email,
+                emailVerified: currentUser.emailVerified,
+                phoneNumber: currentUser.phoneNumber,
+                isAnonymous: currentUser.isAnonymous,
+                tenantId: currentUser.tenantId,
+                isAdmin: currentUser.providerData[0].isAdmin,
+                isDisabled: currentUser.providerData[0].isDisabled,
+    
+            }
+            database.ref('/users/' + data.uid).set(data)
+            console.log("Uploaded a user to database successfully")
+    
+            const dbRef = database.ref();
+            dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
+              if (snapshot.exists()) {
+                console.log(snapshot.val());
+                setUserDb(snapshot.val())
+              } else {
+                console.log("No data available");
+              }
+            }).catch((error) => {
+              console.error(error);
+            });
+    
+        }
+                // console.log(data)
+    }, [])
 
     async function handleSubmit (e){
         e.preventDefault()
@@ -31,24 +68,6 @@ export default function Login() {
 
             const time = new Date().getTime().toString()
 
-        // .then(() => {
-        //     const data = {
-        //     uid: currentUser.uid,
-        //     displayName: currentUser.displayName,
-        //     photoUrl: currentUser.photoUrl,
-        //     email: currentUser.email,
-        //     emailVerified: currentUser.emailVerified,
-        //     phoneNumber: currentUser.phoneNumber,
-        //     isAnonymous: currentUser.isAnonymous,
-        //     tenantId: currentUser.tenantId,
-        //     tenantId: currentUser.displayName,
-        // }
-        // database.ref('/users/' + data.uid).set(data)
-        // console.log("Uploaded a user to database successfully")
-        // console.log(data)
-        // })
-
-        
         console.log(currentUser)
         history.push('/')
 
@@ -60,16 +79,6 @@ export default function Login() {
         setLoading(false)
 
     }
-
-    
-    // if(currentUser.email == "ishaq.kassam@gmail.com"){
-    //     currentUser.providerData[0].isAdmin = "true"
-    // }
-    // else{
-    //     currentUser.providerDataisAdmin = "false"
-    // }
-
-    // currentUser.isDisabled = "false"
     
 
     return (        

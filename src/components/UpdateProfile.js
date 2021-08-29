@@ -21,10 +21,7 @@ export default function UpdateProfile() {
     const history = useHistory()
 
     const [file, setFile] = useState("")
-    const [url, setURL] = useState("")
-
-
-
+    const [photoURL, setURL] = useState("")
 
     function handleSubmit (e){
         e.preventDefault()
@@ -71,6 +68,17 @@ export default function UpdateProfile() {
                         })
                     })
                 })
+
+        const usersDb = database.ref(`/users`).orderByChild('uid').equalTo(currentUser.uid)
+                usersDb.once("value", function(snapshot){
+                    snapshot.forEach(function(child){
+                        child.ref.update({
+                            photoURL: photoURL,
+                        })
+                    })
+                })
+
+        
             
         // promises.push(updateProfilePicture(url))
         }
@@ -92,7 +100,7 @@ export default function UpdateProfile() {
         }).then(() => {
             
         history.push('/')
-        window.location.reload();
+        // window.location.reload();
         }).
         catch(() => {
             setError('Failed to update account')
@@ -101,7 +109,7 @@ export default function UpdateProfile() {
         })
         // setLoading(false)
         
-                console.log('url first is ' + url)
+                console.log('url first is ' + photoURL)
                 // history.push('/')
                 // window.location.reload()
                 // console.log(JSON.stringify(currentUser))
