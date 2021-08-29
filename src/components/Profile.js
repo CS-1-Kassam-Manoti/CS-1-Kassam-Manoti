@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import Header from './Header'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
@@ -7,7 +7,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { database } from '../firebase';
 // import BlogDataService from "../firebaseDatabase";
 import { useAuth } from '../contexts/AuthContext'
-import {Pie, Doughnut, Bar} from 'react-chartjs-2'
+import {Pie, Doughnut,} from 'react-chartjs-2'
+import SearchIcon from '@material-ui/icons/Search';
 
 export default function Profile() {
 
@@ -17,6 +18,8 @@ export default function Profile() {
     const [blogs, setBlogs] = useState([])
     // const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
+    const searchRef = useRef()
+    const [filter, setFilter] = useState("")
     
     const { currentUser } = useAuth()
     
@@ -57,37 +60,119 @@ export default function Profile() {
         // const distinctClasses = blogs.filter(distinct)
         console.log(distinctClasses)
 
+        const handleChange = () => {
+            setFilter(searchRef.current.value.toLowerCase())
+            handleSearch()
+        }
 
-        const classesPie = {
-            labels: ['class 1', 'class 2', 'class 3',
-                     'class 4', 'class 5'],
-            datasets: [
-              {
-                label: 'Classes',
-                backgroundColor: [
-                  '#B21F00',
-                  '#C9DE00',
-                  '#2FDE00',
-                  '#00A6B4',
-                  '#6800B4'
-                ],
-                hoverBackgroundColor: [
-                '#501800',
-                '#4B5000',
-                '#175000',
-                '#003350',
-                '#35014F'
-                ],
-                data: distinctClasses
-              }
-            ]
-          }
+        const handleSearch = () => {
+            console.log(searchRef.current.value)
+            setFilter(searchRef.current.value.toLowerCase())
+        }
     return (
         <ParentContainer>
             <Header/>
             <Container>
             <Articles>
-            {
+                    <ArticleSearchbar>  
+                        <Bar >
+                            <form onSubmit={handleSearch}>
+                                <SearchIcon type="submit"/>
+                                <input type="text" ref={searchRef} onChange={handleChange} placeholder="Search Article by Title..."/> 
+                            </form>
+                        </Bar> 
+                    </ArticleSearchbar>
+            {filter ? 
+                blogs.filter(filteredblog => filteredblog.heading.toLowerCase().includes(filter)).slice(0).reverse().map((blog, key) => (
+                    <ArticleCard key={key} >
+                        
+                        <ArticleTextDetails>                        
+                            <AuthorContainer>
+                                <Author>                                    
+                                    <AuthorProfilePicture>
+                                    {
+                                        blog.postedByProfilePic ? 
+                                        <img src={blog.postedByProfilePic} alt="" /> :
+                                        <AccountCircleIcon className="icon"/>
+                                    }
+                                        
+                                    </AuthorProfilePicture>
+                                    <AuthorUserName>
+                                        {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        {/* {blog.dateCreated} */}
+                                    </AuthorUserName>
+                                </Author>
+                                <Buttons>
+                                    <p onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        history.push(`/edit-blog:${blog.blogId}`)
+                                        console.log("edit button selected for" + blog.heading)
+                                    }} 
+                                    >Edit</p>
+                                    <p className="delete" onClick={() => {
+                                        localStorage.setItem('blog', JSON.stringify(blog))
+                                        console.log("delete button selected for" + blog.heading + "with ID of" + blog.blogId)
+                                        const dialog = window.confirm("Are you sure you want to delete?")
+                                        if(dialog === true){
+                                            console.log("yes, i want to delete")
+                                            // const databaseRef = database.ref(`/blogs`)
+                                            rootRef.child(blogToDelete.blogId).remove()
+                                                .then(() =>{
+                                                    console.log("Deleted successfully")
+                                                    // console.log(theData)
+                                                    alert("Blog Deleted")
+                                                }).catch((e)=>{
+                                                    console.log(e)
+                                                })
+                                                // console.log(theData)
+                                        }
+                                        else{
+                                            console.log("No, it was by mistake")
+                                            // history.push(`/Profile`)
+                                            }
+                                    }}>Delete</p>
+                                </Buttons>
+                            </AuthorContainer>
+
+                            <ArticleTitle onClick={() => {
+                        localStorage.setItem('blog', JSON.stringify(blog))
+                            history.push(`/blog:${blog.blogId}`)
+                        
+                    }
+                    } >
+                                {blog.heading}
+                            </ArticleTitle>
+                                        
+                            <ArticleSubTitle>
+                                {blog.subHeading}
+                            </ArticleSubTitle>
+
+                            <ArticleFooter>
+                                <ArticleDatePosted>
+                                    <p>{blog.datePosted}</p>
+                                </ArticleDatePosted>
+                                <ArticleClassTag>
+                                    <p>{blog.Bclass}</p>
+                                </ArticleClassTag>
+                                <ArticleSubjectTag>
+                                    <p>{blog.subject}</p>
+                                </ArticleSubjectTag>
+                                <ArticleTopicTag>
+                                    <p>{blog.level}</p>
+                                </ArticleTopicTag>
+                                
+                            </ArticleFooter>
+                            
+                        </ArticleTextDetails>
+
+                        <ArticlePicture>
+                            <img src="images/logo.png" alt="" />
+                        </ArticlePicture>
+                    
+                    </ArticleCard>
+            
+            )
+            ) :
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} >
                         
@@ -197,21 +282,7 @@ export default function Profile() {
                         )
                         }
                     
-                    </Classes>      
-                    {/* <Doughnut
-                     data={classesPie}
-                     options={{
-                        title:{
-                          display:true,
-                          text:'Average Rainfall per month',
-                          fontSize:20
-                        },
-                        legend:{
-                          display:true,
-                          position:'right'
-                        }
-                      }}
-                    /> */}
+                    </Classes>    
                     
                     <DatesWritten>
                         <p>dates written</p>
@@ -267,6 +338,45 @@ const Articles = styled.div`
         display: none;
     }
 `
+
+const ArticleSearchbar=styled.div`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* border: 1px solid grey; */
+    
+`
+
+const Bar = styled.div`
+    display: flex;
+    align-items: center;
+    border: 1px solid #0582c3;
+    width: 70%;
+    padding: 5px;
+    border-radius: 15px;
+    color: #0582c3;
+
+    form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+
+        input{
+        border: none;
+        margin-left: 10px;
+        outline: none;
+        width: 100%;
+
+        :hover{
+            outline: none;
+            cursor: text;
+        }
+    }
+}
+`
+
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
