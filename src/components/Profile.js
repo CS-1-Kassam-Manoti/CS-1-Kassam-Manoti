@@ -45,7 +45,6 @@ export default function Profile() {
         }
         
         console.log(blogs.length)
-        console.log(blogs)
         console.log(blogs.datePosted)
 
 
@@ -180,6 +179,7 @@ export default function Profile() {
             ) :
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} >
+                        
                         <ArticleTextDetails>                        
                             <AuthorContainer>
                                 <Author>                                    
