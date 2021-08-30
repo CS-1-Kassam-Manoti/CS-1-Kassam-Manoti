@@ -45,6 +45,7 @@ export default function Profile() {
         }
         
         console.log(blogs.length)
+        console.log(blogs)
         console.log(blogs.datePosted)
 
 
@@ -58,6 +59,10 @@ export default function Profile() {
         const distinctSubjects = [...new Set(blogs.map(x => x.subject))]
         const distinctLevels = [...new Set(blogs.map(x => x.level))]
         // const distinctClasses = blogs.filter(distinct)
+
+
+        //getting the number of blogs for each metric
+        const distinctClassesCount = distinctClasses.length
         console.log(distinctClasses)
 
         const handleChange = () => {
@@ -175,7 +180,6 @@ export default function Profile() {
             ) :
                 blogs.slice(0).reverse().map((blog, key) => (
                     <ArticleCard key={key} >
-                        
                         <ArticleTextDetails>                        
                             <AuthorContainer>
                                 <Author>                                    
@@ -267,7 +271,6 @@ export default function Profile() {
             </Articles>
 
             <RightSideBar>
-                {/* <UpdateProfile className="update-profile"/> */}
                 <BlogsStats>
                     <BlogsCount>
                         <p>Total Blogs Written: {blogs.length}</p>
@@ -277,18 +280,21 @@ export default function Profile() {
                         <p>Classes</p> 
                         {
                         distinctClasses.map((classdi, key) => (
+                            <>
                                 <p>{classdi}</p>
-                        )
-                        )
+                            </>
+                        ))
                         }
-                    
                     </Classes>    
                     
                     <DatesWritten>
                         <p>dates written</p>
                         {
                         distinctDates.map((classdi, key) => (
-                                <p>{classdi}</p>
+                            <>
+                            <p>{classdi}</p>
+                            {/* <p>{classdi.length}</p> */}
+                        </>
                         )
                         )
                         }
@@ -307,7 +313,10 @@ export default function Profile() {
                         <p>Levels</p>
                         {
                         distinctLevels.map((classdi, key) => (
-                                <p>{classdi}</p>
+                            <>
+                            <p>{classdi}</p>
+                            {/* <p>{distinctLevelsCount}</p> */}
+                        </>
                         )
                         )
                         }
