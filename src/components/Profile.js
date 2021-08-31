@@ -9,7 +9,9 @@ import { database } from '../firebase';
 import { useAuth } from '../contexts/AuthContext'
 // import {Pie, Doughnut,} from 'react-chartjs-2'
 import SearchIcon from '@material-ui/icons/Search';
-import { LineChart, Line, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, Pie, PieChart, ResponsiveContainer, XAxis,
+    YAxis,Legend, Tooltip,
+    CartesianGrid } from 'recharts';
 
 export default function Profile() {
 
@@ -81,11 +83,8 @@ export default function Profile() {
               
             arr.forEach((x)=>{
                  
-              // Checking if there is any object in arr2
-              // which contains the key value
                if(arr2.some((val)=>{ return val[key] == x[key] })){
                    
-                 // If yes! then increase the occurrence by 1
                  arr2.forEach((k)=>{
                    if(k[key] === x[key]){ 
                      k["occurrence"]++
@@ -93,9 +92,6 @@ export default function Profile() {
                 })
                    
                }else{
-                 // If not! Then create a new object initialize 
-                 // it with the present iteration key's value and 
-                 // set the occurrence to 1
                  let a = {}
                  a[key] = x[key]
                  a["occurrence"] = 1
@@ -105,26 +101,15 @@ export default function Profile() {
               
             return arr2
           }
-
-
     console.log(blogs)
     console.log(bClass)
 
     const BClassCount = findOcc(blogs, "Bclass")
+    const levelCount = findOcc(blogs, "level")
+    const subjectCount = findOcc(blogs, "subject")
+    const dateCount = findOcc(blogs, "datePosted")
     console.log(findOcc(blogs, "Bclass"))
     console.log(distinctClasses)
-
-    const PieClasses = {
-        labels: BClassCount.Bclass,
-        datasets: [{
-            data: BClassCount.occurence,
-            backgroundColor: ['red', 'blue', 'green']
-        }]
-    }
-
-    // const classLabel = function(){
-    //     return BClassCount.Bclass
-    // }
 
     return (
         <ParentContainer>
@@ -328,8 +313,9 @@ export default function Profile() {
                     <BlogsCount>
                         <p>Total Blogs Written: {blogs.length}</p>
                     </BlogsCount>
-                    <ResponsiveContainer width={450} height={450}>
-                        <PieChart height="100%" width="100%">
+                    <p><b>Classes</b></p>
+                    {/* <ResponsiveContainer width={450} height={450}> */}
+                        <PieChart width={450} height={450}>
                             <Pie
                                 data={BClassCount}
                                 cx="50%"
@@ -366,38 +352,103 @@ export default function Profile() {
                                 }}
                             />
                         </PieChart>
-                    </ResponsiveContainer>
+                    {/* </ResponsiveContainer> */}
                     
-                    <DatesWritten>
-                        <p>dates written</p>
-                        {
-                        distinctDates.map((classdi, key) => (
-                            <>
-                            <p>{classdi}</p>
-                            {/* <p>{classdi.length}</p> */}
-                        </>
-                        )
-                        )
-                        }
-                    </DatesWritten>
-                    
-                    <Subjects>
-                        <p>Subjects</p>
-                        {
-                        distinctSubjects.map((classdi, key) => (
-                                <p>{classdi}</p>
-                        ))}
-                    </Subjects>
-                    <Levels>
-                        <p>Levels</p>
-                        {distinctLevels.map((classdi, key) => (
-                            <>
-                            <p>{classdi}</p>
-                            {/* <p>{distinctLevelsCount}</p> */}
-                        </>
-                        ))}
-                        
-                    </Levels>
+                    <p><b>Date Posted</b></p>
+                    <LineChart 
+                        width={400} height={250} data={dateCount}
+                        margin={{ top: 20, right: 0, left: 0, bottom: 30 }}
+                        >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="datePosted" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="occurrence" stroke="#8884d8" label />
+                        {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
+                    </LineChart>
+                    {/* <ResponsiveContainer width={400} height={400}> */}
+
+                    <p><b>Levels</b></p>
+                        <PieChart width={450} height={400}>
+                            <Pie
+                                data={levelCount}
+                                cx="50%"
+                                cy="30%"
+                                outerRadius={100}
+                                fill="#8884d8"
+                                dataKey="occurrence"
+                                label={({
+                                cx,
+                                cy,
+                                midAngle,
+                                innerRadius,
+                                outerRadius,
+                                value,
+                                index
+                                }) => {
+                                console.log("handling label?");
+                                const RADIAN = Math.PI / 180;
+                                const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                                return (
+                                    <text
+                                    x={x}
+                                    y={y}
+                                    fill="#8884d8"
+                                    textAnchor={x > cx ? "start" : "end"}
+                                    dominantBaseline="central"
+                                    >
+                                    {levelCount[index].level} ({value})
+                                    </text>
+                                );
+                                }}
+                            />
+                        </PieChart>
+                    {/* </ResponsiveContainer> */}
+
+                    {/* <ResponsiveContainer width={450} height={400}> */}
+                    <p><b>Subjects</b></p>
+                        <PieChart width={450} height={400}>
+                            <Pie
+                                data={subjectCount}
+                                cx="50%"
+                                cy="30%"
+                                outerRadius={100}
+                                fill="#8884d8"
+                                dataKey="occurrence"
+                                label={({
+                                cx,
+                                cy,
+                                midAngle,
+                                innerRadius,
+                                outerRadius,
+                                value,
+                                index
+                                }) => {
+                                console.log("handling label?");
+                                const RADIAN = Math.PI / 180;
+                                const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                                return (
+                                    <text
+                                    x={x}
+                                    y={y}
+                                    fill="#8884d8"
+                                    textAnchor={x > cx ? "start" : "end"}
+                                    dominantBaseline="central"
+                                    >
+                                    {subjectCount[index].subject} ({value})
+                                    </text>
+                                );
+                                }}
+                            />
+                        </PieChart>
+                    {/* </ResponsiveContainer> */}
                 </BlogsStats>
             </RightSideBar>
         </Container>
@@ -414,6 +465,7 @@ const Container = styled.div`
 `
 const Articles = styled.div`
     width: 60%;
+    height: 200vh;
     overflow-y: scroll;
     ::-webkit-scrollbar{
         display: none;
@@ -567,6 +619,7 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
+    height: 150vh;
     padding: 10px 0;
 `
 const BlogsStats = styled.div`
