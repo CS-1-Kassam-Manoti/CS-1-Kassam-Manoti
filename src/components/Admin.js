@@ -323,11 +323,11 @@ function Admin() {
 
 
             <RightSideBar>
-            
             <div>
-                <div>
                     Admins
                 </div>
+            <UserCard>
+                
             {
                 isAdmin.slice(0).reverse().map((admin, key) => (
                     <AdminSectionCard key={key}>
@@ -376,22 +376,27 @@ function Admin() {
             )
             )
         }
-            </div>
+            </UserCard>
+
             <div>
-                <div>
                     Disabled Users
                 </div>
+            <UserCard>
+                
             {
                 isDisabled.slice(0).reverse().map((disable, key) => (
                     <AdminSectionCard key={key}>
                         <UserDetails>
 
-                            <UserEmail>
-                                {disable.email}
-                            </UserEmail>
+                            
                             {/* <UserEmail>
                                 {disable.displayName}
                             </UserEmail> */}
+                            <UserEmail>
+                                {disable.email}
+                            </UserEmail>
+                            <Author>
+                            
                             
                             <UserButton>
 
@@ -422,13 +427,14 @@ function Admin() {
                                     }>Enable
                                     </p>
                                 </UserButton>
+                                </Author>
                         </UserDetails>                   
                     </AdminSectionCard>
             // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
         }
-            </div>
+            </UserCard>
 
                 <div>
                     All Users
@@ -445,7 +451,10 @@ function Admin() {
                 users.filter(filteredblog => filteredblog.email.toLowerCase().includes(filteruser)).slice(0).reverse().map((user, key) => (
                     
                     <UserCard key={key}>
-                        <UserDetails>                        
+                        <UserDetails>         
+                        <UserEmail>
+                                {user.email}
+                            </UserEmail>               
                             <Author>
                                 
                                 <UserButton>
@@ -525,9 +534,7 @@ function Admin() {
                             </Author>
 
                                         
-                            <UserEmail>
-                                {user.email}
-                            </UserEmail>
+                            
                             {/* <UserEmail>
                                 {user.displayName}
                             </UserEmail> */}
@@ -540,7 +547,10 @@ function Admin() {
                 users.filter(filteredblog => filteredblog.email.toLowerCase().includes(filteruser)).slice(0).reverse().map((user, key) => (
                     
                     <UserCard key={key}>
-                        <UserDetails>                        
+                        <UserDetails>       
+                        <UserEmail>
+                                {user.email}
+                            </UserEmail>                 
                             <Author>
                                 
                                 <UserButton>
@@ -620,9 +630,7 @@ function Admin() {
                             </Author>
 
                                         
-                            <UserEmail>
-                                {user.email}
-                            </UserEmail>
+                            
                             {/* <UserEmail>
                                 {user.displayName}
                             </UserEmail> */}
@@ -669,12 +677,12 @@ const Container = styled.div`
     justify-content: space-between;
 `
 const AdminSectionCard = styled.div`
-    border: 1px solid black;
+    /* border: 1px solid black; */
 `
 const Articles = styled.div`
-    width: 50%;
+    width: 70%;
     overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
     ::-webkit-scrollbar{
         display: none;
@@ -850,14 +858,21 @@ const RightSideBar = styled.div`
     }
 `
 const UserCard = styled.div`
-    border: 1px solid black;
+    margin: 20px;
     display: flex;
+    justify-content: space-between;
+    /* height: 170px; */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `
 
 const UserDetails = styled.div`
-    padding: 20px 20px;
-    width: 80%;
-    /* display: flex; */
+    padding: 10px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid grey; */
 `
 const UserEmail = styled.div`
 
@@ -865,12 +880,12 @@ const UserEmail = styled.div`
 const UserButton = styled.div`
     display: flex;
     /* border: 1px solid grey; */
-    width: 47%;
+    /* width: 47%; */
     justify-content: space-between;
 
     .delete{
             color: red !important;
-            
+            margin-right: 10px;
         }
 
     p{
