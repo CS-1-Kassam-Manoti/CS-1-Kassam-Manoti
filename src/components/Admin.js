@@ -140,7 +140,8 @@ function Admin() {
                                         
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
-                                        {blog.postedByName}
+                                    {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
                                 <Buttons>
@@ -236,7 +237,8 @@ function Admin() {
                                         
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
-                                        {blog.postedByName}
+                                    {blog.postedByName ? blog.postedByName : blog.postedByEmail}
+                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
                                     </AuthorUserName>
                                 </AuthorProfileAndName>
                                 <Buttons>
