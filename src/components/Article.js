@@ -261,7 +261,7 @@ const ArticleCard = styled.div`
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
-    width: 80%;
+    width: 60%;
 `
 const Author = styled.div`
     display: flex;

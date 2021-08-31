@@ -78,29 +78,29 @@ export default function Profile() {
             setFilter(searchRef.current.value.toLowerCase())
         }
 
-        function findOcc(arr, key){
-            let arr2 = [];
-              
-            arr.forEach((x)=>{
-                 
-               if(arr2.some((val)=>{ return val[key] == x[key] })){
-                   
-                 arr2.forEach((k)=>{
-                   if(k[key] === x[key]){ 
-                     k["occurrence"]++
-                   }
+            function findOcc(arr, key){
+                let arr2 = [];
+                
+                arr.forEach((x)=>{
+                    
+                if(arr2.some((val)=>{ return val[key] == x[key] })){
+                    
+                    arr2.forEach((k)=>{
+                    if(k[key] === x[key]){ 
+                        k["occurrence"]++
+                    }
+                    })
+                    
+                }else{
+                    let a = {}
+                    a[key] = x[key]
+                    a["occurrence"] = 1
+                    arr2.push(a);
+                }
                 })
-                   
-               }else{
-                 let a = {}
-                 a[key] = x[key]
-                 a["occurrence"] = 1
-                 arr2.push(a);
-               }
-            })
-              
-            return arr2
-          }
+                
+                return arr2
+            }
     console.log(blogs)
     console.log(bClass)
 
@@ -513,7 +513,7 @@ const ArticleCard = styled.div`
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
-    width: 80%;
+    width: 60%;
 `
 const AuthorContainer = styled.div`
     display: flex;
@@ -573,7 +573,8 @@ const ArticleTitle = styled.div`
     margin-top: 14px;
     font-weight: bold;
     font-size: 24px;
-    cursor: pointer;
+    width: 100%;
+    overflow: hidden;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

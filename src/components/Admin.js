@@ -330,7 +330,7 @@ function Admin() {
                 
             {
                 isAdmin.slice(0).reverse().map((admin, key) => (
-                    <AdminSectionCard key={key}>
+                    
                         <UserDetails>  
 
                             <UserEmail>
@@ -371,7 +371,7 @@ function Admin() {
                                     </p>
                                 </UserButton>
                         </UserDetails>                   
-                    </AdminSectionCard>
+                    
             // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
@@ -385,7 +385,7 @@ function Admin() {
                 
             {
                 isDisabled.slice(0).reverse().map((disable, key) => (
-                    <AdminSectionCard key={key}>
+                    
                         <UserDetails>
 
                             
@@ -429,7 +429,7 @@ function Admin() {
                                 </UserButton>
                                 </Author>
                         </UserDetails>                   
-                    </AdminSectionCard>
+                    
             // TODO: To display the isAdmin and isDisabled attributes from their nodes
             )
             )
