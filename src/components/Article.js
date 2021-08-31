@@ -205,10 +205,10 @@ const LeftSide = styled.div`
     /* border: 1px solid grey; */
 `
 const Articles = styled.div`
-    height: 90%;
+    height: 98%;
     width: 100%;
     overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
 
     ::-webkit-scrollbar{
         display: none;

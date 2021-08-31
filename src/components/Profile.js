@@ -370,7 +370,7 @@ export default function Profile() {
                     {/* <ResponsiveContainer width={400} height={400}> */}
 
                     <p><b>Levels</b></p>
-                        <PieChart width={450} height={400}>
+                        <PieChart width={450} height={450}>
                             <Pie
                                 data={levelCount}
                                 cx="50%"
@@ -411,7 +411,7 @@ export default function Profile() {
 
                     {/* <ResponsiveContainer width={450} height={400}> */}
                     <p><b>Subjects</b></p>
-                        <PieChart width={450} height={400}>
+                        <PieChart width={450} height={450}>
                             <Pie
                                 data={subjectCount}
                                 cx="50%"
@@ -458,14 +458,14 @@ export default function Profile() {
 const ParentContainer = styled.div`
 `
 const Container = styled.div`
-    height: 85vh;
+    height: 150vh;
     padding: 10px 100px;
     display: flex;
     justify-content: space-between;
 `
 const Articles = styled.div`
     width: 60%;
-    height: 200vh;
+    height: 250vh;
     overflow-y: scroll;
     ::-webkit-scrollbar{
         display: none;
