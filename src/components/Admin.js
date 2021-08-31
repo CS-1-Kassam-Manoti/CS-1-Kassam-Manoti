@@ -326,10 +326,11 @@ function Admin() {
             <div>
                     Admins
                 </div>
-            <UserCard>
                 
             {
                 isAdmin.slice(0).reverse().map((admin, key) => (
+            <UserCard>
+                
                     
                         <UserDetails>  
 
@@ -338,7 +339,6 @@ function Admin() {
                             </UserEmail>
                             
                             <UserButton>
-
                                     <p className="delete" onClick={(e) => {
                                         // TODO: #18 Check whether the user is an admin
                                         if(isUserAdmin){
@@ -372,19 +372,20 @@ function Admin() {
                                 </UserButton>
                         </UserDetails>                   
                     
-            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            </UserCard>
             )
             )
         }
-            </UserCard>
+            
 
             <div>
                     Disabled Users
                 </div>
+                {
+                isDisabled.slice(0).reverse().map((disable, key) => (
             <UserCard>
                 
-            {
-                isDisabled.slice(0).reverse().map((disable, key) => (
+            
                     
                         <UserDetails>
 
@@ -430,11 +431,12 @@ function Admin() {
                                 </Author>
                         </UserDetails>                   
                     
-            // TODO: To display the isAdmin and isDisabled attributes from their nodes
+            {/* // TODO: To display the isAdmin and isDisabled attributes from their nodes */}
+            </UserCard>
             )
             )
         }
-            </UserCard>
+            
 
                 <div>
                     All Users
