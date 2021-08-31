@@ -7,8 +7,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { database } from '../firebase';
 // import BlogDataService from "../firebaseDatabase";
 import { useAuth } from '../contexts/AuthContext'
-import {Pie, Doughnut,} from 'react-chartjs-2'
+// import {Pie, Doughnut,} from 'react-chartjs-2'
 import SearchIcon from '@material-ui/icons/Search';
+import { LineChart, Line, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 export default function Profile() {
 
@@ -16,6 +17,7 @@ export default function Profile() {
     const blogToDelete = JSON.parse(blogRetrieved)
 
     const [blogs, setBlogs] = useState([])
+    const [bClass, setbClass] = useState([])
     // const [currentBlog, setCurrentBlog] = useState({})
     const history = useHistory()
     const searchRef = useRef()
@@ -35,7 +37,7 @@ export default function Profile() {
                 })
                 setBlogs(allBlogs)
                 console.log(storing)
-                
+                setbClass(allBlogs.Bclass)
             })
         }, [])
         const rootRef = database.ref(`blogs`)
@@ -73,6 +75,57 @@ export default function Profile() {
             console.log(searchRef.current.value)
             setFilter(searchRef.current.value.toLowerCase())
         }
+
+        function findOcc(arr, key){
+            let arr2 = [];
+              
+            arr.forEach((x)=>{
+                 
+              // Checking if there is any object in arr2
+              // which contains the key value
+               if(arr2.some((val)=>{ return val[key] == x[key] })){
+                   
+                 // If yes! then increase the occurrence by 1
+                 arr2.forEach((k)=>{
+                   if(k[key] === x[key]){ 
+                     k["occurrence"]++
+                   }
+                })
+                   
+               }else{
+                 // If not! Then create a new object initialize 
+                 // it with the present iteration key's value and 
+                 // set the occurrence to 1
+                 let a = {}
+                 a[key] = x[key]
+                 a["occurrence"] = 1
+                 arr2.push(a);
+               }
+            })
+              
+            return arr2
+          }
+
+
+    console.log(blogs)
+    console.log(bClass)
+
+    const BClassCount = findOcc(blogs, "Bclass")
+    console.log(findOcc(blogs, "Bclass"))
+    console.log(distinctClasses)
+
+    const PieClasses = {
+        labels: BClassCount.Bclass,
+        datasets: [{
+            data: BClassCount.occurence,
+            backgroundColor: ['red', 'blue', 'green']
+        }]
+    }
+
+    // const classLabel = function(){
+    //     return BClassCount.Bclass
+    // }
+
     return (
         <ParentContainer>
             <Header/>
@@ -275,17 +328,45 @@ export default function Profile() {
                     <BlogsCount>
                         <p>Total Blogs Written: {blogs.length}</p>
                     </BlogsCount>
-                    
-                    <Classes>
-                        <p>Classes</p> 
-                        {
-                        distinctClasses.map((classdi, key) => (
-                            <>
-                                <p>{classdi}</p>
-                            </>
-                        ))
-                        }
-                    </Classes>    
+                    <ResponsiveContainer width={450} height={450}>
+                        <PieChart height="100%" width="100%">
+                            <Pie
+                                data={BClassCount}
+                                cx="50%"
+                                cy="30%"
+                                outerRadius={100}
+                                fill="#8884d8"
+                                dataKey="occurrence"
+                                label={({
+                                cx,
+                                cy,
+                                midAngle,
+                                innerRadius,
+                                outerRadius,
+                                value,
+                                index
+                                }) => {
+                                console.log("handling label?");
+                                const RADIAN = Math.PI / 180;
+                                const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                                return (
+                                    <text
+                                    x={x}
+                                    y={y}
+                                    fill="#8884d8"
+                                    textAnchor={x > cx ? "start" : "end"}
+                                    dominantBaseline="central"
+                                    >
+                                    {BClassCount[index].Bclass} ({value})
+                                    </text>
+                                );
+                                }}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
                     
                     <DatesWritten>
                         <p>dates written</p>
@@ -305,21 +386,17 @@ export default function Profile() {
                         {
                         distinctSubjects.map((classdi, key) => (
                                 <p>{classdi}</p>
-                        )
-                        )
-                        }
+                        ))}
                     </Subjects>
                     <Levels>
                         <p>Levels</p>
-                        {
-                        distinctLevels.map((classdi, key) => (
+                        {distinctLevels.map((classdi, key) => (
                             <>
                             <p>{classdi}</p>
                             {/* <p>{distinctLevelsCount}</p> */}
                         </>
-                        )
-                        )
-                        }
+                        ))}
+                        
                     </Levels>
                 </BlogsStats>
             </RightSideBar>
@@ -328,9 +405,7 @@ export default function Profile() {
     )
 }
 const ParentContainer = styled.div`
-
 `
-
 const Container = styled.div`
     height: 85vh;
     padding: 10px 100px;
@@ -340,22 +415,15 @@ const Container = styled.div`
 const Articles = styled.div`
     width: 60%;
     overflow-y: scroll;
-    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
-
-    /* border: 1px solid grey; */
     ::-webkit-scrollbar{
         display: none;
     }
 `
-
 const ArticleSearchbar=styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        /* border: 1px solid grey; */
-    
 `
-
 const Bar = styled.div`
     display: flex;
     align-items: center;
@@ -364,20 +432,17 @@ const Bar = styled.div`
     padding: 5px;
     border-radius: 15px;
     color: #0582c3;
-
     form{
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
         width: 100%;
-
         input{
         border: none;
         margin-left: 10px;
         outline: none;
         width: 100%;
-
         :hover{
             outline: none;
             cursor: text;
@@ -385,7 +450,6 @@ const Bar = styled.div`
     }
 }
 `
-
 const ArticleCard = styled.div`
     margin: 20px;
     display: flex;
@@ -394,12 +458,10 @@ const ArticleCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-
 `
 const ArticleTextDetails = styled.div`
     padding: 20px 20px;
     width: 80%;
-    /* border: 1px solid grey; */
 `
 const AuthorContainer = styled.div`
     display: flex;
@@ -423,14 +485,12 @@ const AuthorProfilePicture = styled.div`
         height: 30px;
         border-radius: 50%;
         overflow: hidden;
-        /* border: 1px solid grey; */
     }
     .icon{
-        /* width: 100%; */
         width: 30px;
         height: 30px;
         border-radius: 50%;
-    overflow: hidden;
+        overflow: hidden;
     }
 `
 const AuthorUserName = styled.div`
@@ -438,13 +498,11 @@ const AuthorUserName = styled.div`
 `
 const Buttons = styled.div`
     display: flex;
-    /* border: 1px solid grey; */
     width: 17%;
     justify-content: space-between;
 
     .delete{
             color: red !important;
-            
         }
 
     p{
@@ -489,15 +547,11 @@ const ArticleFooter = styled.div`
     }
 `
 const ArticleDatePosted = styled.div`
-    font-size: 11px;
-    
-    
+    font-size: 11px;    
 `
 const ArticleClassTag = styled.div`
-
 `
 const ArticleSubjectTag = styled.div`
-
 `                       
 const ArticleTopicTag = styled.div`
     white-space: nowrap;
@@ -513,11 +567,7 @@ const ArticlePicture = styled.div`
 
 const RightSideBar = styled.div`
     width: 30%;
-    /* height: 700px; */
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-    padding: 10px;
-
-    
+    padding: 10px 0;
 `
 const BlogsStats = styled.div`
 
@@ -532,6 +582,12 @@ const Classes = styled.div`
     margin: 10px;
     p:first-of-type{
         font-weight: bold;
+    }
+
+    div{
+        display: flex;
+        justify-content: space-between;
+        width: 30%;
     }
 `
 const DatesWritten = styled.div`
