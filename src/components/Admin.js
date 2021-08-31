@@ -111,7 +111,7 @@ function Admin() {
         <ParentContainer>
             <Header/>
             {
-                isUserAdmin ? 
+                isUserAdmin && !isDisabled ? 
             
         <Container>
             <Articles>
