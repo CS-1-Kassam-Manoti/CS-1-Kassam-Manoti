@@ -114,7 +114,13 @@ export default function Profile() {
     return (
         <ParentContainer>
             <Header/>
+            {
+
+blogs ?
             <Container>
+
+
+                
             <Articles>
                     <ArticleSearchbar>  
                         <Bar >
@@ -308,6 +314,7 @@ export default function Profile() {
         }
             </Articles>
 
+
             <RightSideBar>
                 <BlogsStats>
                     <BlogsCount>
@@ -451,7 +458,11 @@ export default function Profile() {
                     {/* </ResponsiveContainer> */}
                 </BlogsStats>
             </RightSideBar>
+            
         </Container>
+        : 
+        <p>You dont have any blogs</p>
+    }
         </ParentContainer>
     )
 }
