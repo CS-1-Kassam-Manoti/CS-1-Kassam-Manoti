@@ -332,7 +332,7 @@ blogs.length > 0 ?
                                 cx="50%"
                                 cy="30%"
                                 outerRadius={100}
-                                fill="#8884d8"
+                                fill="#0192de"
                                 dataKey="occurrence"
                                 label={({
                                 cx,
@@ -353,7 +353,7 @@ blogs.length > 0 ?
                                     <text
                                     x={x}
                                     y={y}
-                                    fill="#8884d8"
+                                    fill="#0192de"
                                     textAnchor={x > cx ? "start" : "end"}
                                     dominantBaseline="central"
                                     >
@@ -375,7 +375,7 @@ blogs.length > 0 ?
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="occurrence" stroke="#8884d8" label />
+                        <Line type="monotone" dataKey="occurrence" stroke="#0192de" label />
                         {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
                     </LineChart>
                     {/* <ResponsiveContainer width={400} height={400}> */}
@@ -387,7 +387,7 @@ blogs.length > 0 ?
                                 cx="50%"
                                 cy="30%"
                                 outerRadius={100}
-                                fill="#8884d8"
+                                fill="#0192de"
                                 dataKey="occurrence"
                                 label={({
                                 cx,
@@ -408,7 +408,7 @@ blogs.length > 0 ?
                                     <text
                                     x={x}
                                     y={y}
-                                    fill="#8884d8"
+                                    fill="#0192de"
                                     textAnchor={x > cx ? "start" : "end"}
                                     dominantBaseline="central"
                                     >
@@ -428,7 +428,7 @@ blogs.length > 0 ?
                                 cx="50%"
                                 cy="30%"
                                 outerRadius={100}
-                                fill="#8884d8"
+                                fill="#0192de"
                                 dataKey="occurrence"
                                 label={({
                                 cx,
@@ -449,7 +449,7 @@ blogs.length > 0 ?
                                     <text
                                     x={x}
                                     y={y}
-                                    fill="#8884d8"
+                                    fill="#0192de"
                                     textAnchor={x > cx ? "start" : "end"}
                                     dominantBaseline="central"
                                     >
