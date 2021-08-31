@@ -112,15 +112,17 @@ export default function Profile() {
     console.log(distinctClasses)
 
     return (
+        
         <ParentContainer>
+            
             <Header/>
+            
             {
 
-blogs ?
+blogs.length > 0 ?
             <Container>
 
 
-                
             <Articles>
                     <ArticleSearchbar>  
                         <Bar >
@@ -313,9 +315,11 @@ blogs ?
             )
         }
             </Articles>
+            
 
 
             <RightSideBar>
+                
                 <BlogsStats>
                     <BlogsCount>
                         <p>Total Blogs Written: {blogs.length}</p>
@@ -463,10 +467,16 @@ blogs ?
         : 
         <p>You dont have any blogs</p>
     }
+        
         </ParentContainer>
+        
     )
 }
 const ParentContainer = styled.div`
+    p{
+        text-align: center;
+        padding: 20px;
+    }
 `
 const Container = styled.div`
     height: 150vh;
