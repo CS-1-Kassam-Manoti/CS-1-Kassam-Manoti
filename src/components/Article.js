@@ -143,7 +143,7 @@ function Article() {
                                     </AuthorProfilePicture>
                                     <AuthorUserName>
                                         {blog.postedByName ? blog.postedByName : blog.postedByEmail}
-                                        <p>{blog.postedByEmail && blog.postedByEmail}</p>
+                                        {/* <p>{blog.postedByEmail && blog.postedByEmail}</p> */}
                                     </AuthorUserName>
                                 </Author>
 
